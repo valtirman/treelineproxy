@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You — Treeline Proxy</title>
+  <meta name="description" content="Thanks for your purchase. We’ll confirm details and get you scheduled." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .wrap{max-width:720px;margin:0 auto;padding:24px}
+    .card{background:var(--card);border:1px solid #222a39;border-radius:16px;padding:20px}
+    a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
+    h1{margin:8px 0 4px}
+    .muted{color:var(--muted)}
+    .btn{display:inline-block;margin-top:12px;padding:12px 16px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700}
+  </style>
+
+  <!-- Plausible -->
+  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
+  <script>
+    window.track = (name, props={}) => { if (window.plausible) window.plausible(name, { props }); };
+  </script>
+</head>
+<body>
+  <main class="wrap">
+    <div class="card">
+      <h1>You're set — thank you.</h1>
+      <p class="muted" id="orderSummary">Processing your order…</p>
+      <p>We’ll send an email with next steps. You can also grab time now:</p>
+      <p><a class="btn" id="cta-schedule" href="https://calendly.com/TODO/llm-security-scope" rel="noopener">Schedule the scope call →</a></p>
+      <p class="muted">Questions? <a href="mailto:hello@treelineproxy.io">hello@treelineproxy.io</a></p>
+    </div>
+  </main>
+
+  <script>
+    // Map order → label + revenue
+    const ORDERS = {
+      CHECKUP: { label: "48-Hour LLM Security Checkup", revenue: 1500, event: "Paid: Checkup" },
+      BUNDLE:  { label: "Policy Pack Bundle",           revenue: 1199, event: "Paid: PolicyBundle" }
+    };
+
+    (function handleThankYou(){
+      const q = new URLSearchParams(location.search);
+      const key = (q.get('order') || '').toUpperCase();
+      const o = ORDERS[key];
+      const el = document.getElementById('orderSummary');
+
+      if (o) {
+        el.textContent = `Order confirmed: ${o.label} — $${o.revenue}.`;
+        // Fire ecommerce event with revenue attribution
+        track(o.event, { revenue: o.revenue, order: key, path: location.pathname });
+      } else {
+        el.textContent = "Order confirmed.";
+        track('Paid: Unknown', { path: location.pathname });
+      }
+    })();
+
+    // Track schedule click
+    document.getElementById('cta-schedule').addEventListener('click', () =>
+      track('CTA: Schedule Scope', { path: location.pathname })
+    );
+  </script>
+</body>
+</html>
