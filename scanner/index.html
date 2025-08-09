@@ -89,19 +89,44 @@
       return hits;
     }
 
-    function renderResults(hits, text){
-      const res = document.getElementById('results');
-      const badges = document.getElementById('badges');
-      const detail = document.getElementById('detail');
-      res.style.display = 'block';
-      badges.innerHTML = hits.length
-        ? hits.map(h => badge(h.label, h.severity === 'err' ? 'err' : 'warn')).join(' ')
-        : badge('No obvious issues found', 'ok');
+   function renderResults(hits, text){
+  const res = document.getElementById('results');
+  const badges = document.getElementById('badges');
+  const detail = document.getElementById('detail');
+  res.style.display = 'block';
 
-      // Simple detail block
-      const ids = hits.map(h => h.id).join(', ') || 'none';
-      detail.innerHTML = `<p class="muted">Matched rules: <strong>${ids}</strong></p><pre>${text}</pre>`;
-    }
+  // Risk explanations
+  const EXPLAIN = {
+    injection: 'Tries to override or bypass your system prompt/rules.',
+    exfil: 'May expose sensitive data like PII, credentials, or keys.',
+    tools: 'Attempts to abuse tools or escalate access.',
+    jailbreak: 'Known jailbreak pattern to bypass model safeguards.',
+    cot: 'Reveals hidden instructions or chain-of-thought content.',
+    exec: 'Contains dangerous code or system commands.'
+  };
+
+  if (hits.length) {
+    badges.innerHTML = hits.map(h => badge(h.label, h.severity === 'err' ? 'err' : 'warn')).join(' ');
+
+    // CTA to push to Checkup
+    const cta = `
+      <div style="margin-top:16px;padding:12px;border:1px solid #ff4d4f;border-radius:8px;background:#1a0b0c;">
+        <strong>⚠ Risks detected.</strong> Our 48-Hour Checkup simulates dozens more attacks and provides a ready-to-deploy Policy Pack.
+        <div style="margin-top:8px;">
+          <a class="btn" href="https://checkout.stripe.com/c/pay/TODO" rel="noopener" style="display:inline-block;">Fix these now →</a>
+        </div>
+      </div>
+    `;
+
+    // Explanation list
+    const list = hits.map(h => `<li><strong>${h.label}:</strong> ${EXPLAIN[h.id] || ''}</li>`).join('');
+    detail.innerHTML = `${cta}<p class="muted">Matched rules:</p><ul>${list}</ul><pre>${text}</pre>`;
+
+  } else {
+    badges.innerHTML = badge('No obvious issues found', 'ok');
+    detail.innerHTML = `<p class="muted">No matches found in quick scan. Our full Checkup still runs dozens more tests to confirm safety.</p><pre>${text}</pre>`;
+  }
+}
 
     // Bindings
     document.getElementById('scan').addEventListener('click', () => {
