@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompt Risk Scanner — Treeline Proxy</title>
+  <meta name="description" content="Quick client-side checks for prompt injection, data exfil, tool abuse, and jailbreak markers." />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--warn:#ffb020;--err:#ff4d4f;--ok:#24d26e}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    h1{margin:8px 0 6px} .muted{color:var(--muted)}
+    textarea{width:100%;min-height:160px;background:#0f1420;color:var(--fg);border:1px solid #223049;border-radius:12px;padding:12px}
+    .row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+    .btn{padding:10px 14px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;text-decoration:none;display:inline-block}
+    .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid #2a3243}
+    .card{background:var(--card);border:1px solid #222a39;border-radius:16px;padding:16px;margin-top:16px}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .badge{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid #2a3243;color:var(--muted)}
+    .badge.warn{border-color:#604500;color:#ffd07a;background:#1e1500}
+    .badge.err{border-color:#4a1213;color:#ffd3d3;background:#1a0b0c}
+    .badge.ok{border-color:#1a3d2c;color:#bff3d3;background:#0b1a14}
+    pre{white-space:pre-wrap;word-wrap:break-word;background:#0f1420;border:1px solid #223049;border-radius:12px;padding:12px}
+  </style>
+
+  <!-- Plausible -->
+  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
+  <script>
+    window.track = (name, props={}) => { if (window.plausible) window.plausible(name, { props }); };
+  </script>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Prompt Risk Scanner</h1>
+    <p class="muted">Lightweight checks for common LLM risks. Client-side only. For a full assessment, use the 48-Hour Checkup.</p>
+
+    <div class="card">
+      <label for="prompt"><strong>Paste prompt or model output</strong></label>
+      <textarea id="prompt" placeholder="Paste here…"></textarea>
+      <div class="row">
+        <button id="scan" class="btn">Run Checks</button>
+        <a id="cta-checkup" class="btn secondary" href="https://checkout.stripe.com/c/pay/TODO" rel="noopener">Get the 48-Hour Checkup</a>
+        <a id="cta-book" class="btn secondary" href="https://calendly.com/TODO/llm-security-intro" rel="noopener">Book a 20-min intro</a>
+      </div>
+
+      <div id="results" class="card" style="display:none">
+        <strong>Results</strong>
+        <div id="badges" class="badges"></div>
+        <div id="detail"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- Heuristics (quick but useful) ---
+    const RULES = [
+      // Injection / instruction override
+      { id:'injection', label:'Prompt Injection', severity:'err',
+        test:t => /ignore\s+(?:previous|prior)\s+instructions|override\s+all\s+rules|system\s+prompt/gi.test(t) },
+
+      // Exfil / sensitive data
+      { id:'exfil', label:'Data Exfil (PII/Secrets)', severity:'warn',
+        test:t => /\b(ssn|social\s?security|passport|credit\s?card|apikey|api[-_ ]?key|secret|token|private\s?key)\b/gi.test(t) },
+
+      // Tool escalation / policy bypass
+      { id:'tools', label:'Tool-Use Escalation', severity:'warn',
+        test:t => /\bdisable\s+(?:safety|filters)|bypass\s+(?:policy|guardrails)|sudo\b/gi.test(t) },
+
+      // Jailbreak markers
+      { id:'jailbreak', label:'Jailbreak Markers', severity:'warn',
+        test:t => /\b(do\s+anything\s+now|dan\s+6\.\d|unfiltered\s+mode|developer\s+mode)\b/gi.test(t) },
+
+      // Leak of internal chain-of-thought or hidden text
+      { id:'cot', label:'Hidden Prompt / CoT Leak', severity:'warn',
+        test:t => /\b(hidden|invisible)\s+(instructions|prompt)|chain[- ]of[- ]thought/gi.test(t) },
+
+      // Output risks (code exec, shell)
+      { id:'exec', label:'Dangerous Execution', severity:'warn',
+        test:t => /rm\s+-rf|curl\s+.+\|\s*sh|powershell\s+-enc|Invoke-Expression|os\.system\(|subprocess\.Popen/gi.test(t) },
+    ];
+
+    function badge(text, cls){ return `<span class="badge ${cls}">${text}</span>`; }
+
+    function runChecks(input){
+      const text = (input || '').trim();
+      const hits = [];
+      RULES.forEach(r => { try { if (r.test(text)) hits.push(r); } catch(e){} });
+      return hits;
+    }
+
+    function renderResults(hits, text){
+      const res = document.getElementById('results');
+      const badges = document.getElementById('badges');
+      const detail = document.getElementById('detail');
+      res.style.display = 'block';
+      badges.innerHTML = hits.length
+        ? hits.map(h => badge(h.label, h.severity === 'err' ? 'err' : 'warn')).join(' ')
+        : badge('No obvious issues found', 'ok');
+
+      // Simple detail block
+      const ids = hits.map(h => h.id).join(', ') || 'none';
+      detail.innerHTML = `<p class="muted">Matched rules: <strong>${ids}</strong></p><pre>${text}</pre>`;
+    }
+
+    // Bindings
+    document.getElementById('scan').addEventListener('click', () => {
+      const text = document.getElementById('prompt').value || '';
+      const hits = runChecks(text);
+      renderResults(hits, text);
+      track('Scanner: Run', { matches: hits.map(h => h.id).join('|'), count: hits.length, path: location.pathname });
+    });
+
+    // Track CTAs
+    document.getElementById('cta-checkup').addEventListener('click', () =>
+      track('CTA: Checkout', { path: location.pathname, source: 'scanner' })
+    );
+    document.getElementById('cta-book').addEventListener('click', () =>
+      track('CTA: Book Intro', { path: location.pathname, source: 'scanner' })
+    );
+  </script>
+</body>
+</html>
