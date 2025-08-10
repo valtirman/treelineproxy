@@ -1,0 +1,10 @@
+rules:
+  - id: jailbreak_semantic
+    match: semantic
+    embedding_index: ./indices/jailbreak.bin
+    threshold: 0.82
+    action: block
+  - id: jailbreak_phrases
+    match: keyword
+    terms: ["ignore previous","developer mode","do anything now","break the rules"]
+    action: block
