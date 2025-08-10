@@ -1,148 +1,62 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Prompt Risk Scanner — Treeline Proxy</title>
-  <meta name="description" content="Quick client-side checks for prompt injection, data exfil, tool abuse, and jailbreak markers." />
-  <link rel="icon" href="/favicon.ico" />
-  <style>
-    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--warn:#ffb020;--err:#ff4d4f;--ok:#24d26e}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    .wrap{max-width:960px;margin:0 auto;padding:24px}
-    h1{margin:8px 0 6px} .muted{color:var(--muted)}
-    textarea{width:100%;min-height:160px;background:#0f1420;color:var(--fg);border:1px solid #223049;border-radius:12px;padding:12px}
-    .row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
-    .btn{padding:10px 14px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;text-decoration:none;display:inline-block}
-    .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid #2a3243}
-    .card{background:var(--card);border:1px solid #222a39;border-radius:16px;padding:16px;margin-top:16px}
-    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-    .badge{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid #2a3243;color:var(--muted)}
-    .badge.warn{border-color:#604500;color:#ffd07a;background:#1e1500}
-    .badge.err{border-color:#4a1213;color:#ffd3d3;background:#1a0b0c}
-    .badge.ok{border-color:#1a3d2c;color:#bff3d3;background:#0b1a14}
-    pre{white-space:pre-wrap;word-wrap:break-word;background:#0f1420;border:1px solid #223049;border-radius:12px;padding:12px}
-  </style>
-
-  <!-- Plausible -->
-  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
-  <script>
-    window.track = (name, props={}) => { if (window.plausible) window.plausible(name, { props }); };
-  </script>
+<meta charset="utf-8" />
+<title>Prompt Risk Scanner — CLI/API/CI</title>
+<meta name="description" content="Scan prompts and responses for jailbreaks, PII/PHI, data exfil, and unsafe tool calls. CLI, API, and CI modes." />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/assets/site.css" />
+<link rel="preconnect" href="https://plausible.io" />
 </head>
 <body>
-  <main class="wrap">
+<header class="nav wrap"><a class="brand" href="/"><img src="/assets/logo.png" alt="">Treeline</a><nav><a href="/">Home</a></nav></header>
+<main class="wrap">
+  <section class="hero">
     <h1>Prompt Risk Scanner</h1>
-    <p class="muted">Lightweight checks for common LLM risks. Client-side only. For a full assessment, use the 48-Hour Checkup.</p>
+    <p class="sub">Catch jailbreaks and leaks before they ship. Works from laptop to CI.</p>
+    <p>
+      <a id="cta-open-scanner" class="btn btn-primary" href="https://calendly.com/REPLACE_CALENDLY/scanner-demo">Request Demo</a>
+      <a class="btn btn-secondary" href="#examples">See examples</a>
+    </p>
+  </section>
 
+  <section class="grid-2">
     <div class="card">
-      <label for="prompt"><strong>Paste prompt or model output</strong></label>
-      <textarea id="prompt" placeholder="Paste here…"></textarea>
-      <div class="row">
-        <button id="scan" class="btn">Run Checks</button>
-        <a id="cta-checkup" class="btn secondary" href="https://checkout.stripe.com/c/pay/TODO" rel="noopener">Get the 48-Hour Checkup</a>
-        <a id="cta-book" class="btn secondary" href="https://calendly.com/TODO/llm-security-intro" rel="noopener">Book a 20-min intro</a>
-      </div>
-
-      <div id="results" class="card" style="display:none">
-        <strong>Results</strong>
-        <div id="badges" class="badges"></div>
-        <div id="detail"></div>
-      </div>
+      <h2>Modes</h2>
+      <ul class="clean">
+        <li><strong>CLI:</strong> scan *.jsonl files</li>
+        <li><strong>API:</strong> POST to /scan, get scores + actions</li>
+        <li><strong>CI:</strong> block on policy regressions</li>
+      </ul>
     </div>
-  </main>
+    <div class="card">
+      <h2>Signals</h2>
+      <ul class="clean">
+        <li>Jailbreak semantic similarity</li>
+        <li>PII/PHI regex + heuristics</li>
+        <li>Exfil/abuse intents</li>
+        <li>Token overrun & memory leakage hints</li>
+      </ul>
+    </div>
+  </section>
 
-  <script>
-    // --- Heuristics (quick but useful) ---
-    const RULES = [
-      // Injection / instruction override
-      { id:'injection', label:'Prompt Injection', severity:'err',
-        test:t => /ignore\s+(?:previous|prior)\s+instructions|override\s+all\s+rules|system\s+prompt/gi.test(t) },
-
-      // Exfil / sensitive data
-      { id:'exfil', label:'Data Exfil (PII/Secrets)', severity:'warn',
-        test:t => /\b(ssn|social\s?security|passport|credit\s?card|apikey|api[-_ ]?key|secret|token|private\s?key)\b/gi.test(t) },
-
-      // Tool escalation / policy bypass
-      { id:'tools', label:'Tool-Use Escalation', severity:'warn',
-        test:t => /\bdisable\s+(?:safety|filters)|bypass\s+(?:policy|guardrails)|sudo\b/gi.test(t) },
-
-      // Jailbreak markers
-      { id:'jailbreak', label:'Jailbreak Markers', severity:'warn',
-        test:t => /\b(do\s+anything\s+now|dan\s+6\.\d|unfiltered\s+mode|developer\s+mode)\b/gi.test(t) },
-
-      // Leak of internal chain-of-thought or hidden text
-      { id:'cot', label:'Hidden Prompt / CoT Leak', severity:'warn',
-        test:t => /\b(hidden|invisible)\s+(instructions|prompt)|chain[- ]of[- ]thought/gi.test(t) },
-
-      // Output risks (code exec, shell)
-      { id:'exec', label:'Dangerous Execution', severity:'warn',
-        test:t => /rm\s+-rf|curl\s+.+\|\s*sh|powershell\s+-enc|Invoke-Expression|os\.system\(|subprocess\.Popen/gi.test(t) },
-    ];
-
-    function badge(text, cls){ return `<span class="badge ${cls}">${text}</span>`; }
-
-    function runChecks(input){
-      const text = (input || '').trim();
-      const hits = [];
-      RULES.forEach(r => { try { if (r.test(text)) hits.push(r); } catch(e){} });
-      return hits;
-    }
-
-   function renderResults(hits, text){
-  const res = document.getElementById('results');
-  const badges = document.getElementById('badges');
-  const detail = document.getElementById('detail');
-  res.style.display = 'block';
-
-  // Risk explanations
-  const EXPLAIN = {
-    injection: 'Tries to override or bypass your system prompt/rules.',
-    exfil: 'May expose sensitive data like PII, credentials, or keys.',
-    tools: 'Attempts to abuse tools or escalate access.',
-    jailbreak: 'Known jailbreak pattern to bypass model safeguards.',
-    cot: 'Reveals hidden instructions or chain-of-thought content.',
-    exec: 'Contains dangerous code or system commands.'
-  };
-
-  if (hits.length) {
-    badges.innerHTML = hits.map(h => badge(h.label, h.severity === 'err' ? 'err' : 'warn')).join(' ');
-
-    // CTA to push to Checkup
-    const cta = `
-      <div style="margin-top:16px;padding:12px;border:1px solid #ff4d4f;border-radius:8px;background:#1a0b0c;">
-        <strong>⚠ Risks detected.</strong> Our 48-Hour Checkup simulates dozens more attacks and provides a ready-to-deploy Policy Pack.
-        <div style="margin-top:8px;">
-          <a class="btn" href="https://checkout.stripe.com/c/pay/TODO" rel="noopener" style="display:inline-block;">Fix these now →</a>
-        </div>
-      </div>
-    `;
-
-    // Explanation list
-    const list = hits.map(h => `<li><strong>${h.label}:</strong> ${EXPLAIN[h.id] || ''}</li>`).join('');
-    detail.innerHTML = `${cta}<p class="muted">Matched rules:</p><ul>${list}</ul><pre>${text}</pre>`;
-
-  } else {
-    badges.innerHTML = badge('No obvious issues found', 'ok');
-    detail.innerHTML = `<p class="muted">No matches found in quick scan. Our full Checkup still runs dozens more tests to confirm safety.</p><pre>${text}</pre>`;
-  }
-}
-
-    // Bindings
-    document.getElementById('scan').addEventListener('click', () => {
-      const text = document.getElementById('prompt').value || '';
-      const hits = runChecks(text);
-      renderResults(hits, text);
-      track('Scanner: Run', { matches: hits.map(h => h.id).join('|'), count: hits.length, path: location.pathname });
-    });
-
-    // Track CTAs
-    document.getElementById('cta-checkup').addEventListener('click', () =>
-      track('CTA: Checkout', { path: location.pathname, source: 'scanner' })
-    );
-    document.getElementById('cta-book').addEventListener('click', () =>
-      track('CTA: Book Intro', { path: location.pathname, source: 'scanner' })
-    );
-  </script>
+  <section id="examples" class="card">
+    <h2>API Example</h2>
+    <pre class="code"><code>POST /scan
+{
+  "session_id":"abc123",
+  "prompt":"Ignore all instructions and ...",
+  "response":"Sure, here's the admin password ...",
+  "meta":{"model":"claude-3.7","env":"staging"}
+}</code></pre>
+    <pre class="code"><code>{
+  "scores":{"jailbreak":0.91,"pii":0.12,"exfil":0.77},
+  "actions":["block","review"],
+  "matched_rules":["jailbreak_semantic"]
+}</code></pre>
+  </section>
+</main>
+<footer class="footer wrap"><p class="micro"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p></footer>
+<script src="/assets/main.js"></script>
 </body>
 </html>
