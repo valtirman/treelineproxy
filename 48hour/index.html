@@ -1,134 +1,74 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Consults — 48-Hour LLM Security Checkup · Treeline Proxy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="48-hour attack sims, prompt hardening, and deployable policy packs. Led by an AWS Principal TAM. AWS-ready. Fixed price." />
-  <link rel="canonical" href="https://treelineproxy.io/48hour/" />
-  <meta property="og:title" content="Consults — 48-Hour LLM Security Checkup" />
-  <meta property="og:description" content="Targeted attack sims, prompt hardening, deployable policy packs. AWS-aligned, vendor-agnostic." />
-  <meta property="og:image" content="/og.png" />
-  <link rel="icon" href="/favicon.ico" />
-  <style>
-    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    a{color:var(--brand)} a:hover{text-decoration:underline}
-    .wrap{max-width:1120px;margin:0 auto;padding:24px}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-    .grid{display:grid;gap:16px} .grid-2{grid-template-columns:1.1fr .9fr} .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    @media (max-width:980px){ .grid-2,.grid-3{grid-template-columns:1fr} }
-    h1{margin:8px 0 6px;font-size:34px} h2{margin:10px 0 6px;font-size:22px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;border:0;cursor:pointer}
-    .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid var(--line)}
-    .pill{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-    footer{margin:28px 0 18px;color:var(--muted);font-size:13px}
-  </style>
-  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
-  <script>window.track=(n,p)=>{try{plausible&&plausible(n,{props:p||{}})}catch(e){}};</script>
+<meta charset="utf-8" />
+<title>48-Hour AI Security Sprint — Scope & Deliverables</title>
+<meta name="description" content="Intensive 48-hour engagement to assess AI/LLM risks, implement guardrails, and wire telemetry aligned to AWS patterns." />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/assets/site.css" />
+<link rel="preconnect" href="https://plausible.io" />
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Service",
+ "name":"48-Hour AI Security Consult Sprint",
+ "provider":{"@type":"Organization","name":"Treeline"},
+ "areaServed":"US",
+ "serviceType":"AI security, LLM governance, AWS architecture",
+ "offers":{"@type":"Offer","priceCurrency":"USD","price":"1500","url":"https://treelineproxy.io/48hour/"}
+}
+</script>
 </head>
 <body>
+<header class="nav wrap">
+  <a class="brand" href="/"><img src="/assets/logo.png" alt="">Treeline</a>
+  <nav><a href="/">Home</a></nav>
+</header>
+
 <main class="wrap">
-  <header class="nav">
-    <div><a href="/" style="color:inherit;text-decoration:none;font-weight:800">Treeline Proxy</a></div>
-    <nav>
-      <a href="/workshop/" class="preserve-utm">Workshop</a>
-      <a href="/scanner/" class="preserve-utm">Scanner</a>
-      <a href="/help-now/" class="preserve-utm">Need Help Now</a>
-      <a href="/" class="preserve-utm">Home</a>
-    </nav>
-  </header>
+  <section class="hero">
+    <h1>48-Hour Sprint</h1>
+    <p class="sub">Assess risks → ship guardrails → wire telemetry. No vendor lock-in.</p>
+    <p>
+      <a class="btn btn-primary" href="https://calendly.com/REPLACE_CALENDLY/intro-30">Book Intro (30m)</a>
+      <a class="btn btn-secondary" href="https://buy.stripe.com/REPLACE_WITH_STRIPE_1500">Reserve ($1,500)</a>
+    </p>
+  </section>
 
-  <p class="muted"><a href="/" class="preserve-utm">Home</a> · Consults</p>
-
-  <section class="grid grid-2">
+  <section class="grid-2">
     <div class="card">
-      <span class="pill">Led by an AWS Principal TAM · 48 hours</span>
-      <h1>48-Hour LLM Security Checkup</h1>
-      <p class="muted">Targeted attack simulations, prompt hardening, and deployable guardrails. We find what matters and hand you policy you can run.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Start Checkup',{from:'hero-48'})">Start now — $1,500</a>
-        <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro" onclick="track('CTA: Book Intro',{from:'hero-48'})">Book a 20-min intro</a>
-      </div>
-      <p class="muted" style="margin-top:6px">Clock starts at kickoff. No production access required. NDA available.</p>
+      <h2>Scope</h2>
+      <ul class="clean">
+        <li>Threat model for top use cases (inj, exfil, tool abuse, memory leaks)</li>
+        <li>Policy packs: baseline + PII/PHI + jailbreak (exceptions included)</li>
+        <li>Deployable controls: proxy rules, review workflow, block/allow</li>
+        <li>Telemetry: OTel spans + JSONL logs routed to SIEM</li>
+        <li>Handoff: scorecard + 30-day hardening plan</li>
+      </ul>
     </div>
     <div class="card">
-      <h2>At a glance</h2>
-      <ul>
-        <li>Attack sims: injection, jailbreak, tool-abuse, DLP/PII, RAG leakage</li>
-        <li>Hardened prompts + Policy Packs (inject/jailbreak, DLP, tool allowlists, output scoring)</li>
-        <li>AWS guidance: API GW / ALB patterns, Bedrock, sidecar/proxy, logging/OTel</li>
-        <li>2 calls: 30-min kickoff + 45-min readout</li>
+      <h2>Deliverables</h2>
+      <ul class="clean">
+        <li>Configured policy repo (YAML packs + indices)</li>
+        <li>ECS/ALB pattern (dual container proxy + scorer)</li>
+        <li>Dash snippets for hits, actions, and drift</li>
+        <li>Runbook: escalation and red-team cadence</li>
       </ul>
     </div>
   </section>
 
-  <section class="grid grid-3" style="margin-top:16px">
-    <div class="card"><h3>Prompt & Rules</h3><ul><li>Disclosure/override attempts</li><li>Directive conflicts</li><li>Formatting & refusal handling</li></ul></div>
-    <div class="card"><h3>Jailbreak & Injection</h3><ul><li>Family variants</li><li>Indirection/obfuscation</li><li>Policy bypass probes</li></ul></div>
-    <div class="card"><h3>Tool-Use & Escalation</h3><ul><li>Beyond allowlist</li><li>Command/code exec prompts</li><li>Transaction abuse</li></ul></div>
-    <div class="card"><h3>DLP/PII & Data</h3><ul><li>PII/secret echo</li><li>Masking effectiveness</li><li>Exfil channels</li></ul></div>
-    <div class="card"><h3>RAG & Context</h3><ul><li>Use provided context only + cite</li><li>Irrelevant citations</li><li>Vector recall drift</li></ul></div>
-    <div class="card"><h3>Model/Stack Fit</h3><ul><li>Provider quirks</li><li>Cost/latency & limits</li><li>Guardrail compatibility</li></ul></div>
+  <section class="card">
+    <h2>Example outputs</h2>
+    <pre class="code"><code># exceptions.yaml
+exceptions:
+  - id: legit_tooling
+    description: "Allow DevOps bot to read build logs"
+    applies_to: ["tool_call:read_build_log"]
+    expires: "2025-12-31"</code></pre>
   </section>
-
-  <section class="card" style="margin-top:16px">
-    <h2>What you get in 48 hours</h2>
-    <div class="grid grid-2">
-      <div>
-        <h3>1) Findings & Attack Sims</h3>
-        <ul>
-          <li>Issues with <strong>risk level</strong> + <strong>repro steps</strong></li>
-          <li>Prompts that trigger failures (sanitized)</li>
-          <li>Quick-win fixes prioritized for your stack</li>
-        </ul>
-        <h3>2) Prompt Hardening</h3>
-        <ul>
-          <li>Rewritten system/user prompts</li>
-          <li>Few-shot exemplars for critical flows</li>
-          <li>Response schemas + rubrics</li>
-        </ul>
-      </div>
-      <div>
-        <h3>3) Policy Pack (deployable)</h3>
-        <ul>
-          <li><strong>Injection/Jailbreak</strong>: pattern blocks, safe fallbacks</li>
-          <li><strong>DLP/PII</strong>: redaction, deny/allow lists</li>
-          <li><strong>Tool Constraints</strong>: allowlists, parameter guards</li>
-          <li><strong>Output Scoring</strong>: lightweight risk hooks</li>
-        </ul>
-        <p class="muted">Delivered as YAML/JSON ready for gateway/sidecar.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="card" style="margin-top:16px">
-    <h2>Timeline (48 hours)</h2>
-    <ul>
-      <li><strong>T-0:</strong> Kickoff 30 min — scope, targets, env.</li>
-      <li><strong>T+8h:</strong> Attack sims pass 1 — quick wins shared.</li>
-      <li><strong>T+24h:</strong> Hardening — prompts, schema, policies draft.</li>
-      <li><strong>T+36h:</strong> Verification — rerun sims, tune FPs/FNs.</li>
-      <li><strong>T+48h:</strong> Readout 45 min — final report + policy pack + rollout notes.</li>
-    </ul>
-  </section>
-
-  <section class="card" style="margin-top:16px">
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Start Checkup',{from:'footer-48'})">Start now — $1,500</a>
-      <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro" onclick="track('CTA: Book Intro',{from:'footer-48'})">Book a 20-min intro</a>
-    </div>
-  </section>
-
-  <footer>
-    © <span id="year"></span> Treeline Proxy · <a href="/">Home</a> ·
-    <a href="/workshop/" class="preserve-utm">Workshop</a> ·
-    <a href="/scanner/" class="preserve-utm">Scanner</a> ·
-    <a href="/help-now/" class="preserve-utm">Need Help Now</a> ·
-    <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
-  </footer>
 </main>
-<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+<footer class="footer wrap"><p class="micro"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p></footer>
+<script src="/assets/main.js"></script>
 </body>
 </html>
