@@ -1,0 +1,13 @@
+rules:
+  - id: ssn
+    match: regex
+    pattern: "\\b(?!000|666|9\\d\\d)(\\d{3})[- ]?(?!00)(\\d{2})[- ]?(?!0000)(\\d{4})\\b"
+    action: redact
+  - id: phone_us
+    match: regex
+    pattern: "(?i)\\b(?:\\+1[-.\\s]?)?(?:\\(\\d{3}\\)|\\d{3})[-.\\s]?\\d{3}[-.\\s]?\\d{4}\\b"
+    action: redact
+  - id: medical_terms_hint
+    match: keyword
+    terms: ["diagnosis","patient id","HIPAA","PHI"]
+    action: review
