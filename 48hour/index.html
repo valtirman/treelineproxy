@@ -137,4 +137,83 @@
             <li><strong>Output Scoring</strong>: lightweight risk hooks</li>
           </ul>
           <p class="muted">Delivered as YAML/JSON with notes to run in gateway/sidecar. Includes <span class="k">/policies</span> folder structure.</p>
-        <
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="card" style="margin-top:16px">
+      <h2>Timeline (48 hours)</h2>
+      <div class="table">
+        <div class="rowh"><div><strong>T-0</strong></div><div><strong>Kickoff (30 min)</strong> — scope, targets, env. Share sample prompts, tool calls, staging endpoint if available.</div></div>
+        <div class="rowh"><div><strong>T+8h</strong></div><div><strong>Attack sims pass 1</strong> — initial probes across prompts, jailbreak families, tool escalation. Quick wins shared.</div></div>
+        <div class="rowh"><div><strong>T+24h</strong></div><div><strong>Hardening</strong> — updated prompts, schema/rubric, policy pack draft.</div></div>
+        <div class="rowh"><div><strong>T+36h</strong></div><div><strong>Verification</strong> — rerun sims vs hardened prompts/policies; tune FPs/FNs.</div></div>
+        <div class="rowh"><div><strong>T+48h</strong></div><div><strong>Readout (45 min)</strong> — final report + policy pack + rollout notes.</div></div>
+      </div>
+    </section>
+
+    <!-- REQUIREMENTS / AWS -->
+    <section class="grid grid-2" style="margin-top:16px">
+      <div class="card">
+        <h2>What we need</h2>
+        <ul>
+          <li>30-min kickoff with an engineer/product owner</li>
+          <li>Sample prompts & expected outputs (5–10)</li>
+          <li>Staging/test endpoint (preferred) or mocks</li>
+          <li>Tool contract (functions/actions) if applicable</li>
+        </ul>
+        <p class="muted">No production credentials required. NDA on request.</p>
+      </div>
+      <div class="card">
+        <h2>Where it runs (AWS-ready)</h2>
+        <ul>
+          <li>API Gateway / Lambda / ALB proxy patterns</li>
+          <li>Bedrock (Claude/Sonnet), OpenAI, or local models</li>
+          <li>Optional sidecar proxy + OpenTelemetry hooks</li>
+        </ul>
+        <p class="muted">We include rollout notes for your chosen path.</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="card" style="margin-top:16px">
+      <h2>FAQ</h2>
+      <h3>Do you need production access?</h3><p>No. Staging/test or mocks are sufficient to surface issues and ship deployable fixes.</p>
+      <h3>Which models/providers?</h3><p>OpenAI, Anthropic/Claude, AWS Bedrock, and local (Ollama) patterns. We tailor prompts/policies per provider.</p>
+      <h3>How do you handle data?</h3><p>We minimize data handling and can operate in a “no logs retained” mode. NDA available; sensitive samples may be redacted.</p>
+      <h3>What if we already have guardrails?</h3><p>We validate them, reduce false positives/negatives, and harden prompts to complement existing controls.</p>
+    </section>
+
+    <!-- CTA FOOTER -->
+    <section class="card" style="margin-top:16px">
+      <div class="row">
+        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO"
+           onclick="track('CTA: Start Checkup',{from:'footer-48',path:location.pathname})">Start now — $1,500</a>
+        <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
+           onclick="track('CTA: Book Intro',{from:'footer-48',path:location.pathname})">Book a 20-min intro</a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      © <span id="year"></span> Treeline Proxy ·
+      <a href="/workshop/" class="preserve-utm">Workshop</a> ·
+      <a href="/scanner/" class="preserve-utm">Scanner</a> ·
+      <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
+    </footer>
+  </main>
+
+  <!-- UTM + year -->
+  <script>
+    (function preserveUTM(){
+      var qs=location.search.replace(/^\?/,''); if(!qs) return;
+      document.querySelectorAll('a.preserve-utm[href^="/"],a.preserve-utm[href^="https://"]').forEach(function(a){
+        if(a.href.indexOf('#')>-1) return;
+        a.href += (a.href.indexOf('?')>-1 ? '&' : '?') + qs;
+      });
+    })();
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
