@@ -4,140 +4,83 @@
   <meta charset="utf-8" />
   <title>Need Help Now — On-Call AWS/AI Engineer · Treeline Proxy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Urgent help for AWS, AI, and critical tech issues. $5 to start — chat, call, or text. Fast triage by a senior engineer." />
+  <meta name="description" content="Urgent help for AWS, AI, and critical tech issues. $5 to start — chat, call, or text. Led by an AWS Principal TAM." />
   <link rel="canonical" href="https://treelineproxy.io/help-now/" />
   <meta property="og:title" content="Need Help Now — On-Call AWS/AI Engineer" />
   <meta property="og:description" content="Urgent help for AWS, AI, and critical tech issues. $5 to start — chat, call, or text." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://treelineproxy.io/help-now/" />
   <meta property="og:image" content="/og.png" />
   <link rel="icon" href="/favicon.ico" />
   <style>
     :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39;--urg:#ff4d4f;--urg2:#d9363e}
     *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    a{color:var(--brand)} a:hover{text-decoration:underline}
-    .wrap{max-width:1120px;margin:0 auto;padding:24px}
+    a{color:var(--brand)} .wrap{max-width:1120px;margin:0 auto;padding:24px}
     .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .nav a{margin-left:14px} .brand{font-weight:800}
     .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
     .grid{display:grid;gap:16px} .grid-2{grid-template-columns:1.2fr .8fr}
     @media (max-width:980px){ .grid-2{grid-template-columns:1fr} }
-    h1{margin:8px 0 6px;font-size:34px} h2{margin:10px 0 6px;font-size:22px} h3{margin:8px 0 6px}
-    .muted{color:var(--muted)} .row{display:flex;gap:10px;flex-wrap:wrap}
+    h1{margin:8px 0 6px;font-size:34px} h2{margin:10px 0 6px;font-size:22px}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;border:0;cursor:pointer}
     .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid var(--line)}
     .btn.urgency{background:var(--urg);color:#fff} .btn.urgency:hover{background:var(--urg2)}
-    input,textarea,select{width:100%;background:#0f1420;color:var(--fg);border:1px solid #223049;border-radius:10px;padding:10px}
-    footer{margin:28px 0 18px;color:var(--muted);font-size:13px}
     .pill{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+    footer{margin:28px 0 18px;color:var(--muted);font-size:13px}
   </style>
-
-  <!-- Plausible -->
   <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
   <script>window.track=(n,p)=>{try{plausible&&plausible(n,{props:p||{}})}catch(e){}};</script>
 </head>
 <body>
-  <main class="wrap">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="brand"><a href="/" style="color:inherit;text-decoration:none">Treeline Proxy</a></div>
-      <nav>
-        <a href="/48hour/index.html" class="preserve-utm" onclick="track('CTA: Open Consults',{from:'nav-help'})">Consults</a>
-        <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav-help'})">Workshop</a>
-        <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav-help'})">Scanner</a>
-        <a href="/" class="preserve-utm">Home</a>
-      </nav>
-    </header>
+<main class="wrap">
+  <header class="nav">
+    <div><a href="/" style="color:inherit;text-decoration:none;font-weight:800">Treeline Proxy</a></div>
+    <nav>
+      <a href="/48hour/index.html" class="preserve-utm">Consults</a>
+      <a href="/workshop/" class="preserve-utm">Workshop</a>
+      <a href="/scanner/" class="preserve-utm">Scanner</a>
+      <a href="/" class="preserve-utm">Home</a>
+    </nav>
+  </header>
 
-    <!-- BREADCRUMB -->
-    <p class="muted" style="margin:6px 0 12px"><a href="/" class="preserve-utm">Home</a> · Need Help Now</p>
-
-    <!-- HERO -->
-    <section class="grid grid-2">
-      <div class="card">
-        <span class="pill">Urgent • AWS • AI • Infra/App</span>
-        <h1>Need Help Now?</h1>
-        <p class="muted">AWS outage, bill spike, EC2 won’t boot, Bedrock/OpenAI errors, model outputs unsafe — if it’s hard down or time-sensitive, we’ll triage immediately.</p>
-        <div class="row" style="margin-top:8px">
-          <a class="btn urgency preserve-utm" href="https://buy.stripe.com/TODO_HELP_NOW_5USD"
-             onclick="track('CTA: HelpNow Pay',{from:'hero-help'})">⚠️ Pay $5 to start</a>
-          <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/urgent-intake"
-             onclick="track('CTA: HelpNow Calendly',{from:'hero-help'})">Schedule a call</a>
-        </div>
-        <p class="muted" style="margin-top:6px">We respond within minutes during business hours; otherwise ASAP. First 15 minutes included; longer sessions billed hourly (you approve before we proceed).</p>
+  <p class="pill">Led by an AWS Principal TAM</p>
+  <section class="grid grid-2">
+    <div class="card">
+      <h1>Need Help Now?</h1>
+      <p class="muted">AWS outage, bill spike, EC2/EKS issues, Bedrock/OpenAI errors, unsafe outputs — if it’s hard down or time-sensitive, we triage immediately.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+        <a class="btn urgency preserve-utm" href="https://buy.stripe.com/TODO_HELP_NOW_5USD" onclick="track('CTA: HelpNow Pay',{from:'hero-help'})">⚠️ Pay $5 to start</a>
+        <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/urgent-intake" onclick="track('CTA: HelpNow Calendly',{from:'hero-help'})">Schedule a call</a>
       </div>
-
-      <div class="card">
-        <h2>What we cover</h2>
-        <ul>
-          <li><strong>AWS</strong>: EC2/EKS/ECS, ALB/API GW, IAM, networking, costs</li>
-          <li><strong>AI</strong>: Bedrock/OpenAI issues, prompt failures, RAG bugs</li>
-          <li><strong>Security</strong>: jailbreak/injection incidents, data leakage</li>
-          <li><strong>Infra/App</strong>: deployments failing, error storms, rollback</li>
-        </ul>
-        <p class="muted">Not a replacement for AWS Premium Support; we’re a senior engineer on-call.</p>
-      </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="card" style="margin-top:16px">
-      <h2>How it works</h2>
-      <ol>
-        <li><strong>Open the channel</strong>: pay $5 (Stripe) or book a slot.</li>
-        <li><strong>Tell us the situation</strong>: quick intake form or DM.</li>
-        <li><strong>We triage</strong>: chat/call/text; we guide or screenshare.</li>
-        <li><strong>Next steps</strong>: if it exceeds 15 min, we quote hourly and proceed only with your OK.</li>
-      </ol>
-      <p class="muted">We can operate “no logs retained” and under NDA on request.</p>
-    </section>
-
-    <!-- CONTACT OPTIONS -->
-    <section class="card" style="margin-top:16px">
-      <h2>Contact options</h2>
+      <p class="muted" style="margin-top:6px">Response within minutes in business hours (or ASAP). First 15 min included; longer sessions billed hourly (with your OK).</p>
+    </div>
+    <div class="card">
+      <h2>What we cover</h2>
       <ul>
-        <li><strong>Chat/DM:</strong> we’ll share a private link after payment.</li>
-        <li><strong>Call:</strong> Zoom/Teams link on request.</li>
-        <li><strong>Text:</strong> number provided post-payment (SMS/Signal).</li>
-        <li><strong>Email:</strong> <a href="mailto:hello@treelineproxy.io">hello@treelineproxy.io</a></li>
+        <li><strong>AWS</strong>: EC2/EKS/ECS, ALB/API GW, IAM, networking, costs</li>
+        <li><strong>AI/ML</strong>: Bedrock/OpenAI issues, prompt failures, RAG bugs</li>
+        <li><strong>Security</strong>: jailbreak/injection incidents, data leakage</li>
+        <li><strong>Infra/App</strong>: deploys failing, error storms, rollback</li>
       </ul>
-    </section>
+    </div>
+  </section>
 
-    <!-- FAQ -->
-    <section class="card" style="margin-top:16px">
-      <h2>FAQ</h2>
-      <h3>What if you can’t help?</h3><p>We’ll refund the $5 and point you to the right channel if it’s out of scope.</p>
-      <h3>Do you need production access?</h3><p>No. We start with guidance and repro. If access is required, we’ll request read-only or session-based access with your approval.</p>
-      <h3>Do you replace AWS Support?</h3><p>No. We complement it with hands-on engineering and faster context for your stack.</p>
-    </section>
+  <section class="card" style="margin-top:16px">
+    <h2>How it works</h2>
+    <ol>
+      <li><strong>Open the channel</strong>: pay $5 or book a slot.</li>
+      <li><strong>Tell us the situation</strong>: quick intake or DM.</li>
+      <li><strong>We triage</strong>: chat/call/screenshare.</li>
+      <li><strong>Beyond 15 min</strong>: we quote hourly and proceed only with your approval.</li>
+    </ol>
+    <p class="muted">We can operate “no logs retained” and under NDA on request.</p>
+  </section>
 
-    <!-- CTA FOOTER -->
-    <section class="card" style="margin-top:16px">
-      <div class="row">
-        <a class="btn urgency preserve-utm" href="https://buy.stripe.com/TODO_HELP_NOW_5USD" onclick="track('CTA: HelpNow Pay',{from:'footer-help'})">⚠️ Pay $5 to start</a>
-        <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/urgent-intake" onclick="track('CTA: HelpNow Calendly',{from:'footer-help'})">Schedule a call</a>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      © <span id="year"></span> Treeline Proxy ·
-      <a href="/workshop/" class="preserve-utm">Workshop</a> ·
-      <a href="/scanner/" class="preserve-utm">Scanner</a> ·
-      <a href="/48hour/index.html" class="preserve-utm">Consults</a> ·
-      <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
-    </footer>
-  </main>
-
-  <!-- UTM + year -->
-  <script>
-    (function preserveUTM(){
-      var qs=location.search.replace(/^\?/,''); if(!qs) return;
-      document.querySelectorAll('a.preserve-utm[href^="/"],a.preserve-utm[href^="https://"]').forEach(function(a){
-        if(a.href.indexOf('#')>-1) return;
-        a.href += (a.href.indexOf('?')>-1 ? '&' : '?') + qs;
-      });
-    })();
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <footer>
+    © <span id="year"></span> Treeline Proxy ·
+    <a href="/workshop/" class="preserve-utm">Workshop</a> ·
+    <a href="/scanner/" class="preserve-utm">Scanner</a> ·
+    <a href="/48hour/index.html" class="preserve-utm">Consults</a> ·
+    <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
+  </footer>
+</main>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
