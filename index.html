@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Treeline Proxy — LLM Security Checkup & Policy Packs</title>
+  <title>Treeline Proxy — LLM Security</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="48-hour LLM Security Checkup and deployable Policy Packs. Prompt risk scanning, jailbreak and tool-abuse tests, and runtime guardrails readiness." />
+  <meta name="description" content="LLM security for builders: Prompt Workshop, Risk Scanner, and consults. Harden prompts, reduce jailbreak and tool-abuse risk, and ship guardrails that stick." />
   <link rel="canonical" href="https://treelineproxy.io/" />
-  <meta property="og:title" content="Treeline Proxy — LLM Security Checkup & Policy Packs" />
-  <meta property="og:description" content="48-hour LLM Security Checkup and deployable Policy Packs. Prompt risk scanning, jailbreak and tool-abuse tests, and runtime guardrails readiness." />
+  <meta property="og:title" content="Treeline Proxy — LLM Security" />
+  <meta property="og:description" content="Prompt optimization + security. Scanner, Workshop, and consults for AWS-ready guardrails." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://treelineproxy.io/" />
   <meta property="og:image" content="https://treelineproxy.io/og.png" />
@@ -40,7 +40,8 @@
   <!-- Plausible -->
   <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
   <script>
-    window.track=function(name,props){try{window.plausible&&window.plausible(name,{props:props||{}})}catch(e){}};
+    // analytics helper
+    window.track = function(name, props){ try{ window.plausible && window.plausible(name, { props: props||{} }); }catch(e){} };
   </script>
 </head>
 <body>
@@ -50,7 +51,8 @@
       <div class="nav">
         <div class="brand"><a href="/" style="color:inherit;text-decoration:none">Treeline Proxy</a></div>
         <nav>
-          <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: View 48h',{from:'nav',path:location.pathname})">48-Hour Checkup</a>
+          <!-- NEW: Consults points to the 48-hour page, but we don't mention 48h on home -->
+          <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: Open Consults',{from:'nav',path:location.pathname})">Consults</a>
           <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav',path:location.pathname})">Prompt Workshop</a>
           <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav',path:location.pathname})">Scanner</a>
           <a href="#contact" onclick="track('CTA: Nav Contact',{path:location.pathname})">Contact</a>
@@ -58,56 +60,56 @@
       </div>
     </header>
 
-    <!-- HERO -->
+    <!-- HERO (no 48-hour mentions) -->
     <section class="hero" style="margin-top:18px">
       <div class="card">
-        <span class="pill">LLM Security · 48-Hour Checkup</span>
-        <h1>Find & fix prompt risks, jailbreaks, and tool abuse in 48 hours.</h1>
-        <p class="muted">We run targeted attack sims, harden your prompts & tools, and ship deployable Policy Packs. AWS-ready. No vendor lock-in.</p>
+        <span class="pill">LLM Security · Prompt Optimization</span>
+        <h1>Harden prompts. Kill jailbreaks. Ship guardrails that stick.</h1>
+        <p class="muted">Workshop and Scanner for fast iteration. Consults for hands-on attack sims and deployable policy packs. AWS-friendly, vendor-agnostic.</p>
         <div class="row" style="margin-top:10px">
-          <a id="cta-view-48h" class="btn preserve-utm" href="/treeline/48hour/"
-             onclick="track('CTA: View 48h',{from:'hero',path:location.pathname})">Get the 48-Hour Checkup</a>
-          <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
-             onclick="track('CTA: Book Intro',{from:'hero',path:location.pathname})">Book a 20-min intro</a>
+          <a id="cta-workshop" class="btn preserve-utm" href="/workshop/"
+             onclick="track('CTA: Open Workshop',{from:'hero',path:location.pathname})">Try the Prompt Workshop →</a>
           <a id="cta-scanner" class="btn secondary preserve-utm" href="/scanner/"
              onclick="track('CTA: Open Scanner',{from:'hero',path:location.pathname})">Run Prompt Risk Scanner</a>
-          <a id="cta-workshop" class="btn secondary preserve-utm" href="/workshop/"
-             onclick="track('CTA: Open Workshop',{from:'hero',path:location.pathname})">Try the Prompt Workshop →</a>
+          <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
+             onclick="track('CTA: Book Intro',{from:'hero',path:location.pathname})">Book a 20-min intro</a>
         </div>
       </div>
       <div class="card">
-        <h2>What you get in 48 hours</h2>
+        <h2>Why Treeline</h2>
         <ul>
-          <li>Attack simulation report (jailbreaks, injection, tool-use escalation)</li>
-          <li>Policy Pack bundle (DLP/PII, tool allowlists, output scoring)</li>
-          <li>Prompt hardening & templates for your stack</li>
-          <li>AWS deployment guidance (gateway/sidecar, logging, metrics)</li>
+          <li>Targeted attack sims: injection, jailbreak, tool-abuse, DLP/PII</li>
+          <li>Prompt hardening + structured outputs (schemas & rubrics)</li>
+          <li>Deployable policy packs for gateways/sidecars</li>
+          <li>AWS deployment notes (API GW / ALB / Bedrock) with logging</li>
         </ul>
-        <p class="muted">Deliverables you can paste into prod. We’ll walk you through rollout.</p>
+        <p class="muted">Built for teams that need credible, production-ready guardrails.</p>
       </div>
     </section>
 
-    <!-- FEATURES -->
+    <!-- FEATURES (no 48-hour card) -->
     <section class="features" style="margin-top:16px">
       <div class="card">
         <h3>Prompt Workshop</h3>
         <p class="muted">Paste a prompt → get optimized variants (Zero/Few-shot, CoT, ToT, RAG, ReAct, PAL, Reflexion) with an optional security wrapper.</p>
-        <a class="btn secondary preserve-utm" href="/workshop/" onclick="track('CTA: Open Workshop',{from:'features',path:location.pathname})">Open Workshop</a>
+        <a class="btn secondary preserve-utm" href="/workshop/"
+           onclick="track('CTA: Open Workshop',{from:'features',path:location.pathname})">Open Workshop</a>
       </div>
       <div class="card">
         <h3>Risk Scanner</h3>
-        <p class="muted">Client-side checks for common risks (injection, DLP, tool abuse, jailbreak markers). Use it as a quick triage before the full checkup.</p>
-        <a class="btn secondary preserve-utm" href="/scanner/" onclick="track('CTA: Open Scanner',{from:'features',path:location.pathname})">Open Scanner</a>
+        <p class="muted">Client-side checks for common risks (injection, DLP, tool abuse, jailbreak markers). Use it as quick triage before deeper testing.</p>
+        <a class="btn secondary preserve-utm" href="/scanner/"
+           onclick="track('CTA: Open Scanner',{from:'features',path:location.pathname})">Open Scanner</a>
       </div>
       <div class="card">
-        <h3>48-Hour Checkup & Policy Packs</h3>
-        <p class="muted">Fixed-price engagement with deployable guardrails. Bundle includes Injection/Jailbreak, DLP/PII, Tool Constraints, and Output Scoring.</p>
+        <h3>Consults</h3>
+        <p class="muted">Hands-on assessment and deployable guardrails. We run the sims, harden prompts, and deliver policies you can run.</p>
         <a class="btn preserve-utm" href="/treeline/48hour/"
-           onclick="track('CTA: View 48h',{from:'features',path:location.pathname})">Learn more</a>
+           onclick="track('CTA: Open Consults',{from:'features',path:location.pathname})">Learn more</a>
       </div>
     </section>
 
-    <!-- CONTACT / TRUST -->
+    <!-- CONTACT -->
     <section class="card" style="margin-top:16px" id="contact">
       <h2>Talk to an engineer</h2>
       <p class="muted">Questions about your stack? Book a quick intro and we’ll map risks to your exact architecture (gateways, vector DBs, tools, agents).</p>
@@ -116,10 +118,9 @@
       <p class="muted" style="margin-top:8px">Or email <a href="mailto:hello@treelineproxy.io">hello@treelineproxy.io</a></p>
     </section>
 
-    <!-- FOOTER -->
+    <!-- FOOTER (no explicit 48-hour mention; Consults lives in nav/features) -->
     <footer>
       © <span id="year"></span> Treeline Proxy ·
-      <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: View 48h',{from:'footer',path:location.pathname})">48-Hour Checkup</a> ·
       <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'footer',path:location.pathname})">Prompt Workshop</a> ·
       <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'footer',path:location.pathname})">Scanner</a> ·
       <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
