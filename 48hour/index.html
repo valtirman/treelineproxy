@@ -4,216 +4,131 @@
   <meta charset="utf-8" />
   <title>Consults — 48-Hour LLM Security Checkup · Treeline Proxy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Targeted attack sims, prompt hardening, and deployable policy packs delivered in 48 hours. AWS-ready. Fixed price." />
-  <link rel="canonical" href="https://treelineproxy.io/treeline/48hour/" />
+  <meta name="description" content="48-hour attack sims, prompt hardening, and deployable policy packs. Led by an AWS Principal TAM. AWS-ready. Fixed price." />
+  <link rel="canonical" href="https://treelineproxy.io/48hour/" />
   <meta property="og:title" content="Consults — 48-Hour LLM Security Checkup" />
-  <meta property="og:description" content="Targeted attack sims, prompt hardening, and deployable policy packs delivered in 48 hours. AWS-ready. Fixed price." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://treelineproxy.io/treeline/48hour/" />
-  <meta property="og:image" content="https://treelineproxy.io/og.png" />
+  <meta property="og:description" content="Targeted attack sims, prompt hardening, deployable policy packs. AWS-aligned, vendor-agnostic." />
+  <meta property="og:image" content="/og.png" />
   <link rel="icon" href="/favicon.ico" />
   <style>
     :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:var(--brand)} a:hover{text-decoration:underline}
     .wrap{max-width:1120px;margin:0 auto;padding:24px}
     .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .nav a{margin-left:14px}
-    .brand{font-weight:800;letter-spacing:.2px}
     .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-    .pill{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-    @media (max-width:980px){ .hero{grid-template-columns:1fr} }
-    h1{margin:8px 0 6px;font-size:34px}
-    h2{margin:10px 0 6px;font-size:22px}
-    h3{margin:8px 0 6px}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .grid{display:grid;gap:16px} .grid-2{grid-template-columns:1.1fr .9fr} .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:980px){ .grid-2,.grid-3{grid-template-columns:1fr} }
+    h1{margin:8px 0 6px;font-size:34px} h2{margin:10px 0 6px;font-size:22px}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;border:0;cursor:pointer}
     .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid var(--line)}
-    ul{margin:8px 0 0 18px}
-    .k{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
-    .grid{display:grid;gap:16px}
-    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    @media (max-width:980px){ .grid-3,.grid-2{grid-template-columns:1fr} }
-    .muted{color:var(--muted)}
+    .pill{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
     footer{margin:28px 0 18px;color:var(--muted);font-size:13px}
-    .table{border:1px solid var(--line);border-radius:12px;overflow:hidden}
-    .table .rowh{display:grid;grid-template-columns:180px 1fr;background:#0f1420;border-bottom:1px solid var(--line)}
-    .table .rowh div{padding:10px 12px}
   </style>
-  <!-- Plausible -->
   <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
-  <script>window.track=(n,p={})=>{try{window.plausible&&window.plausible(n,{props:p})}catch(e){}};</script>
+  <script>window.track=(n,p)=>{try{plausible&&plausible(n,{props:p||{}})}catch(e){}};</script>
 </head>
 <body>
-  <main class="wrap">
-    <!-- NAV -->
-    <header class="nav">
-      <div class="brand"><a href="/" class="preserve-utm" style="color:inherit;text-decoration:none">Treeline Proxy</a></div>
-      <nav>
-        <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: Open Consults',{from:'nav-48'})">Consults</a>
-        <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav-48'})">Workshop</a>
-        <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav-48'})">Scanner</a>
-        <a href="/" class="preserve-utm">Home</a>
-      </nav>
-    </header>
+<main class="wrap">
+  <header class="nav">
+    <div><a href="/" style="color:inherit;text-decoration:none;font-weight:800">Treeline Proxy</a></div>
+    <nav>
+      <a href="/workshop/" class="preserve-utm">Workshop</a>
+      <a href="/scanner/" class="preserve-utm">Scanner</a>
+      <a href="/help-now/" class="preserve-utm">Need Help Now</a>
+      <a href="/" class="preserve-utm">Home</a>
+    </nav>
+  </header>
 
-    <!-- Breadcrumb -->
-    <p class="muted" style="margin:6px 0 12px"><a href="/" class="preserve-utm">Home</a> · Consults</p>
+  <p class="muted"><a href="/" class="preserve-utm">Home</a> · Consults</p>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="card">
-        <span class="pill">Fixed-price · AWS-ready · 48 hours</span>
-        <h1>48-Hour LLM Security Checkup</h1>
-        <p class="muted">Targeted attack simulations, prompt hardening, and deployable guardrails. We find what matters and hand you policy you can run.</p>
-        <div class="row" style="margin-top:10px">
-          <a id="cta-start" class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO"
-             onclick="track('CTA: Start Checkup',{from:'hero-48',path:location.pathname})">Start now — $1,500</a>
-          <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
-             onclick="track('CTA: Book Intro',{from:'hero-48',path:location.pathname})">Book a 20-min intro</a>
-        </div>
-        <p class="muted" style="margin-top:6px">Clock starts at kickoff. No access to prod required.</p>
+  <section class="grid grid-2">
+    <div class="card">
+      <span class="pill">Led by an AWS Principal TAM · 48 hours</span>
+      <h1>48-Hour LLM Security Checkup</h1>
+      <p class="muted">Targeted attack simulations, prompt hardening, and deployable guardrails. We find what matters and hand you policy you can run.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Start Checkup',{from:'hero-48'})">Start now — $1,500</a>
+        <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro" onclick="track('CTA: Book Intro',{from:'hero-48'})">Book a 20-min intro</a>
       </div>
-      <div class="card">
-        <h2>At a glance</h2>
+      <p class="muted" style="margin-top:6px">Clock starts at kickoff. No production access required. NDA available.</p>
+    </div>
+    <div class="card">
+      <h2>At a glance</h2>
+      <ul>
+        <li>Attack sims: injection, jailbreak, tool-abuse, DLP/PII, RAG leakage</li>
+        <li>Hardened prompts + Policy Packs (inject/jailbreak, DLP, tool allowlists, output scoring)</li>
+        <li>AWS guidance: API GW / ALB patterns, Bedrock, sidecar/proxy, logging/OTel</li>
+        <li>2 calls: 30-min kickoff + 45-min readout</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="grid grid-3" style="margin-top:16px">
+    <div class="card"><h3>Prompt & Rules</h3><ul><li>Disclosure/override attempts</li><li>Directive conflicts</li><li>Formatting & refusal handling</li></ul></div>
+    <div class="card"><h3>Jailbreak & Injection</h3><ul><li>Family variants</li><li>Indirection/obfuscation</li><li>Policy bypass probes</li></ul></div>
+    <div class="card"><h3>Tool-Use & Escalation</h3><ul><li>Beyond allowlist</li><li>Command/code exec prompts</li><li>Transaction abuse</li></ul></div>
+    <div class="card"><h3>DLP/PII & Data</h3><ul><li>PII/secret echo</li><li>Masking effectiveness</li><li>Exfil channels</li></ul></div>
+    <div class="card"><h3>RAG & Context</h3><ul><li>Use provided context only + cite</li><li>Irrelevant citations</li><li>Vector recall drift</li></ul></div>
+    <div class="card"><h3>Model/Stack Fit</h3><ul><li>Provider quirks</li><li>Cost/latency & limits</li><li>Guardrail compatibility</li></ul></div>
+  </section>
+
+  <section class="card" style="margin-top:16px">
+    <h2>What you get in 48 hours</h2>
+    <div class="grid grid-2">
+      <div>
+        <h3>1) Findings & Attack Sims</h3>
         <ul>
-          <li><strong>Attack sims</strong>: injection, jailbreak, tool-abuse, DLP/PII, RAG leakage</li>
-          <li><strong>Hardened prompts</strong> + <strong>policy packs</strong> (inject/jailbreak, DLP, tool allowlists, output scoring)</li>
-          <li><strong>AWS guidance</strong>: API GW / ALB patterns, Bedrock, sidecar/proxy, logging/OTel</li>
-          <li><strong>2 calls</strong>: 30-min kickoff + 45-min readout</li>
+          <li>Issues with <strong>risk level</strong> + <strong>repro steps</strong></li>
+          <li>Prompts that trigger failures (sanitized)</li>
+          <li>Quick-win fixes prioritized for your stack</li>
+        </ul>
+        <h3>2) Prompt Hardening</h3>
+        <ul>
+          <li>Rewritten system/user prompts</li>
+          <li>Few-shot exemplars for critical flows</li>
+          <li>Response schemas + rubrics</li>
         </ul>
       </div>
-    </section>
-
-    <!-- WHAT WE TEST -->
-    <section class="grid grid-3" style="margin-top:16px">
-      <div class="card"><h3>Prompt & Rules</h3><ul>
-        <li>System prompt disclosure & override attempts</li><li>Directive conflicts & role leakage</li><li>Formatting compliance & refusal handling</li>
-      </ul></div>
-      <div class="card"><h3>Jailbreak & Injection</h3><ul>
-        <li>Known families (DAN, Dev-mode variants)</li><li>Indirection & obfuscation patterns</li><li>Content-policy bypass probes</li>
-      </ul></div>
-      <div class="card"><h3>Tool-Use & Escalation</h3><ul>
-        <li>Calls beyond allowlist</li><li>Prompted code/command exec hazards</li><li>Transaction abuse / unsafe “sudo” language</li>
-      </ul></div>
-      <div class="card"><h3>DLP/PII & Data Handling</h3><ul>
-        <li>PII/secret echo, pattern leakage</li><li>Redaction & masking effectiveness</li><li>Prompted data exfil channels</li>
-      </ul></div>
-      <div class="card"><h3>RAG & Context Use</h3><ul>
-        <li>Grounding: use provided context only + cite</li><li>Window abuse / irrelevant citations</li><li>Vector recall drift & sensitive docs</li>
-      </ul></div>
-      <div class="card"><h3>Model/Stack Fit</h3><ul>
-        <li>Provider quirks (OpenAI/Anthropic/Bedrock)</li><li>Latency/cost tradeoffs & limits</li><li>Guardrail compatibility snapshot</li>
-      </ul></div>
-    </section>
-
-    <!-- DELIVERABLES -->
-    <section class="card" style="margin-top:16px">
-      <h2>What you get in 48 hours</h2>
-      <div class="grid grid-2">
-        <div>
-          <h3>1) Findings & Attack Sims</h3>
-          <ul>
-            <li>Issue list with <strong>risk level</strong> and <strong>repro steps</strong></li>
-            <li>Example prompts that trigger failures (sanitized)</li>
-            <li>Quick-win fixes prioritized for your stack</li>
-          </ul>
-          <h3>2) Prompt Hardening</h3>
-          <ul>
-            <li>Rewritten system/user prompts with conflict-free rules</li>
-            <li>Few-shot exemplars for critical flows</li>
-            <li>Response schemas (JSON/Markdown) + rubrics</li>
-          </ul>
-        </div>
-        <div>
-          <h3>3) Policy Pack (deployable)</h3>
-          <ul>
-            <li><strong>Injection/Jailbreak</strong>: pattern blocks, safe fallbacks</li>
-            <li><strong>DLP/PII</strong>: redaction patterns, deny/allow lists</li>
-            <li><strong>Tool Constraints</strong>: allowlists, parameter guards</li>
-            <li><strong>Output Scoring</strong>: lightweight risk hooks</li>
-          </ul>
-          <p class="muted">Delivered as YAML/JSON with notes to run in gateway/sidecar. Includes <span class="k">/policies</span> folder structure.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TIMELINE -->
-    <section class="card" style="margin-top:16px">
-      <h2>Timeline (48 hours)</h2>
-      <div class="table">
-        <div class="rowh"><div><strong>T-0</strong></div><div><strong>Kickoff (30 min)</strong> — scope, targets, env. Share sample prompts, tool calls, staging endpoint if available.</div></div>
-        <div class="rowh"><div><strong>T+8h</strong></div><div><strong>Attack sims pass 1</strong> — initial probes across prompts, jailbreak families, tool escalation. Quick wins shared.</div></div>
-        <div class="rowh"><div><strong>T+24h</strong></div><div><strong>Hardening</strong> — updated prompts, schema/rubric, policy pack draft.</div></div>
-        <div class="rowh"><div><strong>T+36h</strong></div><div><strong>Verification</strong> — rerun sims vs hardened prompts/policies; tune FPs/FNs.</div></div>
-        <div class="rowh"><div><strong>T+48h</strong></div><div><strong>Readout (45 min)</strong> — final report + policy pack + rollout notes.</div></div>
-      </div>
-    </section>
-
-    <!-- REQUIREMENTS / AWS -->
-    <section class="grid grid-2" style="margin-top:16px">
-      <div class="card">
-        <h2>What we need</h2>
+      <div>
+        <h3>3) Policy Pack (deployable)</h3>
         <ul>
-          <li>30-min kickoff with an engineer/product owner</li>
-          <li>Sample prompts & expected outputs (5–10)</li>
-          <li>Staging/test endpoint (preferred) or mocks</li>
-          <li>Tool contract (functions/actions) if applicable</li>
+          <li><strong>Injection/Jailbreak</strong>: pattern blocks, safe fallbacks</li>
+          <li><strong>DLP/PII</strong>: redaction, deny/allow lists</li>
+          <li><strong>Tool Constraints</strong>: allowlists, parameter guards</li>
+          <li><strong>Output Scoring</strong>: lightweight risk hooks</li>
         </ul>
-        <p class="muted">No production credentials required. NDA on request.</p>
+        <p class="muted">Delivered as YAML/JSON ready for gateway/sidecar.</p>
       </div>
-      <div class="card">
-        <h2>Where it runs (AWS-ready)</h2>
-        <ul>
-          <li>API Gateway / Lambda / ALB proxy patterns</li>
-          <li>Bedrock (Claude/Sonnet), OpenAI, or local models</li>
-          <li>Optional sidecar proxy + OpenTelemetry hooks</li>
-        </ul>
-        <p class="muted">We include rollout notes for your chosen path.</p>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FAQ -->
-    <section class="card" style="margin-top:16px">
-      <h2>FAQ</h2>
-      <h3>Do you need production access?</h3><p>No. Staging/test or mocks are sufficient to surface issues and ship deployable fixes.</p>
-      <h3>Which models/providers?</h3><p>OpenAI, Anthropic/Claude, AWS Bedrock, and local (Ollama) patterns. We tailor prompts/policies per provider.</p>
-      <h3>How do you handle data?</h3><p>We minimize data handling and can operate in a “no logs retained” mode. NDA available; sensitive samples may be redacted.</p>
-      <h3>What if we already have guardrails?</h3><p>We validate them, reduce false positives/negatives, and harden prompts to complement existing controls.</p>
-    </section>
+  <section class="card" style="margin-top:16px">
+    <h2>Timeline (48 hours)</h2>
+    <ul>
+      <li><strong>T-0:</strong> Kickoff 30 min — scope, targets, env.</li>
+      <li><strong>T+8h:</strong> Attack sims pass 1 — quick wins shared.</li>
+      <li><strong>T+24h:</strong> Hardening — prompts, schema, policies draft.</li>
+      <li><strong>T+36h:</strong> Verification — rerun sims, tune FPs/FNs.</li>
+      <li><strong>T+48h:</strong> Readout 45 min — final report + policy pack + rollout notes.</li>
+    </ul>
+  </section>
 
-    <!-- CTA FOOTER -->
-    <section class="card" style="margin-top:16px">
-      <div class="row">
-        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO"
-           onclick="track('CTA: Start Checkup',{from:'footer-48',path:location.pathname})">Start now — $1,500</a>
-        <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
-           onclick="track('CTA: Book Intro',{from:'footer-48',path:location.pathname})">Book a 20-min intro</a>
-      </div>
-    </section>
+  <section class="card" style="margin-top:16px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Start Checkup',{from:'footer-48'})">Start now — $1,500</a>
+      <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro" onclick="track('CTA: Book Intro',{from:'footer-48'})">Book a 20-min intro</a>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer>
-      © <span id="year"></span> Treeline Proxy ·
-      <a href="/workshop/" class="preserve-utm">Workshop</a> ·
-      <a href="/scanner/" class="preserve-utm">Scanner</a> ·
-      <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
-    </footer>
-  </main>
-
-  <!-- UTM + year -->
-  <script>
-    (function preserveUTM(){
-      var qs=location.search.replace(/^\?/,''); if(!qs) return;
-      document.querySelectorAll('a.preserve-utm[href^="/"],a.preserve-utm[href^="https://"]').forEach(function(a){
-        if(a.href.indexOf('#')>-1) return;
-        a.href += (a.href.indexOf('?')>-1 ? '&' : '?') + qs;
-      });
-    })();
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <footer>
+    © <span id="year"></span> Treeline Proxy · <a href="/">Home</a> ·
+    <a href="/workshop/" class="preserve-utm">Workshop</a> ·
+    <a href="/scanner/" class="preserve-utm">Scanner</a> ·
+    <a href="/help-now/" class="preserve-utm">Need Help Now</a> ·
+    <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
+  </footer>
+</main>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
