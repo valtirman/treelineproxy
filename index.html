@@ -40,8 +40,7 @@
   <!-- Plausible -->
   <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
   <script>
-    // analytics helper
-    window.track = function(name, props){ try{ window.plausible && window.plausible(name, { props: props||{} }); }catch(e){} };
+    window.track=function(name,props){try{window.plausible&&window.plausible(name,{props:props||{}})}catch(e){}};
   </script>
 </head>
 <body>
@@ -51,16 +50,18 @@
       <div class="nav">
         <div class="brand"><a href="/" style="color:inherit;text-decoration:none">Treeline Proxy</a></div>
         <nav>
-          <!-- NEW: Consults points to the 48-hour page, but we don't mention 48h on home -->
-          <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: Open Consults',{from:'nav',path:location.pathname})">Consults</a>
-          <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav',path:location.pathname})">Prompt Workshop</a>
-          <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav',path:location.pathname})">Scanner</a>
+          <a href="/48hour/index.html" class="preserve-utm"
+             onclick="track('CTA: Open Consults',{from:'nav',path:location.pathname})">Consults</a>
+          <a href="/workshop/" class="preserve-utm"
+             onclick="track('CTA: Open Workshop',{from:'nav',path:location.pathname})">Prompt Workshop</a>
+          <a href="/scanner/" class="preserve-utm"
+             onclick="track('CTA: Open Scanner',{from:'nav',path:location.pathname})">Scanner</a>
           <a href="#contact" onclick="track('CTA: Nav Contact',{path:location.pathname})">Contact</a>
         </nav>
       </div>
     </header>
 
-    <!-- HERO (no 48-hour mentions) -->
+    <!-- HERO -->
     <section class="hero" style="margin-top:18px">
       <div class="card">
         <span class="pill">LLM Security · Prompt Optimization</span>
@@ -71,8 +72,8 @@
              onclick="track('CTA: Open Workshop',{from:'hero',path:location.pathname})">Try the Prompt Workshop →</a>
           <a id="cta-scanner" class="btn secondary preserve-utm" href="/scanner/"
              onclick="track('CTA: Open Scanner',{from:'hero',path:location.pathname})">Run Prompt Risk Scanner</a>
-          <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
-             onclick="track('CTA: Book Intro',{from:'hero',path:location.pathname})">Book a 20-min intro</a>
+          <a id="cta-consults" class="btn secondary preserve-utm" href="/48hour/index.html"
+             onclick="track('CTA: Open Consults',{from:'hero',path:location.pathname})">Book a Consult</a>
         </div>
       </div>
       <div class="card">
@@ -87,7 +88,7 @@
       </div>
     </section>
 
-    <!-- FEATURES (no 48-hour card) -->
+    <!-- FEATURES -->
     <section class="features" style="margin-top:16px">
       <div class="card">
         <h3>Prompt Workshop</h3>
@@ -104,7 +105,7 @@
       <div class="card">
         <h3>Consults</h3>
         <p class="muted">Hands-on assessment and deployable guardrails. We run the sims, harden prompts, and deliver policies you can run.</p>
-        <a class="btn preserve-utm" href="/treeline/48hour/"
+        <a class="btn preserve-utm" href="/48hour/index.html"
            onclick="track('CTA: Open Consults',{from:'features',path:location.pathname})">Learn more</a>
       </div>
     </section>
@@ -118,11 +119,15 @@
       <p class="muted" style="margin-top:8px">Or email <a href="mailto:hello@treelineproxy.io">hello@treelineproxy.io</a></p>
     </section>
 
-    <!-- FOOTER (no explicit 48-hour mention; Consults lives in nav/features) -->
+    <!-- FOOTER -->
     <footer>
       © <span id="year"></span> Treeline Proxy ·
-      <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'footer',path:location.pathname})">Prompt Workshop</a> ·
-      <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'footer',path:location.pathname})">Scanner</a> ·
+      <a href="/workshop/" class="preserve-utm"
+         onclick="track('CTA: Open Workshop',{from:'footer',path:location.pathname})">Prompt Workshop</a> ·
+      <a href="/scanner/" class="preserve-utm"
+         onclick="track('CTA: Open Scanner',{from:'footer',path:location.pathname})">Scanner</a> ·
+      <a href="/48hour/index.html" class="preserve-utm"
+         onclick="track('CTA: Open Consults',{from:'footer',path:location.pathname})">Consults</a> ·
       <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
     </footer>
   </main>
