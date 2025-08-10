@@ -6,7 +6,7 @@
 <meta name="description" content="Find and fix prompt risks fast. Ship deployable guardrails that fit AWS patterns—without vendor lock-in." />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://plausible.io" />
-<link rel="stylesheet" href="/assets/site.css" />
+<link rel="stylesheet" href="/assets/site.css?v=2" />
 <meta property="og:title" content="Treeline — Runtime Guardrails for LLMs on AWS">
 <meta property="og:description" content="Deployable guardrails. Real telemetry. No vendor lock-in.">
 <meta property="og:image" content="https://treelineproxy.io/assets/og-card.png">
@@ -39,7 +39,7 @@
 
 <main class="wrap">
   <section class="hero">
-    <div class="badge">Built by an AWS Principal TAM — AI/ML & FinOps specialist</div>
+    <div class="badge">Built by an AWS Principal TAM — AI/ML &amp; FinOps specialist</div>
     <h1>Runtime Guardrails for LLMs on AWS</h1>
     <p class="sub">Find and fix prompt risks fast. Ship deployable guardrails that fit AWS patterns—without vendor lock-in.</p>
     <div class="kpis">
@@ -47,10 +47,10 @@
       <div class="kpi">⬇︎ 94% PII exposure (10 days)</div>
       <div class="kpi">↗︎ OTel traces → SIEM</div>
     </div>
-    <p>
-      <a class="btn btn-primary" href="/48hour/" id="cta-open-consults">See scope & deliverables</a>
+    <p class="cta-row">
+      <a class="btn btn-primary" href="/48hour/" id="cta-open-consults">See scope &amp; deliverables</a>
       <a class="btn btn-secondary" href="/workshop/">Book workshop</a>
-      <a class="btn btn-ghost" href="/scanner/">Scan a prompt</a>
+      <a class="btn btn-ghost" href="/scanner/">Request demo</a>
     </p>
   </section>
 
@@ -58,17 +58,17 @@
     <div class="card">
       <h3>48-Hour Sprint</h3>
       <p>Urgent engagement to assess risks, ship controls, and wire telemetry in your AWS path.</p>
-      <p><a class="btn btn-secondary" href="/48hour/">Open</a></p>
+      <p><a class="btn btn-secondary" href="/48hour/">See scope &amp; deliverables</a></p>
     </div>
     <div class="card">
       <h3>Guardrails Workshop</h3>
       <p>Hands-on session to map risks, build policy packs, and deploy controls without lock-in.</p>
-      <p><a class="btn btn-secondary" href="/workshop/">Open</a></p>
+      <p><a class="btn btn-secondary" href="/workshop/">Book workshop</a></p>
     </div>
     <div class="card">
       <h3>Prompt Risk Scanner</h3>
       <p>CLI/API/CI scanner for jailbreaks, PII/PHI, exfil, and unsafe tool calls.</p>
-      <p><a class="btn btn-secondary" href="/scanner/">Open</a></p>
+      <p><a class="btn btn-secondary" href="/scanner/">Request demo</a></p>
     </div>
   </section>
 
@@ -78,12 +78,12 @@
       <article class="card">
         <h3>Reduced jailbreaks 87% in 2 weeks</h3>
         <p>Semantic jailbreak index + review workflow over ALB/ECS. False positives under 3%.</p>
-        <img src="/assets/proof/case1-blur.png" alt="Before/after dashboard (blurred)" loading="lazy" />
+        <img src="/assets/proof/case1-blur.svg" width="920" height="420" alt="Before/after dashboard (blurred placeholder)" loading="lazy" />
       </article>
       <article class="card">
         <h3>PII exposure down 94% in 10 days</h3>
         <p>Scoped regex + PHI heuristics; exception tokens for legit flows. OTel traces to SIEM.</p>
-        <img src="/assets/proof/case2-blur.png" alt="Policy hit trends (blurred)" loading="lazy" />
+        <img src="/assets/proof/case2-blur.svg" width="920" height="420" alt="Policy hit trends (blurred placeholder)" loading="lazy" />
       </article>
     </div>
   </section>
@@ -105,28 +105,32 @@ rules:
 </code></pre>
       <p><a class="btn btn-secondary" href="/policy-packs/">See all packs</a></p>
     </div>
-    <div class="card">
+    <aside class="card">
       <h3>Help Now (hard down?)</h3>
       <div class="alert">
         <p><strong>Hard down, production at risk?</strong></p>
-        <p>
+        <p class="cta-row">
           <a id="cta-helpnow-pay" class="btn btn-danger" rel="noopener"
             href="https://buy.stripe.com/REPLACE_WITH_STRIPE_LINK?client_reference_id=">Need Help Now — $5</a>
           <a class="btn btn-secondary" href="/help-now/">How it works</a>
         </p>
         <p class="micro">First 15 min included; no surprises.</p>
       </div>
-    </div>
+    </aside>
   </section>
 
   <section class="card">
     <h2>Lead capture</h2>
-    <form action="https://formspree.io/f/REPLACE_FORM_ID" method="POST" class="lead-form">
-      <input type="email" name="email" placeholder="work@email.com" required />
-      <input type="text" name="company" placeholder="Company (optional)" />
-      <textarea name="note" placeholder="What are you solving? (optional)"></textarea>
+    <form action="https://formspree.io/f/REPLACE_FORM_ID" method="POST" class="lead-form" aria-labelledby="leadform-title">
+      <h3 id="leadform-title" class="visually-hidden">Request intro</h3>
+      <label class="visually-hidden" for="lead-email">Work email</label>
+      <input id="lead-email" type="email" name="email" placeholder="work@email.com" required aria-required="true" />
+      <label class="visually-hidden" for="lead-company">Company</label>
+      <input id="lead-company" type="text" name="company" placeholder="Company (optional)" />
+      <label class="visually-hidden" for="lead-note">Note</label>
+      <textarea id="lead-note" name="note" placeholder="What are you solving? (optional)"></textarea>
       <!-- honeypot -->
-      <input type="text" name="_tlf_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px">
+      <input type="text" name="_tlf_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
       <button type="submit" id="cta-lead-submit" class="btn btn-primary">Request intro</button>
       <p class="form-success micro" hidden>Thanks — we’ll reply within 1 business day.</p>
     </form>
@@ -134,7 +138,6 @@ rules:
 
   <section>
     <div class="logo-row">
-      <!-- optional ecosystem logos (non-endorsement copy in footer) -->
       <img src="https://dummyimage.com/140x28/111722/9fb1c5.png&text=AWS" alt="AWS (ecosystem)">
       <img src="https://dummyimage.com/140x28/111722/9fb1c5.png&text=Bedrock" alt="Bedrock (ecosystem)">
       <img src="https://dummyimage.com/140x28/111722/9fb1c5.png&text=OpenTelemetry" alt="OpenTelemetry (ecosystem)">
@@ -147,7 +150,7 @@ rules:
   <p class="micro"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/resources/">Resources</a></p>
 </footer>
 
-<!-- Minimal interactivity -->
+<!-- Analytics + UTM preservation and goal wiring -->
 <script src="/assets/main.js"></script>
 <script>
 document.querySelectorAll('.lead-form').forEach(f=>{
