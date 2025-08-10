@@ -6,7 +6,7 @@
 <meta name="description" content="Find and fix prompt risks fast. Ship deployable guardrails that fit AWS patterns—without vendor lock-in." />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://plausible.io" />
-<link rel="stylesheet" href="/assets/site.css?v=3" />
+<link rel="stylesheet" href="/assets/site.css?v=5" />
 <meta property="og:title" content="Treeline — Runtime Guardrails for LLMs on AWS">
 <meta property="og:description" content="Deployable guardrails. Real telemetry. No vendor lock-in.">
 <meta property="og:image" content="https://treelineproxy.io/assets/og-card.png">
@@ -26,14 +26,17 @@
 </head>
 <body>
 <header class="nav wrap">
-  <a class="brand" href="/"><img src="/assets/logo.png" alt="Treeline logo">Treeline</a>
+  <a class="brand" href="/">
+    <img src="/assets/logo.png" alt="" onerror="this.style.display='none'">
+    <span>Treeline</span>
+  </a>
   <nav>
     <a href="/workshop/">Workshop</a>
     <a href="/scanner/">Scanner</a>
-    <a href="/policy-packs/">Policy Packs</a>
+    <a href="/policy-packs/">Policy&nbsp;Packs</a>
     <a href="/resources/">Resources</a>
     <a href="/about/">About</a>
-    <a id="cta-open-consults" class="cta" href="/48hour/">48-Hour Sprint</a>
+    <a id="cta-open-consults" class="cta" href="/48hour/">48-Hour&nbsp;Sprint</a>
   </nav>
 </header>
 
@@ -120,12 +123,10 @@ rules:
     </form>
   </section>
 
-  <section>
-    <div class="logo-row">
-      <img src="https://dummyimage.com/140x28/111722/9fb1c5.png&text=AWS" alt="AWS (ecosystem)">
-      <img src="https://dummyimage.com/140x28/111722/9fb1c5.png&text=Bedrock" alt="Bedrock (ecosystem)">
-      <img src="https://dummyimage.com/140x28/111722/9fb1c5.png&text=OpenTelemetry" alt="OpenTelemetry (ecosystem)">
-    </div>
+  <section class="logo-row">
+    <img src="/assets/aws-logo.svg" alt="AWS" />
+    <img src="/assets/bedrock-logo.svg" alt="Bedrock" />
+    <img src="/assets/opentelemetry-logo.svg" alt="OpenTelemetry" />
   </section>
 </main>
 
