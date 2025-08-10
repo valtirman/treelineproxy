@@ -1,252 +1,143 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Meta -->
   <meta charset="utf-8" />
+  <title>Treeline Proxy — LLM Security Checkup & Policy Packs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Treeline Proxy — LLM Security Checkups & Policy Packs</title>
-  <meta name="description" content="48-hour LLM Security Checkup and ready-to-run Policy Packs. Stop prompt injection, data exfil, and unsafe tool calls. Fast, practical, AWS-ready." />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Treeline Proxy — LLM Security Checkups & Policy Packs" />
-  <meta property="og:description" content="48-hour LLM Security Checkup and ready-to-run Policy Packs. Stop prompt injection, data exfil, and unsafe tool calls. Fast, practical, AWS-ready." />
+  <meta name="description" content="48-hour LLM Security Checkup and deployable Policy Packs. Prompt risk scanning, jailbreak and tool-abuse tests, and runtime guardrails readiness." />
+  <link rel="canonical" href="https://treelineproxy.io/" />
+  <meta property="og:title" content="Treeline Proxy — LLM Security Checkup & Policy Packs" />
+  <meta property="og:description" content="48-hour LLM Security Checkup and deployable Policy Packs. Prompt risk scanning, jailbreak and tool-abuse tests, and runtime guardrails readiness." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://TODO-your-gh-pages-domain/" />
-  <meta property="og:image" content="https://TODO-your-gh-pages-domain/og.png" />
-
-  <!-- Twitter -->
+  <meta property="og:url" content="https://treelineproxy.io/" />
+  <meta property="og:image" content="https://treelineproxy.io/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Treeline Proxy — LLM Security Checkups & Policy Packs" />
-  <meta name="twitter:description" content="48-hour LLM Security Checkup and ready-to-run Policy Packs." />
-  <meta name="twitter:image" content="https://TODO-your-gh-pages-domain/og.png" />
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://TODO-your-gh-pages-domain/" />
-
-  <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" />
 
-  <!-- Fonts (system stack for speed) & Minimal Styles -->
   <style>
-    :root { --bg:#0b0d12; --fg:#e8ecf1; --muted:#a7b0bd; --brand:#76e4f7; --card:#121723; --ok:#24d26e; --warn:#ffb020; --err:#ff4d4f; }
-    * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
-    a { color: var(--brand); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width:1120px; margin:0 auto; padding:24px; }
-    .hero { padding:48px 0 16px; display:grid; gap:16px; }
-    .badge { display:inline-block; padding:4px 10px; border:1px solid #2a3243; border-radius:999px; color:var(--muted); font-size:12px; letter-spacing:.2px; }
-    h1 { font-size:44px; line-height:1.2; margin:8px 0; }
-    .sub { color:var(--muted); max-width:820px; }
-    .cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:16px; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 16px; border-radius:12px; background:var(--brand); color:#051015; font-weight:700; border:0; cursor:pointer; }
-    .btn.secondary { background:#1b2333; color:var(--fg); border:1px solid #2a3243;}
-    .btn.small { padding:8px 12px; font-weight:600; }
-    .grid { display:grid; gap:16px; }
-    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .card { background:var(--card); border:1px solid #222a39; border-radius:16px; padding:16px; }
-    .kpis { display:flex; gap:16px; flex-wrap:wrap; margin-top:8px; }
-    .kpi { background:#0f1420; border:1px dashed #223049; border-radius:12px; padding:12px 14px; color:var(--muted); }
-    .list { margin:0; padding-left:18px; }
-    .muted { color:var(--muted); }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
-    .footer { margin:40px 0 24px; color:var(--muted); font-size:14px; }
-    @media (max-width:900px){ .grid-3, .grid-2 { grid-template-columns: 1fr; } h1{font-size:36px;} }
+    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39;--ok:#24d26e}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:1120px;margin:0 auto;padding:24px}
+    header .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .nav a{margin-left:14px}
+    .brand{font-weight:800;letter-spacing:.2px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+    @media (max-width:980px){ .hero{grid-template-columns:1fr} }
+    h1{margin:8px 0 6px;font-size:34px}
+    h2{margin:8px 0 4px;font-size:22px}
+    p.muted{color:var(--muted)}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;border:0;cursor:pointer}
+    .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid var(--line)}
+    .pill{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+    .features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    @media (max-width:980px){ .features{grid-template-columns:1fr} }
+    footer{margin:28px 0 18px;color:var(--muted);font-size:13px}
   </style>
 
-  <!-- Plausible (self-hosted or cloud) -->
-  <!-- Replace data-domain with your domain; 'hash' enables privacy-preserving pageview attribution -->
-  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/plausible.js"></script>
+  <!-- Plausible -->
+  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
   <script>
-    // Custom events helper
-    window.track = (name, props={}) => { if (window.plausible) window.plausible(name, { props }); };
+    // safe track helper
+    window.track = function(name, props){ try { window.plausible && window.plausible(name, { props: props||{} }); } catch(e){} };
   </script>
 </head>
 <body>
-  <header class="wrap">
-    <span class="badge">Runtime LLM Security</span>
-    <div class="hero">
-      <h1>Ship LLMs with guardrails — in 48 hours.</h1>
-      <p class="sub">Treeline provides a <strong>48-hour LLM Security Checkup</strong> and <strong>Policy Packs</strong> that harden your AI apps against prompt injection, data exfil, jailbreaks, and unsafe tool calls. Fast, practical, <span class="mono">AWS-ready</span>, and built by engineers who deploy this in the field.</p>
-      <div class="cta-row">
-        <a id="cta-checkout" class="btn" href="https://checkout.stripe.com/c/pay/TODO" rel="noopener">Get the 48-Hour Checkup →</a>
-        <a id="cta-book" class="btn secondary" href="https://calendly.com/TODO/llm-security-intro" rel="noopener">Book a 20-min intro</a>
-        <a id="cta-scanner" class="btn small secondary" href="/scanner" rel="noopener">Run Prompt Risk Scanner</a>
+  <main class="wrap">
+    <!-- NAV -->
+    <header>
+      <div class="nav">
+        <div class="brand">Treeline Proxy</div>
+        <nav>
+          <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav',path:location.pathname})">Prompt Workshop</a>
+          <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav',path:location.pathname})">Scanner</a>
+          <a href="#offer" onclick="track('CTA: Nav Offer',{path:location.pathname})">Offer</a>
+          <a href="#contact" onclick="track('CTA: Nav Contact',{path:location.pathname})">Contact</a>
+        </nav>
       </div>
-      <div class="kpis">
-        <div class="kpi">Avg time to findings: <strong>48h</strong></div>
-        <div class="kpi">Common blocked risks: <strong>PII exfil, tool abuse, jailbreaks</strong></div>
-        <div class="kpi">Deploy targets: <strong>AWS ALB/ECS, Lambda, k8s</strong></div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" style="margin-top:18px">
+      <div class="card">
+        <span class="pill">LLM Security · 48-Hour Checkup</span>
+        <h1>Find & fix prompt risks, jailbreaks, and tool abuse in 48 hours.</h1>
+        <p class="muted">We run targeted attack sims, harden your prompts & tools, and ship deployable Policy Packs. AWS-ready. No vendor lock-in.</p>
+        <div class="row" style="margin-top:10px">
+          <a id="cta-checkout" class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO"
+             onclick="track('CTA: Checkout',{from:'hero',path:location.pathname})">Get the 48-Hour Checkup</a>
+          <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
+             onclick="track('CTA: Book Intro',{from:'hero',path:location.pathname})">Book a 20-min intro</a>
+          <a id="cta-scanner" class="btn secondary preserve-utm" href="/scanner/"
+             onclick="track('CTA: Open Scanner',{from:'hero',path:location.pathname})">Run Prompt Risk Scanner</a>
+          <a id="cta-workshop" class="btn secondary preserve-utm" href="/workshop/"
+             onclick="track('CTA: Open Workshop',{from:'hero',path:location.pathname})">Try the Prompt Workshop →</a>
+        </div>
       </div>
-    </div>
-  </header>
-
-  <main class="wrap grid grid-3">
-    <!-- Value Props -->
-    <section class="card">
-      <h3>Why Treeline</h3>
-      <ul class="list">
-        <li><strong>Real-world hardening</strong> — MitM proxy patterns, scoring, and block logic proven in production.</li>
-        <li><strong>Policy Packs</strong> — Drop-in rules for prompt injection, DLP, tool constraints, and safety rails.</li>
-        <li><strong>AWS-aligned</strong> — Fits ALB/ECS, OTel telemetry, and standard VPC patterns.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h3>What You Get (48h Checkup)</h3>
-      <ul class="list">
-        <li>Threat model for your LLM usage (chat, RAG, tools, agents).</li>
-        <li>Attack simulations: jailbreaks, exfil, tool-call abuse, supply chain.</li>
-        <li>Findings report with <em>fix-first</em> order, sample policies, and code diffs.</li>
-        <li>Runtime guardrails: prompt filters, output scoring, tool allowlists.</li>
-        <li>Quick-win Policy Pack mapped to your stack.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h3>How It Works</h3>
-      <ol class="list">
-        <li><strong>Scope</strong> (60 min): app surfaces, models, tools, data sensitivity.</li>
-        <li><strong>Probe</strong> (Day 1): targeted attacks + telemetry capture.</li>
-        <li><strong>Harden</strong> (Day 2): policies + guardrails integrated; demo + report.</li>
-      </ol>
-      <div class="cta-row" style="margin-top:8px;">
-        <a class="btn small" href="https://checkout.stripe.com/c/pay/TODO">Start Checkup</a>
-        <a class="btn small secondary" href="https://calendly.com/TODO/llm-security-intro">Talk to an engineer</a>
-      </div>
-    </section>
-
-    <!-- Offer / Pricing -->
-    <section class="card grid grid-2" style="grid-column: 1 / -1;">
-      <div>
-        <h3>48-Hour LLM Security Checkup</h3>
-        <p class="muted">Fixed-scope, fixed-fee. One app surface, one environment. 48-hour turnaround.</p>
-        <ul class="list">
-          <li>Attack sims + runtime traces</li>
-          <li>Top risks with reproducible PoCs</li>
-          <li>Policy Pack tailored to your stack</li>
-          <li>Readout + next-step plan</li>
+      <div class="card">
+        <h2>What you get in 48 hours</h2>
+        <ul>
+          <li>Attack simulation report (jailbreaks, injection, tool-use escalation)</li>
+          <li>Policy Pack bundle (DLP/PII, tool allowlists, output scoring)</li>
+          <li>Prompt hardening & templates for your stack</li>
+          <li>AWS deployment guidance (gateway/sidecar, logging, metrics)</li>
         </ul>
-        <p><strong class="mono">$1,500</strong> launch promo.</p>
-        <a class="btn" href="https://checkout.stripe.com/c/pay/TODO">Checkout →</a>
-      </div>
-      <div>
-        <h3>Policy Packs</h3>
-        <p class="muted">Drop-in rules you can enforce today. Works with Treeline or your gateway.</p>
-        <ul class="list">
-          <li>Prompt Injection &amp; Jailbreaks</li>
-          <li>PII/DLP &amp; Secrets</li>
-          <li>Tool-Use Constraints &amp; Rate limits</li>
-          <li>Output Scoring &amp; Escalation</li>
-        </ul>
-        <p><strong class="mono">$499 each</strong> or <strong class="mono">$1,199</strong> bundle.</p>
-        <a class="btn secondary" href="https://checkout.stripe.com/c/pay/TODO">Get Policy Packs</a>
+        <p class="muted">Deliverables you can paste into prod. We’ll walk you through rollout.</p>
       </div>
     </section>
 
-    <!-- Social Proof / Trust -->
-    <section class="card">
-      <h3>Built for Enterprise Reality</h3>
-      <p class="muted">Design mirrors how regulated teams actually ship: least-privilege, auditable, rollback-friendly.</p>
-      <ul class="list">
-        <li>Transparent deny/allow with evidence</li>
-        <li>Token-level logging knobs</li>
-        <li>OTel-friendly telemetry</li>
-      </ul>
+    <!-- FEATURES -->
+    <section class="features" style="margin-top:16px">
+      <div class="card">
+        <h3>Prompt Workshop</h3>
+        <p class="muted">Paste a prompt → get optimized variants (Zero/Few-shot, CoT, ToT, RAG, ReAct, PAL, Reflexion) with an optional security wrapper.</p>
+        <a class="btn secondary preserve-utm" href="/workshop/" onclick="track('CTA: Open Workshop',{from:'features',path:location.pathname})">Open Workshop</a>
+      </div>
+      <div class="card">
+        <h3>Risk Scanner</h3>
+        <p class="muted">Client-side checks for common risks (injection, DLP, tool abuse, jailbreak markers). Use it as a quick triage before the full checkup.</p>
+        <a class="btn secondary preserve-utm" href="/scanner/" onclick="track('CTA: Open Scanner',{from:'features',path:location.pathname})">Open Scanner</a>
+      </div>
+      <div class="card" id="offer">
+        <h3>48-Hour Checkup & Policy Packs</h3>
+        <p class="muted">Fixed-price engagement with deployable guardrails. Bundle includes Injection/Jailbreak, DLP/PII, Tool Constraints, and Output Scoring.</p>
+        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Checkout',{from:'features',path:location.pathname})">Get the Checkup</a>
+      </div>
     </section>
 
-    <section class="card">
-      <h3>Prompt Risk Scanner</h3>
-      <p class="muted">Quickly test prompts against common attacks. Use it standalone or wire it into CI/CD.</p>
-      <div class="cta-row"><a class="btn small secondary" href="/scanner">Open Scanner</a></div>
+    <!-- CONTACT / TRUST -->
+    <section class="card" style="margin-top:16px" id="contact">
+      <h2>Talk to an engineer</h2>
+      <p class="muted">Questions about your stack? Book a quick intro and we’ll map risks to your exact architecture (gateways, vector DBs, tools, agents).</p>
+      <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
+         onclick="track('CTA: Book Intro',{from:'contact',path:location.pathname})">Book 20-min intro</a>
+      <p class="muted" style="margin-top:8px">Or email <a href="mailto:hello@treelineproxy.io">hello@treelineproxy.io</a></p>
     </section>
 
-    <section class="card">
-      <h3>Latest from the Blog</h3>
-      <ul class="list">
-        <li><a href="/blog/48h-llm-security-checkup-teardown">48h LLM Security Checkup: a teardown</a></li>
-        <li><a href="/blog/runtime-policy-packs">Runtime Policy Packs: patterns that stick</a></li>
-      </ul>
-    </section>
-
-    <!-- FAQ -->
-    <section class="card" style="grid-column: 1 / -1;">
-      <h3>FAQ</h3>
-      <details><summary>What access do you need?</summary><p class="muted">A non-prod environment, minimal creds for traffic capture, and a read-only view of your policy surface. No customer PII required.</p></details>
-      <details><summary>Does this replace my API gateway?</summary><p class="muted">No. Treeline slots alongside your gateway. Use it to score and enforce LLM-specific risks without re-plumbing.</p></details>
-      <details><summary>Which models are supported?</summary><p class="muted">Any over HTTPS: OpenAI, Anthropic, Bedrock, Vertex, local LLMs behind an endpoint. Tooling works at the request/response layer.</p></details>
-      <details><summary>What happens after the Checkup?</summary><p class="muted">You get a findings report, PoCs, and a Policy Pack. We can optionally help harden prod and add observability.</p></details>
-    </section>
+    <!-- FOOTER -->
+    <footer>
+      © <span id="year"></span> Treeline Proxy ·
+      <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'footer',path:location.pathname})">Prompt Workshop</a> ·
+      <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'footer',path:location.pathname})">Scanner</a> ·
+      <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
+    </footer>
   </main>
 
-  <footer class="wrap footer">
-    <div>© <span id="year"></span> Treeline Proxy · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></div>
-  </footer>
-
-  <!-- Scripts: UTM preservation + KPI events -->
+  <!-- UTM preservation (append query to internal links) -->
   <script>
     (function preserveUTM(){
-      const qs = window.location.search;
-      if (!qs) return;
-      // Append current query string to all outbound CTAs for attribution continuity
-      const ids = ["cta-checkout", "cta-book", "cta-scanner"];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el.href) {
-          const u = new URL(el.href);
-          // Don't double-append UTM if already present
-          const hasUtm = Array.from(new URLSearchParams(qs)).some(([k]) => k.toLowerCase().startsWith("utm_"));
-          if (hasUtm) {
-            const current = new URLSearchParams(u.search);
-            const incoming = new URLSearchParams(qs);
-            incoming.forEach((v, k) => { if(!current.has(k)) current.set(k, v); });
-            u.search = current.toString();
-            el.href = u.toString();
-          }
-        }
+      var qs = location.search.replace(/^\?/, '');
+      if(!qs) return;
+      document.querySelectorAll('a.preserve-utm[href^="/"]').forEach(function(a){
+        if (a.href.indexOf('#')>-1) return;
+        a.href += (a.href.indexOf('?')>-1 ? '&' : '?') + qs;
       });
     })();
-
-    // Simple KPI events
-    const bind = (id, name) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.addEventListener('click', () => track(name, { path: location.pathname }));
-    };
-    bind('cta-checkout', 'CTA: Checkout');
-    bind('cta-book', 'CTA: Book Intro');
-    bind('cta-scanner', 'CTA: Open Scanner');
-
-    // Pageview goal tags (optional)
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('year').textContent = new Date().getFullYear();
-      track('Page Loaded', { path: location.pathname });
-    });
-  </script>
-
-  <!-- JSON-LD: Organization + FAQ -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Treeline Proxy",
-    "url": "https://TODO-your-gh-pages-domain/",
-    "logo": "https://TODO-your-gh-pages-domain/og.png",
-    "sameAs": []
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "What access do you need?", "acceptedAnswer": { "@type": "Answer", "text": "A non-prod environment, minimal creds for traffic capture, and a read-only view of your policy surface. No customer PII required." }},
-      { "@type": "Question", "name": "Does this replace my API gateway?", "acceptedAnswer": { "@type": "Answer", "text": "No. Treeline slots alongside your gateway. Use it to score and enforce LLM-specific risks without re-plumbing." }},
-      { "@type": "Question", "name": "Which models are supported?", "acceptedAnswer": { "@type": "Answer", "text": "Any over HTTPS: OpenAI, Anthropic, Bedrock, Vertex, local LLMs behind an endpoint. Tooling works at the request/response layer." }},
-      { "@type": "Question", "name": "What happens after the Checkup?", "acceptedAnswer": { "@type": "Answer", "text": "You get a findings report, PoCs, and a Policy Pack. We can optionally help harden prod and add observability." }}
-    ]
-  }
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
