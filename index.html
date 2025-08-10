@@ -6,7 +6,7 @@
 <meta name="description" content="Find and fix prompt risks fast. Ship deployable guardrails that fit AWS patterns—without vendor lock-in." />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="preconnect" href="https://plausible.io" />
-<link rel="stylesheet" href="/assets/site.css?v=2" />
+<link rel="stylesheet" href="/assets/site.css?v=3" />
 <meta property="og:title" content="Treeline — Runtime Guardrails for LLMs on AWS">
 <meta property="og:description" content="Deployable guardrails. Real telemetry. No vendor lock-in.">
 <meta property="og:image" content="https://treelineproxy.io/assets/og-card.png">
@@ -72,20 +72,9 @@
     </div>
   </section>
 
+  <!-- Proof link replacing old Proof section -->
   <section>
-    <h2>Proof</h2>
-    <div class="grid-2">
-      <article class="card">
-        <h3>Reduced jailbreaks 87% in 2 weeks</h3>
-        <p>Semantic jailbreak index + review workflow over ALB/ECS. False positives under 3%.</p>
-        <img src="/assets/proof/case1-blur.svg" width="920" height="420" alt="Before/after dashboard (blurred placeholder)" loading="lazy" />
-      </article>
-      <article class="card">
-        <h3>PII exposure down 94% in 10 days</h3>
-        <p>Scoped regex + PHI heuristics; exception tokens for legit flows. OTel traces to SIEM.</p>
-        <img src="/assets/proof/case2-blur.svg" width="920" height="420" alt="Policy hit trends (blurred placeholder)" loading="lazy" />
-      </article>
-    </div>
+    <p><a href="/proof-and-accolades/">Need proof of good work?</a></p>
   </section>
 
   <section class="grid-2">
@@ -150,7 +139,6 @@ rules:
   <p class="micro"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/resources/">Resources</a></p>
 </footer>
 
-<!-- Analytics + UTM preservation and goal wiring -->
 <script src="/assets/main.js"></script>
 <script>
 document.querySelectorAll('.lead-form').forEach(f=>{
