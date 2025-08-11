@@ -1,0 +1,8 @@
+{
+  "version": "2025-08-11",
+  "rules": [
+    { "id":"jb.dan", "pattern":"\\bDAN  ?\\d*\\b|Do Anything Now", "severity":"high", "message":"Classic DAN jailbreak token.", "fix":"Reject legacy jailbreak templates." },
+    { "id":"jb.system.fusion", "pattern":"\\bfuse (system|developer) and user prompts\\b", "severity":"med", "message":"System/user context fusion attempt.", "fix":"Separate contexts; reject fusion." },
+    { "id":"jb.translation.escape", "pattern":"\\b(as|act) a translator.*verbatim.*unsafe|repeat back the instructions exactly", "severity":"med", "message":"Translation echo to smuggle instructions.", "fix":"Strip echo-back requests." }
+  ]
+}
