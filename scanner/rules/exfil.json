@@ -1,0 +1,8 @@
+{
+  "version": "2025-08-11",
+  "rules": [
+    { "id":"exfil.connectors", "pattern":"\\bconnect to\\b.*\\b(gmail|drive|slack|jira|calendar|notion|box|dropbox)\\b", "severity":"med", "message":"Third-party connector exfil risk.", "fix":"Constrain connectors + human-in-loop." },
+    { "id":"exfil.systemprompt", "pattern":"\\bexpose|dump|leak\\b.{0,20}\\b(system|hidden|internal) prompt\\b", "severity":"high", "message":"Explicit prompt exfil request.", "fix":"Never reveal hidden prompts." },
+    { "id":"exfil.fileops", "pattern":"\\b(read|open|upload|download)\\b.{0,12}\\b(file|filesystem|secret|key)\\b", "severity":"high", "message":"File operation request.", "fix":"Deny file IO unless sandboxed." }
+  ]
+}
