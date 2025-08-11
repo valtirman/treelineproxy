@@ -11,10 +11,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://treelineproxy.io/" />
   <meta property="og:image" content="https://treelineproxy.io/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="/favicon.ico" />
 
   <style>
-    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39}
+    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39;--ok:#24d26e}
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
     a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
@@ -40,7 +41,8 @@
   <!-- Plausible -->
   <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
   <script>
-    window.track=function(name,props){try{window.plausible&&window.plausible(name,{props:props||{}})}catch(e){}};
+    // safe track helper
+    window.track = function(name, props){ try { window.plausible && window.plausible(name, { props: props||{} }); } catch(e){} };
   </script>
 </head>
 <body>
@@ -48,11 +50,11 @@
     <!-- NAV -->
     <header>
       <div class="nav">
-        <div class="brand"><a href="/" style="color:inherit;text-decoration:none">Treeline Proxy</a></div>
+        <div class="brand">Treeline Proxy</div>
         <nav>
-          <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: View 48h',{from:'nav',path:location.pathname})">48-Hour Checkup</a>
           <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav',path:location.pathname})">Prompt Workshop</a>
           <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav',path:location.pathname})">Scanner</a>
+          <a href="#offer" onclick="track('CTA: Nav Offer',{path:location.pathname})">Offer</a>
           <a href="#contact" onclick="track('CTA: Nav Contact',{path:location.pathname})">Contact</a>
         </nav>
       </div>
@@ -65,8 +67,8 @@
         <h1>Find & fix prompt risks, jailbreaks, and tool abuse in 48 hours.</h1>
         <p class="muted">We run targeted attack sims, harden your prompts & tools, and ship deployable Policy Packs. AWS-ready. No vendor lock-in.</p>
         <div class="row" style="margin-top:10px">
-          <a id="cta-view-48h" class="btn preserve-utm" href="/treeline/48hour/"
-             onclick="track('CTA: View 48h',{from:'hero',path:location.pathname})">Get the 48-Hour Checkup</a>
+          <a id="cta-checkout" class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO"
+             onclick="track('CTA: Checkout',{from:'hero',path:location.pathname})">Get the 48-Hour Checkup</a>
           <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
              onclick="track('CTA: Book Intro',{from:'hero',path:location.pathname})">Book a 20-min intro</a>
           <a id="cta-scanner" class="btn secondary preserve-utm" href="/scanner/"
@@ -99,11 +101,10 @@
         <p class="muted">Client-side checks for common risks (injection, DLP, tool abuse, jailbreak markers). Use it as a quick triage before the full checkup.</p>
         <a class="btn secondary preserve-utm" href="/scanner/" onclick="track('CTA: Open Scanner',{from:'features',path:location.pathname})">Open Scanner</a>
       </div>
-      <div class="card">
+      <div class="card" id="offer">
         <h3>48-Hour Checkup & Policy Packs</h3>
         <p class="muted">Fixed-price engagement with deployable guardrails. Bundle includes Injection/Jailbreak, DLP/PII, Tool Constraints, and Output Scoring.</p>
-        <a class="btn preserve-utm" href="/treeline/48hour/"
-           onclick="track('CTA: View 48h',{from:'features',path:location.pathname})">Learn more</a>
+        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Checkout',{from:'features',path:location.pathname})">Get the Checkup</a>
       </div>
     </section>
 
@@ -119,22 +120,23 @@
     <!-- FOOTER -->
     <footer>
       © <span id="year"></span> Treeline Proxy ·
-      <a href="/treeline/48hour/" class="preserve-utm" onclick="track('CTA: View 48h',{from:'footer',path:location.pathname})">48-Hour Checkup</a> ·
       <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'footer',path:location.pathname})">Prompt Workshop</a> ·
       <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'footer',path:location.pathname})">Scanner</a> ·
       <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
     </footer>
   </main>
 
-  <!-- UTM preservation + year -->
+  <!-- UTM preservation (append query to internal links) -->
   <script>
     (function preserveUTM(){
-      var qs=location.search.replace(/^\?/,''); if(!qs) return;
-      document.querySelectorAll('a.preserve-utm[href^="/"],a.preserve-utm[href^="https://"]').forEach(function(a){
-        if(a.href.indexOf('#')>-1) return;
+      var qs = location.search.replace(/^\?/, '');
+      if(!qs) return;
+      document.querySelectorAll('a.preserve-utm[href^="/"]').forEach(function(a){
+        if (a.href.indexOf('#')>-1) return;
         a.href += (a.href.indexOf('?')>-1 ? '&' : '?') + qs;
       });
     })();
+    // year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
