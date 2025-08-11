@@ -2,142 +2,148 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Treeline Proxy — LLM Security Checkup & Policy Packs</title>
+  <title>Treeline Proxy — Runtime Guardrails for LLMs on AWS</title>
+  <meta name="description" content="Find and fix prompt risks, jailbreaks, and tool abuse. Ship deployable guardrails that fit AWS patterns—without vendor lock-in." />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="48-hour LLM Security Checkup and deployable Policy Packs. Prompt risk scanning, jailbreak and tool-abuse tests, and runtime guardrails readiness." />
   <link rel="canonical" href="https://treelineproxy.io/" />
-  <meta property="og:title" content="Treeline Proxy — LLM Security Checkup & Policy Packs" />
-  <meta property="og:description" content="48-hour LLM Security Checkup and deployable Policy Packs. Prompt risk scanning, jailbreak and tool-abuse tests, and runtime guardrails readiness." />
+
+  <!-- Open Graph / Twitter -->
   <meta property="og:type" content="website" />
+  <meta property="og:title" content="Treeline Proxy — Runtime Guardrails for LLMs on AWS" />
+  <meta property="og:description" content="Runtime visibility and control for GenAI. Deploy guardrails on AWS today—no model changes required." />
   <meta property="og:url" content="https://treelineproxy.io/" />
-  <meta property="og:image" content="https://treelineproxy.io/og.png" />
+  <meta property="og:image" content="https://treelineproxy.io/assets/og-card.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="/favicon.ico" />
 
-  <style>
-    :root{--bg:#0b0d12;--fg:#e8ecf1;--muted:#a7b0bd;--brand:#76e4f7;--card:#121723;--line:#222a39;--ok:#24d26e}
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
-    a{color:var(--brand);text-decoration:none} a:hover{text-decoration:underline}
-    .wrap{max-width:1120px;margin:0 auto;padding:24px}
-    header .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .nav a{margin-left:14px}
-    .brand{font-weight:800;letter-spacing:.2px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-    @media (max-width:980px){ .hero{grid-template-columns:1fr} }
-    h1{margin:8px 0 6px;font-size:34px}
-    h2{margin:8px 0 4px;font-size:22px}
-    p.muted{color:var(--muted)}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;background:var(--brand);color:#051015;font-weight:700;border:0;cursor:pointer}
-    .btn.secondary{background:#1b2333;color:var(--fg);border:1px solid var(--line)}
-    .pill{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-    .features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-    @media (max-width:980px){ .features{grid-template-columns:1fr} }
-    footer{margin:28px 0 18px;color:var(--muted);font-size:13px}
-  </style>
-
-  <!-- Plausible -->
+  <!-- Optional: Plausible analytics -->
   <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
-  <script>
-    // safe track helper
-    window.track = function(name, props){ try { window.plausible && window.plausible(name, { props: props||{} }); } catch(e){} };
-  </script>
+
+  <!-- Minimal styles (safe defaults; remove if you have a global stylesheet) -->
+  <style>
+    :root { --bg:#0b0c10; --fg:#e6e6e6; --muted:#a8a8a8; --accent:#6ee7b7; --card:#111318; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; padding:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; color:var(--fg); background:var(--bg); }
+    a { color:inherit; text-decoration:none; }
+    .wrap { max-width:1100px; margin:0 auto; padding:24px; }
+    .nav { display:flex; align-items:center; justify-content:space-between; padding:8px 0 16px; }
+    .nav .brand { display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:0.2px; }
+    .nav .brand img { width:28px; height:28px; }
+    .nav .links { display:flex; gap:18px; font-size:14px; color:var(--muted); }
+    .hero { padding:56px 0 40px; display:grid; gap:18px; }
+    .hero h1 { font-size:40px; line-height:1.1; margin:0; }
+    .hero p { color:var(--muted); max-width:780px; margin:0; font-size:18px; }
+    .cta { display:flex; gap:14px; margin-top:10px; flex-wrap:wrap; }
+    .btn { padding:12px 16px; border-radius:12px; border:1px solid #2a2d35; background:#14161c; color:#fff; font-weight:600; }
+    .btn:hover { border-color:#3a3f48; }
+    .btn-primary { background:linear-gradient(180deg, #1f6f5b, #164e3f); border:0; }
+    .btn-outline { background:transparent; border:1px solid #3a3f48; color:#eaeaea; }
+    .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); margin:26px 0 10px; }
+    .card { background:var(--card); border:1px solid #1a1d24; border-radius:16px; padding:18px; }
+    .card h3 { margin:0 0 8px; font-size:18px; }
+    .card p { margin:0; color:var(--muted); font-size:14px; }
+    .logos { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    .logo { padding:6px 10px; border:1px solid #20242c; border-radius:999px; font-size:12px; color:#c9c9c9; background:#12151a; }
+    .footer { color:#9aa0a6; font-size:13px; padding:30px 0 60px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    @media (max-width:640px){ .hero h1{font-size:32px;} }
+  </style>
 </head>
 <body>
+  <header class="wrap nav" role="navigation" aria-label="Main">
+    <div class="brand">
+      <img src="/assets/treeline-mark.svg" alt="Treeline logo" />
+      <span>Treeline Proxy</span>
+    </div>
+    <nav class="links">
+      <a href="/scanner/">Scanner</a>
+      <a href="/workshop/">Workshop</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+  </header>
+
   <main class="wrap">
-    <!-- NAV -->
-    <header>
-      <div class="nav">
-        <div class="brand">Treeline Proxy</div>
-        <nav>
-          <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'nav',path:location.pathname})">Prompt Workshop</a>
-          <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'nav',path:location.pathname})">Scanner</a>
-          <a href="#offer" onclick="track('CTA: Nav Offer',{path:location.pathname})">Offer</a>
-          <a href="#contact" onclick="track('CTA: Nav Contact',{path:location.pathname})">Contact</a>
-        </nav>
+    <section class="hero">
+      <h1>Runtime guardrails for LLMs on AWS</h1>
+      <p>
+        See every prompt and tool call, detect jailbreaks and data leaks, and enforce policy before output escapes.
+        Deploy as a transparent proxy or gateway sidecar—no model changes required.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="/scanner/" onclick="window.plausible && plausible('Scanner Click',{props:{source:'home'}})">Run the Scanner</a>
+        <a class="btn btn-outline" href="mailto:hello@treelineproxy.io" onclick="window.plausible && plausible('Contact Click',{props:{source:'home'}})">Get in touch</a>
       </div>
-    </header>
+    </section>
 
-    <!-- HERO -->
-    <section class="hero" style="margin-top:18px">
-      <div class="card">
-        <span class="pill">LLM Security · 48-Hour Checkup</span>
-        <h1>Find & fix prompt risks, jailbreaks, and tool abuse in 48 hours.</h1>
-        <p class="muted">We run targeted attack sims, harden your prompts & tools, and ship deployable Policy Packs. AWS-ready. No vendor lock-in.</p>
-        <div class="row" style="margin-top:10px">
-          <a id="cta-checkout" class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO"
-             onclick="track('CTA: Checkout',{from:'hero',path:location.pathname})">Get the 48-Hour Checkup</a>
-          <a id="cta-book" class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
-             onclick="track('CTA: Book Intro',{from:'hero',path:location.pathname})">Book a 20-min intro</a>
-          <a id="cta-scanner" class="btn secondary preserve-utm" href="/scanner/"
-             onclick="track('CTA: Open Scanner',{from:'hero',path:location.pathname})">Run Prompt Risk Scanner</a>
-          <a id="cta-workshop" class="btn secondary preserve-utm" href="/workshop/"
-             onclick="track('CTA: Open Workshop',{from:'hero',path:location.pathname})">Try the Prompt Workshop →</a>
+    <!-- Problem / Outcomes -->
+    <section class="grid" aria-label="Outcomes">
+      <article class="card">
+        <h3>Stop prompt injection</h3>
+        <p>Detect instruction hijacks and jailbreak variants across prompts, tools, and RAG. Block or sanitize in-line.</p>
+      </article>
+      <article class="card">
+        <h3>Protect sensitive data</h3>
+        <p>DLP rules for PII/PHI/keys. Redact at ingress/egress; enforce allow/deny on tools and connectors.</p>
+      </article>
+      <article class="card">
+        <h3>Govern tool use</h3>
+        <p>Scope which external actions are allowed, throttle risky calls, and require human-in-the-loop for escalations.</p>
+      </article>
+      <article class="card">
+        <h3>Prove compliance</h3>
+        <p>Token-level traceability and policy outcomes for audits. Export telemetry to your SIEM and data lake.</p>
+      </article>
+    </section>
+
+    <!-- How it works -->
+    <section class="grid" aria-label="How it works">
+      <article class="card">
+        <h3>Drop-in proxy / sidecar</h3>
+        <p>Transparent TLS interception for model providers; native ALB → ECS/EKS patterns.</p>
+        <div class="logos">
+          <span class="logo">ALB</span><span class="logo">ECS</span><span class="logo">EKS</span><span class="logo">Bedrock</span>
         </div>
-      </div>
-      <div class="card">
-        <h2>What you get in 48 hours</h2>
-        <ul>
-          <li>Attack simulation report (jailbreaks, injection, tool-use escalation)</li>
-          <li>Policy Pack bundle (DLP/PII, tool allowlists, output scoring)</li>
-          <li>Prompt hardening & templates for your stack</li>
-          <li>AWS deployment guidance (gateway/sidecar, logging, metrics)</li>
-        </ul>
-        <p class="muted">Deliverables you can paste into prod. We’ll walk you through rollout.</p>
-      </div>
+      </article>
+      <article class="card">
+        <h3>Policy Packs (YAML)</h3>
+        <p>Baseline + DLP + jailbreak policies. Tune thresholds, add regex/semantic rules, and ship to prod with gitops.</p>
+      </article>
+      <article class="card">
+        <h3>Inline actions</h3>
+        <p>Sanitize, block, or escalate. Optional human review for high-risk outputs and tool invocations.</p>
+      </article>
+      <article class="card">
+        <h3>Observability</h3>
+        <p>OpenTelemetry events, per-request scoring, and structured logs. Works with CloudWatch, Datadog, Splunk.</p>
+      </article>
     </section>
 
-    <!-- FEATURES -->
-    <section class="features" style="margin-top:16px">
-      <div class="card">
-        <h3>Prompt Workshop</h3>
-        <p class="muted">Paste a prompt → get optimized variants (Zero/Few-shot, CoT, ToT, RAG, ReAct, PAL, Reflexion) with an optional security wrapper.</p>
-        <a class="btn secondary preserve-utm" href="/workshop/" onclick="track('CTA: Open Workshop',{from:'features',path:location.pathname})">Open Workshop</a>
-      </div>
-      <div class="card">
-        <h3>Risk Scanner</h3>
-        <p class="muted">Client-side checks for common risks (injection, DLP, tool abuse, jailbreak markers). Use it as a quick triage before the full checkup.</p>
-        <a class="btn secondary preserve-utm" href="/scanner/" onclick="track('CTA: Open Scanner',{from:'features',path:location.pathname})">Open Scanner</a>
-      </div>
-      <div class="card" id="offer">
-        <h3>48-Hour Checkup & Policy Packs</h3>
-        <p class="muted">Fixed-price engagement with deployable guardrails. Bundle includes Injection/Jailbreak, DLP/PII, Tool Constraints, and Output Scoring.</p>
-        <a class="btn preserve-utm" href="https://checkout.stripe.com/c/pay/TODO" onclick="track('CTA: Checkout',{from:'features',path:location.pathname})">Get the Checkup</a>
-      </div>
+    <!-- Calls to explore -->
+    <section class="grid" aria-label="Explore">
+      <a class="card" href="/scanner/" onclick="window.plausible && plausible('Scanner Click',{props:{source:'home-grid'}})">
+        <h3>Scanner</h3>
+        <p>Run static checks on prompts and configs. Catch obvious leaks and jailbreak bait before launch.</p>
+      </a>
+      <a class="card" href="/workshop/" onclick="window.plausible && plausible('Workshop Click',{props:{source:'home-grid'}})">
+        <h3>Workshop</h3>
+        <p>Hands-on hardening session for your team. We map threats, tune policies, and wire the proxy in your AWS account.</p>
+      </a>
+      <a class="card" href="mailto:hello@treelineproxy.io" onclick="window.plausible && plausible('Contact Click',{props:{source:'home-grid'}})">
+        <h3>Talk to us</h3>
+        <p>Have a production risk or an incident? We’ll help you triage, tune, and ship guardrails.</p>
+      </a>
     </section>
-
-    <!-- CONTACT / TRUST -->
-    <section class="card" style="margin-top:16px" id="contact">
-      <h2>Talk to an engineer</h2>
-      <p class="muted">Questions about your stack? Book a quick intro and we’ll map risks to your exact architecture (gateways, vector DBs, tools, agents).</p>
-      <a class="btn secondary preserve-utm" href="https://calendly.com/TODO/llm-security-intro"
-         onclick="track('CTA: Book Intro',{from:'contact',path:location.pathname})">Book 20-min intro</a>
-      <p class="muted" style="margin-top:8px">Or email <a href="mailto:hello@treelineproxy.io">hello@treelineproxy.io</a></p>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      © <span id="year"></span> Treeline Proxy ·
-      <a href="/workshop/" class="preserve-utm" onclick="track('CTA: Open Workshop',{from:'footer',path:location.pathname})">Prompt Workshop</a> ·
-      <a href="/scanner/" class="preserve-utm" onclick="track('CTA: Open Scanner',{from:'footer',path:location.pathname})">Scanner</a> ·
-      <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
-    </footer>
   </main>
 
-  <!-- UTM preservation (append query to internal links) -->
-  <script>
-    (function preserveUTM(){
-      var qs = location.search.replace(/^\?/, '');
-      if(!qs) return;
-      document.querySelectorAll('a.preserve-utm[href^="/"]').forEach(function(a){
-        if (a.href.indexOf('#')>-1) return;
-        a.href += (a.href.indexOf('?')>-1 ? '&' : '?') + qs;
-      });
-    })();
-    // year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <footer class="wrap footer">
+    <div>
+      <strong>Treeline Proxy</strong> · Runtime visibility & control for GenAI
+      <div class="logos" style="margin-top:8px">
+        <span class="logo">ALB</span><span class="logo">ECS</span><span class="logo">EKS</span><span class="logo">Bedrock</span>
+      </div>
+    </div>
+    <div>
+      <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="mailto:hello@treelineproxy.io">Contact</a>
+    </div>
+  </footer>
 </body>
 </html>
