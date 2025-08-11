@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -48,7 +47,6 @@
         try{ return getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()==='#0b0f14'; }catch(e){ return false; }
       }
       function swap(h){ var l=document.getElementById('sitecss'); if(l) l.href=h; }
-
       window.addEventListener('load',function(){
         if(cssApplied()) return;
         swap('assets/site.css?v=6');
@@ -62,12 +60,9 @@
   {"@context":"https://schema.org","@type":"Organization","name":"Treeline","url":"https://treelineproxy.io/","logo":"https://treelineproxy.io/assets/logo.png","sameAs":["https://www.linkedin.com/company/treelineproxy"]}
   </script>
 </head>
-
-  <body>
-
-    <!-- MOBILE-SAFE HEADER -->
-
-    <header class="nav wrap">
+<body>
+  <!-- MOBILE-SAFE HEADER -->
+  <header class="nav wrap">
     <a class="brand" href="/">
       <img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Treeline</span>
     </a>
