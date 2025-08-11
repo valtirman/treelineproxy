@@ -1,20 +1,30 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Not found — Treeline</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="/assets/treeline.css">
+  <meta charset="utf-8" />
+  <title>Not found — Treeline Proxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <style>
+    :root{--bg:#0b0c10;--fg:#e7e7e7}
+    *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    .wrap{max-width:1100px;margin:0 auto;padding:40px}
+    .center{min-height:70vh;display:grid;place-items:center;text-align:center}
+    .btn{display:inline-block;margin:6px;padding:12px 14px;border-radius:12px;border:1px solid #2a2d35;background:#14161c;color:#fff;font-weight:600;text-decoration:none}
+    .btn-primary{background:linear-gradient(180deg,#1f6f5b,#164e3f);border:0}
+  </style>
 </head>
-<body class="dark">
-  <main class="tl-center">
-    <h1>We can’t find that page.</h1>
-    <p>Try one of these:</p>
-    <p>
-      <a class="btn" href="/">Home</a>
-      <a class="btn" href="/scanner/">Scanner</a>
-      <a class="btn" href="/workshop/">Workshop</a>
-    </p>
+<body>
+  <main class="wrap center">
+    <div>
+      <h1>We can’t find that page.</h1>
+      <p>Try one of these:</p>
+      <p>
+        <a class="btn btn-primary" href="/">Home</a>
+        <a class="btn" href="/scanner/">Scanner</a>
+        <a class="btn" href="/workshop/">Workshop</a>
+      </p>
+    </div>
   </main>
 </body>
 </html>
