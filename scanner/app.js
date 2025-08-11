@@ -249,3 +249,65 @@ async function fetchJSON(path){
   if (!res.ok) throw new Error(`Failed to load ${path}`);
   return res.json();
 }
+
+/* ==== Remote scan hook (optional) ======================================= */
+const API_FALLBACKS = [
+  // Put your endpoint(s) here if different origin:
+  // 'https://<your-workers-subdomain>.workers.dev/scanner/api/scan',
+  // 'https://<api-id>.execute-api.<region>.amazonaws.com/scanner/api/scan'
+];
+
+async function callRemoteScan(text, profile) {
+  const candidates = ['/scanner/api/scan', ...API_FALLBACKS];
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ text, profile })
+      });
+      if (res.ok) return await res.json();
+    } catch (_) {}
+  }
+  return null;
+}
+
+function bump(cat, n) {
+  state.scores[cat] = Math.max(0, Math.min(100, Math.round(state.scores[cat] + n)));
+  setScore(cat, state.scores[cat]);
+}
+
+function mergeExtra(extra) {
+  if (extra.approx_injection) {
+    bump('injection', 12);
+    addFinding({
+      category: 'injection', severity: 'med', ruleId: 'remote.approx_injection',
+      message: 'Fuzzy similarity to known instruction-override phrase.',
+      fix: 'Remove/bound override or “ignore previous instructions” language.'
+    });
+  }
+  if (extra.highRisk) {
+    bump('exfil', 20);
+    addFinding({
+      category: 'exfil', severity: 'high', ruleId: 'remote.highRisk',
+      message: 'Serverless detector flagged a high-risk exfil pattern.',
+      fix: 'Block requests to reveal hidden/system/developer prompts.'
+    });
+  }
+}
+
+/* Wire into the end of runChecks() */
+async function runChecks(){
+  resetResults();
+  const t = state.text.trim();
+  if (!t) return;
+
+  // ...existing local checks...
+
+  state.scores = clampScores({injection:sInjection, jailbreak:sJail, exfil:sExfil, secrets:sSecrets, pii:sPII, dos:sDoS});
+  for (const k of Object.keys(state.scores)) setScore(k, state.scores[k]);
+
+  // optional: serverless extra signals (non-blocking UX)
+  const remote = await callRemoteScan(t, state.profile);
+  if (remote && remote.extra) mergeExtra(remote.extra);
+}
