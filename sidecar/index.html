@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <title>Sidecar MITM — Treeline Proxy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Transparent proxy for GenAI: intercept, score, and enforce policy in real time without changing app code." />
-  <link rel="canonical" href="https://treelineproxy.io/sidecar/" />
+  <meta name="description" content="Transparent MITM proxy for GenAI. Intercept, score, and enforce policy in real time without changing app code." />
+  <link rel="canonical" href="https://treelineproxy.io/sidecar/"/>
   <style>
     :root{--bg:#0b0c10;--card:#111318;--muted:#a8a8a8;--fg:#e7e7e7;--line:#1a1d24}
     *{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
@@ -16,6 +16,7 @@
     .brand img{width:28px;height:28px}
     .links{display:flex;gap:18px;font-size:14px;color:var(--muted)}
     .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:20px}
+    .muted{color:var(--muted)}
     .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;border:1px solid #2a2d35;background:#14161c;color:#fff;font-weight:600;margin-right:10px}
     .btn:hover{border-color:#3a3f48}
     .btn-primary{background:linear-gradient(180deg,#1f6f5b,#164e3f);border:0}
@@ -29,9 +30,9 @@
       <span>Treeline Proxy</span>
     </div>
     <nav class="links">
+      <a href="/">Home</a>
       <a href="/scanner/">Scanner</a>
       <a href="/workshop/">Workshop</a>
-      <a href="/sidecar/">Sidecar</a>
       <a href="/platform/">Platform</a>
       <a href="/privacy/">Privacy</a>
       <a href="/terms/">Terms</a>
@@ -41,16 +42,16 @@
   <main class="wrap">
     <div class="card">
       <h1>Sidecar MITM</h1>
-      <p style="color:var(--muted)">Transparent TLS MITM for GenAI traffic. Score prompts and tool calls, throttle risky actions, and enforce policy — no app code changes.</p>
+      <p class="muted">Drop-in TLS MITM for GenAI traffic. Score prompts & tool calls, throttle risky actions, and enforce policy — <strong>without app changes</strong>.</p>
       <ul>
-        <li>TLS interception with semantic risk scoring</li>
-        <li>Policy packs: jailbreaks, DLP, memory controls, tool gating</li>
-        <li>Exports & telemetry: OTLP/OTel events, JSONL, S3</li>
-        <li>Deploy anywhere: Docker, ECS, EKS, K8s</li>
+        <li>Semantic risk scoring for prompts, tool-use, file I/O, and outbound calls</li>
+        <li>Policy packs: jailbreaks, DLP, memory controls, tool gating, allow/deny-lists</li>
+        <li>Exports & telemetry: OTLP/OTel events, JSONL, webhook, S3</li>
+        <li>Deploy anywhere: Docker, ECS, EKS/K8s; sidecar or gateway mode</li>
       </ul>
       <p style="margin-top:14px">
         <a class="btn btn-primary" href="mailto:hello@treelineproxy.io?subject=Sidecar%20Demo">Request a demo</a>
-        <a class="btn" href="/scanner/">Try the Scanner</a>
+        <a class="btn" href="/scanner/">Run Prompt Risk Scanner</a>
       </p>
     </div>
   </main>
