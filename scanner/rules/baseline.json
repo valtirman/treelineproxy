@@ -1,38 +1,47 @@
-version	"2025-08-11"
-injection	
-0	
-id	"inj.ignore.previous"
-pattern	"\\b(ignore|disregard) (all|previous|above) (instructions|rules)\\b"
-severity	"high"
-message	"Attempts to override prior instructions."
-fix	"Remove instruction-override phrasing."
-1	
-id	"inj.role.hijack"
-pattern	"\\bassume the role of\\b|\\bact as\\b"
-severity	"med"
-message	"Role-hijacking pattern."
-fix	"Avoid open-ended role escalations."
-2	
-id	"inj.sys.prompt.request"
-pattern	"\\b(show|reveal|print).{0,20}(system|developer) prompt\\b"
-severity	"high"
-message	"Requests disclosure of hidden system/developer prompt."
-fix	"Never expose system prompts."
-3	
-id	"inj.safety.bypass"
-pattern	"\\b(jailbreak|DAN|bypass|disable) (safety|guardrails|filters)\\b"
-severity	"high"
-message	"Explicit safety-bypass intent."
-fix	"Block or rewrite to deny bypass requests."
-4	
-id	"inj.translation.echo"
-pattern	"\\b(as|act) a translator\\b.*\\bverbatim\\b"
-severity	"med"
-message	"Translation-echo trick to smuggle unsafe instructions."
-fix	"Reject verbatim echo of unsafe text; summarize safely."
-5	
-id	"inj.context.fusion"
-pattern	"\\bfuse (system|developer) and user prompts\\b"
-severity	"med"
-message	"Context fusion attempt to override boundaries."
-fix	"Keep system/developer/user contexts separated."
+{
+  "version": "2025-08-11",
+  "injection": [
+    {
+      "id": "inj.ignore.previous",
+      "pattern": "\\b(ignore|disregard) (all|previous|above) (instructions|rules)\\b",
+      "severity": "high",
+      "message": "Attempts to override prior instructions.",
+      "fix": "Remove instruction override phrasing."
+    },
+    {
+      "id": "inj.role.hijack",
+      "pattern": "\\bassume the role of\\b|\\bact as\\b",
+      "severity": "med",
+      "message": "Role-hijacking pattern.",
+      "fix": "Avoid open-ended role escalations."
+    },
+    {
+      "id": "inj.sys.prompt.request",
+      "pattern": "\\b(show|reveal|print).{0,20}(system|developer) prompt\\b",
+      "severity": "high",
+      "message": "Requests disclosure of hidden system/developer prompt.",
+      "fix": "Never expose system prompts."
+    },
+    {
+      "id": "inj.safety.bypass",
+      "pattern": "\\b(jailbreak|DAN|bypass|disable) (safety|guardrails|filters)\\b",
+      "severity": "high",
+      "message": "Explicit safety-bypass intent.",
+      "fix": "Block or rewrite to deny bypass requests."
+    },
+    {
+      "id": "inj.translation.echo",
+      "pattern": "\\b(as|act) a translator\\b.*\\bverbatim\\b",
+      "severity": "med",
+      "message": "Translation-echo trick to smuggle unsafe instructions.",
+      "fix": "Reject verbatim echo of unsafe text; summarize safely."
+    },
+    {
+      "id": "inj.context.fusion",
+      "pattern": "\\bfuse (system|developer) and user prompts\\b",
+      "severity": "med",
+      "message": "Context fusion attempt to override boundaries.",
+      "fix": "Keep system/developer/user contexts separated."
+    }
+  ]
+}
