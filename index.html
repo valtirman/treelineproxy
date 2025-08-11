@@ -1,1 +1,188 @@
 
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Treeline — Runtime Guardrails for LLMs on AWS</title>
+  <meta name="description" content="Find and fix prompt risks fast. Ship deployable guardrails that fit AWS patterns—without vendor lock-in." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://plausible.io" />
+  <meta property="og:title" content="Treeline — Runtime Guardrails for LLMs on AWS">
+  <meta property="og:description" content="Deployable guardrails. Real telemetry. No vendor lock-in.">
+  <meta property="og:image" content="https://treelineproxy.io/assets/og-card.png">
+  <meta property="og:url" content="https://treelineproxy.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/logo.png">
+
+  <!-- Critical inline CSS: prevents naked HTML if external CSS fails -->
+  <style>
+    :root{--bg:#0b0f14;--panel:#101820;--muted:#9fb1c5;--text:#e6eef7;--accent:#5aa9ff;--accent2:#7af7c2;--danger:#ff4d4d;--border:#1a2630;--radius:16px;--pad:18px}
+    *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,Segoe UI,Inter,Arial}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header.nav{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    header.nav .brand{display:flex;gap:10px;align-items:center;font-weight:700}
+    header.nav .brand img{height:28px;width:auto}
+    nav{display:flex;gap:14px;flex-wrap:wrap} nav a{color:var(--muted)}
+    nav a.cta{background:var(--accent2);color:#001423;padding:8px 14px;border-radius:999px;white-space:nowrap}
+    .hero{padding:56px 0} h1{margin:0 0 10px}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:var(--pad)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:12px 18px;border:1px solid transparent}
+    .btn-primary{background:var(--accent);color:#07131f}
+    .btn-secondary{background:transparent;color:var(--text);border:1px solid #2b3b50}
+    .btn-danger{background:var(--danger);color:#2b0000;border:1px solid #ff6a6a}
+    .cred{margin:0 0 10px;color:#bcd2eb;font-weight:600;letter-spacing:.2px}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#12263a;border:1px solid #1f3d5c;border-radius:999px;padding:6px 10px;color:#cce6ff;font-size:13px;font-weight:600}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px} .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    @media(max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}}
+    @media(max-width:640px){header.nav .brand{flex:1 0 100%;margin-bottom:8px} header.nav nav{width:100%;gap:10px 12px} .hero{padding-top:56px}}
+  </style>
+
+  <!-- Primary CSS link -->
+  <link id="sitecss" rel="stylesheet" href="/assets/site.css?v=6">
+
+  <!-- iOS fallback: try alternate paths if CSS didn't apply -->
+  <script>
+    (function(){
+      function cssApplied(){
+        try{ return getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()==='#0b0f14'; }catch(e){ return false; }
+      }
+      function swap(h){ var l=document.getElementById('sitecss'); if(l) l.href=h; }
+
+      window.addEventListener('load',function(){
+        if(cssApplied()) return;
+        swap('assets/site.css?v=6');
+        setTimeout(function(){ if(!cssApplied()) swap('./assets/site.css?v=6'); },150);
+      });
+    })();
+  </script>
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Treeline","url":"https://treelineproxy.io/","logo":"https://treelineproxy.io/assets/logo.png","sameAs":["https://www.linkedin.com/company/treelineproxy"]}
+  </script>
+</head>
+
+  <body>
+
+    <!-- MOBILE-SAFE HEADER -->
+
+    <header class="nav wrap">
+    <a class="brand" href="/">
+      <img src="/assets/logo.png" alt="" onerror="this.style.display='none'"><span>Treeline</span>
+    </a>
+    <nav>
+      <a href="/workshop/">Workshop</a>
+      <a href="/scanner/">Scanner</a>
+      <a href="/policy-packs/">Policy&nbsp;Packs</a>
+      <a href="/resources/">Resources</a>
+      <a href="/about/">About</a>
+      <a id="cta-open-consults" class="cta" href="/48hour/">48-Hour&nbsp;Sprint</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="cred">Enterprise AI security &amp; FinOps expertise</p>
+      <h1>Runtime Guardrails for LLMs on AWS</h1>
+      <p class="sub">Find and fix prompt risks fast. Ship deployable guardrails that fit AWS patterns—without vendor lock-in.</p>
+      <div class="kpis">
+        <div class="kpi">⬇︎ 87% jailbreaks (2 wks)</div>
+        <div class="kpi">⬇︎ 94% PII exposure (10 days)</div>
+        <div class="kpi">↗︎ OTel traces → SIEM</div>
+      </div>
+      <p class="cta-row">
+        <a class="btn btn-primary" href="/48hour/" id="cta-open-consults">See scope &amp; deliverables</a>
+        <a class="btn btn-secondary" href="/workshop/">Book workshop</a>
+        <a class="btn btn-ghost" href="/scanner/">Request demo</a>
+      </p>
+    </section>
+
+    <section class="grid-3">
+      <div class="card">
+        <h3>48-Hour Sprint</h3>
+        <p>Urgent engagement to assess risks, ship controls, and wire telemetry in your AWS path.</p>
+        <p><a class="btn btn-secondary" href="/48hour/">See scope &amp; deliverables</a></p>
+      </div>
+      <div class="card">
+        <h3>Guardrails Workshop</h3>
+        <p>Hands-on session to map risks, build policy packs, and deploy controls without lock-in.</p>
+        <p><a class="btn btn-secondary" href="/workshop/">Book workshop</a></p>
+      </div>
+      <div class="card">
+        <h3>Prompt Risk Scanner</h3>
+        <p>CLI/API/CI scanner for jailbreaks, PII/PHI, exfil, and unsafe tool calls.</p>
+        <p><a class="btn btn-secondary" href="/scanner/">Request demo</a></p>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h3>Policy Pack — Example</h3>
+<pre class="code"><code># /assets/packs/baseline.yaml
+rules:
+  - id: pii_email
+    match: regex
+    pattern: "(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b"
+    action: redact
+  - id: jailbreak_semantic
+    match: semantic
+    embedding_index: ./indices/jailbreak.bin
+    threshold: 0.82
+    action: block
+</code></pre>
+        <p><a class="btn btn-secondary" href="/policy-packs/">See all packs</a></p>
+      </div>
+      <aside class="card">
+        <h3>Help Now (hard down?)</h3>
+        <div class="alert">
+          <p><strong>Hard down, production at risk?</strong></p>
+          <p class="cta-row">
+            <a id="cta-helpnow-pay" class="btn btn-danger" rel="noopener"
+              href="https://buy.stripe.com/REPLACE_WITH_STRIPE_LINK?client_reference_id=">Need Help Now — $5</a>
+            <a class="btn btn-secondary" href="/help-now/">How it works</a>
+          </p>
+          <p class="micro">First 15 min included; no surprises.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card">
+      <h2>Lead capture</h2>
+      <form action="https://formspree.io/f/REPLACE_FORM_ID" method="POST" class="lead-form" aria-labelledby="leadform-title">
+        <h3 id="leadform-title" class="visually-hidden">Request intro</h3>
+        <label class="visually-hidden" for="lead-email">Work email</label>
+        <input id="lead-email" type="email" name="email" placeholder="work@email.com" required aria-required="true" />
+        <label class="visually-hidden" for="lead-company">Company</label>
+        <input id="lead-company" type="text" name="company" placeholder="Company (optional)" />
+        <label class="visually-hidden" for="lead-note">Note</label>
+        <textarea id="lead-note" name="note" placeholder="What are you solving? (optional)"></textarea>
+        <input type="text" name="_tlf_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+        <button type="submit" id="cta-lead-submit" class="btn btn-primary">Request intro</button>
+        <p class="form-success micro" hidden>Thanks — we’ll reply within 1 business day.</p>
+      </form>
+    </section>
+
+    <section class="logo-row">
+      <img src="/assets/aws-logo.svg" alt="AWS" />
+      <img src="/assets/bedrock-logo.svg" alt="Bedrock" />
+      <img src="/assets/opentelemetry-logo.svg" alt="OpenTelemetry" />
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p class="micro">Independent work. Not affiliated with or endorsed by AWS.</p>
+    <p class="micro"><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · <a href="/resources/">Resources</a></p>
+  </footer>
+
+  <!-- Analytics + goals -->
+  <script defer data-domain="treelineproxy.io" src="https://plausible.io/js/script.js"></script>
+  <script>
+    (function(){
+      const goals={'cta-open-consults':'CTA: Open Consults','cta-helpnow-pay':'CTA: HelpNow Pay','cta-lead-submit':'Lead Form Submit'};
+      for(const [id,evt] of Object.entries(goals)){ const el=document.getElementById(id); if(el) el.addEventListener('click',()=>window.plausible&&plausible(evt)); }
+      document.querySelectorAll('.lead-form').forEach(f=>f.addEventListener('submit',()=>setTimeout(()=>{f.querySelector('.form-success').hidden=false},400)));
+    })();
+  </script>
+</body>
+</html>
