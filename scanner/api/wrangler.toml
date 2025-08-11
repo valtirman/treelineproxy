@@ -1,0 +1,5 @@
+name = "treeline-scan-api"
+main = "scanner/api/worker-cloudflare.js"
+compatibility_date = "2025-08-11"
+# Later, when DNS is on Cloudflare, you can attach a route:
+# routes = [{ pattern = "treelineproxy.io/scanner/api/*", zone_name = "treelineproxy.io" }]
