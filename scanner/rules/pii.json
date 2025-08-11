@@ -1,0 +1,9 @@
+{
+  "version": "2025-08-11",
+  "rules": [
+    { "id":"pii.email", "pattern":"[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}", "flags":"i", "severity":"med", "message":"Email address detected.", "fix":"Mask or remove emails." },
+    { "id":"pii.phone", "pattern":"\\b(?:\\+?1[-.\\s]?)?(?:\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4})\\b", "severity":"low", "message":"Phone number detected.", "fix":"Mask or remove phone numbers." },
+    { "id":"pii.ssn", "pattern":"\\b(?!000|666)[0-8]\\d{2}-?(?!00)\\d{2}-?(?!0000)\\d{4}\\b", "severity":"high", "message":"SSN-like pattern.", "fix":"Remove and handle per policy." },
+    { "id":"pii.cc", "pattern":"\\b(?:\\d[ -]*?){13,19}\\b", "severity":"high", "message":"Credit card-like number.", "fix":"Remove; never include payment data." }
+  ]
+}
