@@ -1,0 +1,14 @@
+:root { --bg:#0b1220; --panel:#121b2e; --text:#dbe7ff; --muted:#96a3bf; --accent:#2dd4bf; }
+*{box-sizing:border-box}
+body.dark{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto}
+a{color:#8ab4ff;text-decoration:none} a:hover{text-decoration:underline}
+.tl-header{background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.06);position:sticky;top:0;backdrop-filter:saturate(150%) blur(6px);z-index:10}
+.tl-wrap{max-width:1120px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:20px}
+.tl-logo{font-weight:700} .tl-nav a{margin:0 10px;color:var(--text);opacity:.9}
+main.tl-wrap{padding:48px 20px}
+.btn{display:inline-block;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:transparent;color:var(--text)}
+.btn-primary{border-color:transparent;background:linear-gradient(90deg,#22c1c3,#2dd4bf);color:#0b1220;font-weight:600}
+.bullets{list-style:disc;margin-left:20px}
+.tl-center{min-height:70vh;display:grid;place-items:center;text-align:center;padding:40px}
+.tl-tip{position:fixed;transform:translate(-50%,-120%);background:#1b2438;color:#e8f0ff;padding:6px 10px;border-radius:8px;font-size:12px;opacity:0;transition:.15s}
+.tl-tip.show{opacity:1;transform:translate(-50%,-140%)}
