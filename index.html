@@ -233,13 +233,11 @@
       for (const r of rules){
         if (r.rx.test(t)){ s += r.w; hits.push(r.id); }
       }
-      // length/complexity heuristic (very long + many links/code = riskier)
       const urls = (t.match(/https?:\/\/\S+/g)||[]).length;
       const fences = (t.match(/```/g)||[]).length / 2;
       const lines = (t.split(/\n/).length);
       s += Math.min(3, Math.floor(urls*0.5 + fences + lines/80));
 
-      // normalize to label
       let label='Low', cls='good';
       if (s >= 7 && s < 11){ label='Medium'; cls='warn'; }
       if (s >= 11){ label='High'; cls='bad'; }
@@ -279,6 +277,25 @@
     });
   </script>
 
-  <noscript><div class="wrap mini">JavaScript is disabled. The mini-scanner requires JS, but the full Scanner and documentation links still work.</div></noscript>
+  <!-- CTA hardening: ensure correct targets at runtime -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const map = [
+        { sel: 'a.btn.btn-primary[href*="scanner"]', href: '/scanner/' }, // hero primary
+        { sel: 'a.btn[href*="workshop"]', href: '/workshop/' },           // hero/workshop
+        { sel: 'a.btn[href*="sidecar"]', href: '/sidecar/' },             // sidecar card
+        { sel: 'a.btn[href*="platform"]', href: '/platform/' },           // platform card
+        { sel: 'a.btn[href*="scanner/#gallery"]', href: '/scanner/#gallery' } // gallery link
+      ];
+      map.forEach(({sel, href}) => {
+        document.querySelectorAll(sel).forEach(a => { a.setAttribute('href', href); });
+      });
+
+      // Make sure "Open Advanced Scanner" buttons go to /scanner/
+      document.querySelectorAll('button[data-open="advanced-scanner"]').forEach(btn => {
+        btn.addEventListener('click', () => { window.location.href = '/scanner/'; });
+      });
+    });
+  </script>
 </body>
 </html>
