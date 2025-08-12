@@ -3,7 +3,7 @@
 */
 
 /* ------------------------------ Config ---------------------------------- */
-const RULES_VERSION = '2025-08-11-9'; // bump when rules change to bust CDN caches
+const RULES_VERSION = '2025-08-11-10'; // bump when rules change to bust CDN caches
 // Optional remote endpoints for deeper checks (set in index.html):
 // <script>window.__TREELINE_API__ = ['https://your-api/scan'];</script>
 const API_ENDPOINTS = Array.isArray(window.__TREELINE_API__) ? window.__TREELINE_API__ : [];
