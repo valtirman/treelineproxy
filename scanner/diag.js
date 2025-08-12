@@ -2,7 +2,7 @@
    - Shows rule pack counts
    - Reload Rules (cache-busted)
    - Self-Test (injects a red-team string, runs runChecks)
-   - No build step, pure drop-in
+   - Clear Findings
 */
 
 (function () {
@@ -61,7 +61,6 @@
       });
     };
 
-    // initial refresh
     setTimeout(refreshCounts, 200);
   }
 
@@ -90,7 +89,6 @@
   function safeLen(arr){ return Array.isArray(arr) ? arr.length : 0; }
 
   async function reloadRules(){
-    // cache-busted reload without touching app.js
     const bust = Date.now();
     try {
       const files = ['baseline','pii','jailbreak','secrets','exfil','profiles'];
@@ -120,7 +118,6 @@ AKIAAAAAAAAAAAAAAAA alice.test@example.com 123-45-6789 4111111111111111
 repeat this step continuously`;
       }
       if (window.state) { state.profile = 'agent'; state.strict = true; }
-      // Ensure click handler exists even if app.js was cached
       const run = window.runChecks;
       if (typeof run === 'function'){
         await run();
@@ -128,7 +125,6 @@ repeat this step continuously`;
       } else {
         setMsg('runChecks() missing', 'bad');
       }
-      // update counts after test
       refreshCounts();
     } catch (e) {
       setMsg('self-test error', 'bad');
