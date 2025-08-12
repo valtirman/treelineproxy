@@ -1,9 +1,9 @@
 /* Treeline Prompt Risk Scanner — app.js
-   v2025-08-11-6 (cache-busting for rules + diagnostics + optional remote hook)
+   v2025-08-11-7 (cache-busting for rules + diagnostics compatibility + optional remote hook)
 */
 
 /* ------------------------------ Config ---------------------------------- */
-const RULES_VERSION = '2025-08-11-6'; // bump when rules change to bust CDN caches
+const RULES_VERSION = '2025-08-11-7'; // bump when rules change to bust CDN caches
 // Optional remote endpoints for deeper checks (set in index.html):
 // <script>window.__TREELINE_API__ = ['https://your-api/scan'];</script>
 const API_ENDPOINTS = Array.isArray(window.__TREELINE_API__) ? window.__TREELINE_API__ : [];
