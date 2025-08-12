@@ -1,9 +1,9 @@
 /* Treeline Prompt Risk Scanner — app.js
-   v2025-08-11-7 (cache-busting for rules + diagnostics compatibility + optional remote hook)
+   v2025-08-11-8 (cache-busting + diagnostics compatibility + optional remote hook)
 */
 
 /* ------------------------------ Config ---------------------------------- */
-const RULES_VERSION = '2025-08-11-7'; // bump when rules change to bust CDN caches
+const RULES_VERSION = '2025-08-11-8'; // bump when rules change to bust CDN caches
 // Optional remote endpoints for deeper checks (set in index.html):
 // <script>window.__TREELINE_API__ = ['https://your-api/scan'];</script>
 const API_ENDPOINTS = Array.isArray(window.__TREELINE_API__) ? window.__TREELINE_API__ : [];
@@ -31,7 +31,15 @@ async function init(){
   bind();
   try {
     await loadPacks();
-    statusBanner(`packs loaded — baseline=${(state.packs?.baseline?.injection||[]).length}, jailbreak=${(state.packs?.jailbreak?.rules||[]).length}, exfil=${(state.packs?.exfil?.rules||[]).length}, secrets=${(state.packs?.secrets?.rules||[]).length}, pii=${(state.packs?.pii?.rules||[]).length} • remote=${API_ENDPOINTS.length}`, 'ok');
+    statusBanner(
+      'packs loaded — ' +
+      'baseline=' + (state.packs?.baseline?.injection||[]).length + ', ' +
+      'jailbreak=' + (state.packs?.jailbreak?.rules||[]).length + ', ' +
+      'exfil=' + (state.packs?.exfil?.rules||[]).length + ', ' +
+      'secrets=' + (state.packs?.secrets?.rules||[]).length + ', ' +
+      'pii=' + (state.packs?.pii?.rules||[]).length + ' • remote=' + API_ENDPOINTS.length,
+      'ok'
+    );
   } catch (e) {
     console.warn('Rule loading error:', e);
     statusBanner('rules failed to load — using minimal fallbacks', 'warn');
@@ -82,12 +90,13 @@ async function loadPacks(){
 
 function sanityCheckPack(name, pack){
   if (name === 'baseline' && !Array.isArray(pack?.injection)) throw new Error('baseline.json missing "injection" array');
-  if (['pii','jailbreak','secrets','exfil'].includes(name) && !Array.isArray(pack?.rules)) throw new Error(`${name}.json missing "rules" array`);
+  if (['pii','jailbreak','secrets','exfil'].includes(name) && !Array.isArray(pack?.rules)) throw new Error(name + '.json missing "rules" array');
   if (name === 'profiles' && typeof pack?.chatbot !== 'object') throw new Error('profiles.json missing profiles');
 }
 
 async function loadSamples(){
   const list = await fetchJSON('./assets/samples.json');
+  if (!els.sampleList) return;
   els.sampleList.innerHTML = '';
   for (const s of list){
     const li = document.createElement('li');
@@ -100,38 +109,39 @@ async function loadSamples(){
   }
 }
 function pickRandomSample(){
-  const items = [...(els.sampleList?.querySelectorAll('button')||[])];
+  const items = Array.from(els.sampleList?.querySelectorAll('button')||[]);
   if (items.length) items[Math.floor(Math.random()*items.length)].click();
 }
 
 async function fetchJSON(path){
-  const url = `${path}?v=${encodeURIComponent(RULES_VERSION)}`;
+  const url = path + '?v=' + encodeURIComponent(RULES_VERSION);
   const res = await fetch(url, { cache:'no-cache' });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${path}`);
+  if (!res.ok) throw new Error('HTTP ' + res.status + ' for ' + path);
   return res.json();
 }
 
 /* ---------------------------- UI Helpers --------------------------------- */
-function statusBanner(msg, kind='ok'){
+function statusBanner(msg, kind){
   const el = document.createElement('div');
-  el.style.cssText = `position:sticky;top:0;z-index:9999;padding:6px 10px;background:#111827;color:#fff;border-left:4px solid ${kind==='ok'?'#10b981':'#f59e0b'};font:12px/1.3 system-ui`;
+  const color = kind === 'ok' ? '#10b981' : '#f59e0b';
+  el.style.cssText = 'position:sticky;top:0;z-index:9999;padding:6px 10px;background:#111827;color:#fff;border-left:4px solid ' + color + ';font:12px/1.3 system-ui';
   el.textContent = msg;
   document.body.prepend(el);
 }
 function byId(id){ return document.getElementById(id); }
-function escapeHTML(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); }
-function snippet(s){ return s.length > 240 ? s.slice(0,240)+'…' : s; }
+function escapeHTML(s){ return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]); }); }
+function snippet(s){ s = String(s); return s.length > 240 ? s.slice(0,240) + '…' : s; }
 
 /* --------------------------- Editor Metrics ------------------------------ */
 function handleCounts(){
   const t = els.text?.value || '';
   state.text = t;
-  els.charCount && (els.charCount.textContent = String(t.length));
+  if (els.charCount) els.charCount.textContent = String(t.length);
   const tok = estimateTokens(t);
-  els.tokCount && (els.tokCount.textContent = String(tok));
-  els.costRisk && (els.costRisk.textContent = tok > 2000 ? 'High' : tok > 800 ? 'Medium' : 'Low');
+  if (els.tokCount) els.tokCount.textContent = String(tok);
+  if (els.costRisk) els.costRisk.textContent = tok > 2000 ? 'High' : (tok > 800 ? 'Medium' : 'Low');
 }
-function estimateTokens(s){ return s ? Math.ceil(s.length / 4) : 0; }
+function estimateTokens(s){ return s ? Math.ceil(String(s).length / 4) : 0; }
 
 /* ---------------------------- Scoring UI --------------------------------- */
 function renderScores(){
@@ -145,21 +155,21 @@ function renderScores(){
   ];
   if (!els.scoreGrid) return;
   els.scoreGrid.innerHTML = '';
-  for (const [key,label] of cats){
+  for (const c of cats){
+    const key = c[0], label = c[1];
     const div = document.createElement('div');
     div.className = 'score';
-    div.innerHTML = `
-      <h3>${label} <span id="score-${key}">0</span>/100</h3>
-      <div class="gauge"><div id="bar-${key}" class="bar"></div></div>
-    `;
+    div.innerHTML =
+      '<h3>' + label + ' <span id="score-' + key + '">0</span>/100</h3>' +
+      '<div class="gauge"><div id="bar-' + key + '" class="bar"></div></div>';
     els.scoreGrid.appendChild(div);
   }
 }
 function setScore(cat, val){
   const n = Math.max(0, Math.min(100, Math.round(val)));
-  const sp = byId(`score-${cat}`); const bar = byId(`bar-${cat}`);
+  const sp = byId('score-' + cat); const bar = byId('bar-' + cat);
   if (sp) sp.textContent = String(n);
-  if (bar) bar.style.width = `${n}%`;
+  if (bar) bar.style.width = n + '%';
 }
 
 /* ----------------------------- Findings ---------------------------------- */
@@ -168,16 +178,29 @@ function resetResults(){
   if (els.findings) els.findings.innerHTML = '';
   renderScores();
 }
-function addFinding({category, severity, ruleId, message, match, fix}){
+
+// (SAFE VERSION) — no nested template literals
+function addFinding(args){
   if (!els.findings) return;
+  const category = args.category, severity = args.severity, ruleId = args.ruleId;
+  const message = args.message || '(no message)';
+  const match = args.match, fix = args.fix;
+
+  const catHTML  = '<span class="cat">' + escapeHTML(category) + '</span>';
+  const sevHTML  = '<span class="sev ' + escapeHTML(severity) + '">' + String(severity||'').toUpperCase() + '</span>';
+  const msgHTML  = '<strong>' + escapeHTML(message) + '</strong>';
+  const fixHTML  = fix ? ' — <span class="muted">' + escapeHTML(fix) + '</span>' : '';
+  const matchHTML= match ? '<div class="code">' + escapeHTML(snippet(match)) + '</div>' : '';
+  const ruleHTML = '<div class="muted">Rule: <code>' + escapeHTML(ruleId || 'n/a') + '</code></div>';
+
   const div = document.createElement('div');
   div.className = 'finding';
-  div.innerHTML = `
-    <div><span class="cat">${category}</span> <span class="sev ${severity}">${severity.toUpperCase()}</span></div>
-    <div><strong>${message || '(no message)'} </strong>${fix ? ` — <span class="muted">${fix}</span>` : ''}</div>
-    ${match ? `<div class="code">${escapeHTML(snippet(match))}</div>` : ''}
-    <div class="muted">Rule: <code>${ruleId||'n/a'}</code></div>
-  `;
+  div.innerHTML =
+    '<div>' + catHTML + ' ' + sevHTML + '</div>' +
+    '<div>' + msgHTML + fixHTML + '</div>' +
+    matchHTML +
+    ruleHTML;
+
   els.findings.appendChild(div);
 }
 
@@ -191,20 +214,22 @@ function weightFor(cat){
 function applyRules(rules, category, text){
   let score = 0;
   if (!Array.isArray(rules)) return 0;
-  for (const r of rules){
+  for (let i=0; i<rules.length; i++){
+    const r = rules[i];
     try {
       const re = new RegExp(r.pattern, r.flags || 'i');
-      const m = text.match(re);
+      const m = String(text).match(re);
       if (m){
         const sev = r.severity || 'med';
-        const bump = sev === 'high' ? 30 : sev === 'med' ? 15 : 7;
+        const bump = sev === 'high' ? 30 : (sev === 'med' ? 15 : 7);
         score += bump;
         addFinding({
-          category, severity: sev, ruleId: r.id, message: r.message, match: m[0], fix: r.fix
+          category: category, severity: sev, ruleId: r.id,
+          message: r.message, match: m[0], fix: r.fix
         });
       }
     } catch (e) {
-      console.warn(`Bad rule ${category}:${r?.id}`, e);
+      console.warn('Bad rule ' + category + ':' + (r && r.id), e);
     }
   }
   return score;
@@ -241,16 +266,19 @@ async function runChecks(){
     sInjection *= 1.15; sJail *= 1.15; sExfil *= 1.10; sSecrets *= 1.10; sPII *= 1.05; sDoS *= 1.05;
   }
   // Profile weights
-  const W = (k,v)=> v * weightFor(k);
+  function W(k,v){ return v * weightFor(k); }
   sInjection = W('injection', sInjection);
-  sJail = W('jailbreak', sJail);
-  sExfil = W('exfil', sExfil);
-  sSecrets = W('secrets', sSecrets);
-  sPII = W('pii', sPII);
-  sDoS = W('dos', sDoS);
+  sJail      = W('jailbreak', sJail);
+  sExfil     = W('exfil', sExfil);
+  sSecrets   = W('secrets', sSecrets);
+  sPII       = W('pii', sPII);
+  sDoS       = W('dos', sDoS);
 
-  state.scores = clampScores({ injection:sInjection, jailbreak:sJail, exfil:sExfil, secrets:sSecrets, pii:sPII, dos:sDoS });
-  for (const k of Object.keys(state.scores)) setScore(k, state.scores[k]);
+  state.scores = clampScores({
+    injection:sInjection, jailbreak:sJail, exfil:sExfil,
+    secrets:sSecrets, pii:sPII, dos:sDoS
+  });
+  for (const k in state.scores) setScore(k, state.scores[k]);
 
   // Optional remote scan (only if endpoints configured)
   if (API_ENDPOINTS.length){
@@ -261,13 +289,14 @@ async function runChecks(){
 
 function clampScores(obj){
   const out = {};
-  for (const k of Object.keys(obj)) out[k] = Math.max(0, Math.min(100, Math.round(obj[k])));
+  for (const k in obj) out[k] = Math.max(0, Math.min(100, Math.round(obj[k])));
   return out;
 }
 
 /* ------------------------- Remote (optional) ----------------------------- */
 async function callRemoteScan(text, profile){
-  for (const url of API_ENDPOINTS){
+  for (let i=0;i<API_ENDPOINTS.length;i++){
+    const url = API_ENDPOINTS[i];
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -316,25 +345,25 @@ function exportReport(){
       token_estimate: estimateTokens(state.text)
     },
     scores: state.scores,
-    findings: [...document.querySelectorAll('.finding')].map((el) => el.innerText),
+    findings: Array.from(document.querySelectorAll('.finding')).map(function(el){ return el.innerText; }),
     text: state.text
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-  download(blob, `treeline-scan-${now.replace(/[:.]/g,'-')}.json`);
+  download(blob, 'treeline-scan-' + now.replace(/[:.]/g,'-') + '.json');
 }
 
 function download(blob, filename){
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url; a.download = filename; a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
 }
 
 /* ------------------------ Minimal Fallbacks ------------------------------ */
 function applyMinimalFallbacks(){
   state.packs = state.packs || {};
   if (!state.packs.baseline) state.packs.baseline = { injection: [
-    { id:"inj.ignore.previous", pattern:"\\b(ignore|disregard) (all|previous|above) (instructions|rules)\\b", severity:"high", message:"Attempts to override prior instructions.", fix:"Remove instruction override phrasing." }
+    { id:'inj.ignore.previous', pattern:'\\b(ignore|disregard) (all|previous|above) (instructions|rules)\\b', severity:'high', message:'Attempts to override prior instructions.', fix:'Remove instruction override phrasing.' }
   ]};
   if (!state.packs.jailbreak) state.packs.jailbreak = { rules: [] };
   if (!state.packs.exfil) state.packs.exfil = { rules: [] };
