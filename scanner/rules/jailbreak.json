@@ -1,8 +1,37 @@
 {
-  "version": "2025-08-11",
+  "version": "2025-08-12",
   "rules": [
-    { "id":"jb.dan", "pattern":"\\bDAN  ?\\d*\\b|Do Anything Now", "severity":"high", "message":"Classic DAN jailbreak token.", "fix":"Reject legacy jailbreak templates." },
-    { "id":"jb.system.fusion", "pattern":"\\bfuse (system|developer) and user prompts\\b", "severity":"med", "message":"System/user context fusion attempt.", "fix":"Separate contexts; reject fusion." },
-    { "id":"jb.translation.escape", "pattern":"\\b(as|act) a translator.*verbatim.*unsafe|repeat back the instructions exactly", "severity":"med", "message":"Translation echo to smuggle instructions.", "fix":"Strip echo-back requests." }
+    {
+      "id": "jb.dan",
+      "pattern": "\\b(?:DAN(?:\\s*\\d+(?:\\.\\d+)*)?|Do\\s+Anything\\s+Now)\\b",
+      "flags": "i",
+      "severity": "high",
+      "message": "Classic DAN jailbreak token.",
+      "fix": "Reject legacy jailbreak templates."
+    },
+    {
+      "id": "jb.role.disinhibition",
+      "pattern": "\\b(?:unfiltered|uncensored|no\\s+(?:limits|restrictions)|ignore\\s+safety|bypass\\s+(?:guardrails|filters))\\b",
+      "flags": "i",
+      "severity": "high",
+      "message": "Explicit request to disable safety systems.",
+      "fix": "Refuse to disable safety; follow policy."
+    },
+    {
+      "id": "jb.system.fusion",
+      "pattern": "\\bfuse\\s+(?:system|developer)\\s+and\\s+user\\s+prompts\\b",
+      "flags": "i",
+      "severity": "med",
+      "message": "System/user context fusion attempt.",
+      "fix": "Keep contexts separated."
+    },
+    {
+      "id": "jb.translation.echo",
+      "pattern": "\\b(?:as|act)\\s+a\\s+translator\\b.*\\bverbatim\\b",
+      "flags": "is",
+      "severity": "med",
+      "message": "Translation-echo trick to smuggle instructions.",
+      "fix": "Strip echo-back requests or summarize safely."
+    }
   ]
 }
