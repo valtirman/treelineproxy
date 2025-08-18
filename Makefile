@@ -1,3 +1,5 @@
+RECIPEPREFIX := >
+
 .RECIPEPREFIX := >
 # Add OPA ports so we kill them too
 PORTS=15000 19901 8080 8081 9090 8181 9191
@@ -46,3 +48,25 @@ test:
 logs:
 > docker logs $$(docker ps --format '{{.Names}}' | grep -m1 envoy) --tail=200 2>/dev/null || true
 > docker logs $$(docker ps --format '{{.Names}}' | grep -m1 mitm) --tail=200 2>/dev/null || true
+.PHONY: health soak chaos
+
+health:
+> docker ps --format 'table {{.Names}}\t{{.Status}}' | grep -E 'envoy|mitm' || true
+> echo "READY: $$(curl -s http://localhost:19901/ready)"
+> echo -n "UPSTREAM HEALTHY: "
+> curl -s "http://localhost:19901/stats?format=prometheus" | \
+>   awk -F' ' '/^envoy_cluster_membership_healthy\{[^}]*envoy_cluster_name="mitm"[^}]*\} /{print $$2; exit}'
+
+soak:
+> for i in $$(seq 1 60); do \
+>   curl -k -s -o /dev/null -w '%{http_code}\n' -x http://localhost:15000 https://example.com/ || true; \
+>   sleep 1; \
+> done
+
+chaos:
+> docker rm -f treelineproxy-v4-mitmproxy-1 || true
+> sleep 12
+> docker ps --format 'table {{.Names}}\t{{.Status}}' | grep envoy || true
+> docker compose up -d mitmproxy
+> sleep 8
+> $$(MAKE) health
