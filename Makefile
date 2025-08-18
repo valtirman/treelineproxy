@@ -70,3 +70,9 @@ chaos:
 > docker compose up -d mitmproxy
 > sleep 8
 > $$(MAKE) health
+.PHONY: health
+
+health:
+> @docker ps --format 'table {{.Names}}\t{{.Status}}' | grep -E 'envoy|mitm' || true
+> @echo "READY: $$(curl -s http://localhost:19901/ready)"
+> @echo "UPSTREAM HEALTHY: $$(curl -s 'http://localhost:19901/stats?format=prometheus' | awk -F' ' '/^envoy_cluster_membership_healthy\{[^}]*envoy_cluster_name="mitm"[^}]*\} /{print $$2; exit}')"

@@ -1,0 +1,39 @@
+networks:
+  treeline:
+    driver: bridge
+
+services:
+  mitmproxy:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.mitm
+    image: treeline/mitm:4.1.3
+    environment:
+      - RULES_FILE=/addons/rules.json
+      - RELOAD_SECONDS=5
+      - METRICS_PORT=9090
+    ports:
+      - "8081:8081"   # web UI (dev)
+      - "9090:9090"   # metrics/health
+    volumes:
+      - ./mitm/addons:/addons:ro
+    networks: [treeline]
+    restart: unless-stopped
+    stop_grace_period: 15s
+
+  envoy:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.envoy
+    image: treeline/envoy:4.1.4
+    ports:
+      - "15000:15000" # proxy
+      - "19901:19901" # admin/ready
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+    depends_on:
+      mitmproxy:
+        condition: service_healthy
+    networks: [treeline]
+    restart: unless-stopped
+    stop_grace_period: 15s
