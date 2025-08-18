@@ -1,0 +1,10 @@
+FROM envoyproxy/envoy:v1.29.7
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends curl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+COPY envoy/envoy.yaml /etc/envoy/envoy.yaml
+COPY docker/envoy-health.sh /usr/local/bin/envoy-health.sh
+EXPOSE 15000 19901
+HEALTHCHECK --interval=10s --timeout=2s --start-period=20s --retries=3 \
+  CMD /usr/local/bin/envoy-health.sh
+CMD ["-c","/etc/envoy/envoy.yaml","--service-cluster","treeline-gateway"]
