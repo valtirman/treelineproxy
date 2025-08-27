@@ -1,0 +1,5 @@
+global: {}
+scrape_configs:
+  - job_name: 'treeline'
+    static_configs:
+      - targets: ['host.docker.internal:9096']
