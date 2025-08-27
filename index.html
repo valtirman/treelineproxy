@@ -20,6 +20,8 @@
       </a>
       <nav class="nav__links">
         <a href="/sidecar/">Sidecar</a>
+        <a href="/scanner/">Scanner</a>
+        <a href="/builder/">Prompt&nbsp;Builder</a>
         <a href="/resources/sidecar/">Docs</a>
         <a href="/downloads/compose.quickstart.yml">Download</a>
         <a href="https://github.com/valtirman/treelineproxy" rel="noopener" target="_blank">GitHub</a>
@@ -37,7 +39,8 @@
       </div>
     </section>
 
-    <section class="grid two">
+    <!-- Tools entry-points -->
+    <section class="grid two tools">
       <article class="card">
         <div class="card__header">
           <h2>Prompt Scanner</h2>
@@ -48,6 +51,7 @@
           <div class="actions">
             <button id="scan-btn" class="btn btn--primary">Scan</button>
             <button id="redact-btn" class="btn">Redact</button>
+            <a class="btn btn--ghost" href="/scanner/">Open full scanner</a>
           </div>
           <div id="scan-results" class="results"></div>
           <div class="copyrow">
@@ -87,6 +91,7 @@
           <div class="actions">
             <button id="build-btn" class="btn btn--primary">Build Prompt</button>
             <button id="copy-built" class="btn btn--ghost">Copy</button>
+            <a class="btn btn--ghost" href="/builder/">Open builder page</a>
           </div>
           <textarea id="built-output" class="output" rows="10" placeholder="Your generated prompt will appear here…" readonly></textarea>
         </div>
