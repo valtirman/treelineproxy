@@ -1,0 +1,27 @@
+
+policies:
+  - id: auth-bearer
+    when: { header: { name: Authorization, contains: "Bearer " } }
+    action: block
+  - id: openai-key
+    when:
+      any:
+        - header: { value_regex: "(sk-[A-Za-z0-9]{20,})" }
+        - body_regex: "(sk-[A-Za-z0-9]{20,})"
+    action: block
+  - id: multiple
+    when:
+      body_regex_group:
+        - { name: email, pattern: "(?i)([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})" }
+        - { name: ssn,   pattern: "(\b\d{3}-\d{2}-\d{4}\b)" }
+        - { name: cc,    pattern: "(\b(?:\d[ -]*?){13,19}\b)" }
+    action: redact
+  - id: jwt
+    when:
+      any:
+        - header_regex: "eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}"
+        - body_regex: "eyJ[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}\.[a-zA-Z0-9_-]{10,}"
+    action: redact
+  - id: duplicate
+    when: { duplicate_window_seconds: 60 }
+    action: audit

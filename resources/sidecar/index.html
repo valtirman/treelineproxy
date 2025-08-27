@@ -1,166 +1,63 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <title>Treeline Sidecar — Get Started</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Drop-in HTTP(S)/TLS MITM sidecar for AI/API egress. Enforce policy (allow/redact/block), emit telemetry (JSONL, Prometheus). Fail-closed by default; decision headers off.">
-  <link rel="canonical" href="https://treelineproxy.io/resources/sidecar/">
-  <meta property="og:title" content="Treeline Sidecar — Get Started">
-  <meta property="og:description" content="Runtime guardrails for LLM traffic with copy-paste deploy recipes.">
-  <link rel="stylesheet" href="/assets/site.css"/>
-  <style>
-    .wrap{max-width:1100px;margin:0 auto;padding:22px}
-    pre{background:#0b0d12;border:1px solid #222a39;border-radius:12px;padding:12px;overflow:auto;position:relative}
-    code,kbd{font-family:ui-monospace, SFMono-Regular, Menlo, monospace;font-size:13px}
-    .toc a{display:block;margin:4px 0;color:#76e4f7}
-    .pill{display:inline-block;border:1px solid #222a39;border-radius:999px;padding:2px 8px;color:#a7b0bd;font-size:12px}
-    .note{color:#a7b0bd;font-size:13px;margin:8px 0 0}
-    .copybtn{position:absolute;right:10px;top:6px;padding:4px 8px;font:12px system-ui;border:1px solid #222a39;background:#121723;border-radius:8px;color:#e8ecf1;cursor:pointer}
-  </style>
-</head>
+
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sidecar Docs — Treeline Proxy</title><link rel="stylesheet" href="/assets/site.css"><script defer src="/assets/app.js"></script></head>
 <body>
-<header class="wrap"><a href="../../">← Treeline</a></header>
-<main class="wrap">
-  <h1>Treeline Sidecar</h1>
-  <p class="pill">Fail-closed by default · Decision headers OFF</p>
-
-  <nav class="toc">
-    <a href="#overview">Overview</a>
-    <a href="#quickstart">Quickstart (Docker Compose)</a>
-    <a href="#ecs">ECS/Fargate</a>
-    <a href="#k8s">Kubernetes (sidecar)</a>
-    <a href="#tls">TLS Interception & CA</a>
-    <a href="#config">Configuration</a>
-    <a href="#policy">Policy Pack (Baseline v1)</a>
-    <a href="#obs">Observability</a>
-    <a href="#debug">Decision Headers (Debug)</a>
-    <a href="#troubleshoot">Troubleshooting</a>
-    <a href="#release">Release Checklist</a>
-  </nav>
-
-  <h2 id="overview">Overview</h2>
-  <p>Drop-in HTTP(S)/TLS MITM for AI/API egress. Enforces policy (allow/redact/block), emits telemetry (JSONL, Prometheus). Zero app changes.</p>
-
-  <h2 id="quickstart">Quickstart (Docker Compose)</h2>
-  <pre><button class="copybtn">Copy</button><code>services:
-  sidecar:
-    image: ghcr.io/&lt;org&gt;/sidecar@sha256:&lt;PIN&gt;
-    ports: ["127.0.0.1:15050:15000","127.0.0.1:9096:9095","127.0.0.1:18080:8080"]
-    environment:
-      POLICY_DIR: /policies
-      LOG_PATH: /data/telemetry.jsonl
-      FAIL_MODE: closed
-      DECISION_HEADERS: "false"
-    volumes:
-      - ./policies:/policies:ro
-      - ./data:/data
-      - ./mitm:/home/mitmproxy
-    healthcheck:
-      test: ["CMD","curl","-fsS","http://localhost:8080/health"]
-      interval: 10s
-      timeout: 3s
-      retries: 10
-  policy_engine:
-    image: ghcr.io/&lt;org&gt;/policy-engine@sha256:&lt;PIN&gt;
-    environment: { POLICY_DIR: /policies }
-    volumes: [ "./policies:/policies:ro" ]</code></pre>
-
-  <p><strong>Smoke:</strong></p>
-  <pre><button class="copybtn">Copy</button><code>export PROXY=http://127.0.0.1:15050
-curl -i -x "$PROXY" -k https://httpbin.org/anything -H 'Authorization: Bearer x' -d hi -o /dev/null -w "%{http_code}\n"   # expect 403
-curl -s -x "$PROXY" -k https://postman-echo.com/post -H 'content-type: text/plain' \
-  --data 'email a@b.com SSN 123-45-6789 CC 4242 4242 4242 4242' | jq -r '.data'    # expect redactions</code></pre>
-
-  <h2 id="ecs">ECS/Fargate</h2>
-  <pre><button class="copybtn">Copy</button><code>[
-  {"name":"HTTP_PROXY","value":"http://127.0.0.1:15000"},
-  {"name":"HTTPS_PROXY","value":"http://127.0.0.1:15000"},
-  {"name":"NO_PROXY","value":"169.254.170.2,169.254.169.254,127.0.0.1,localhost"}
-]</code></pre>
-  <p class="note">Target group → Sidecar port. Health path <code>/health</code> (200 OK). Logs to CloudWatch; optional OTLP exporter to collector.</p>
-
-  <h2 id="k8s">Kubernetes (sidecar)</h2>
-  <pre><button class="copybtn">Copy</button><code>containers:
-- name: app
-  env:
-    - name: HTTP_PROXY
-      value: http://localhost:15000
-    - name: HTTPS_PROXY
-      value: http://localhost:15000
-    - name: NO_PROXY
-      value: 127.0.0.1,localhost,.svc,.cluster.local
-- name: treeline
-  image: ghcr.io/&lt;org&gt;/sidecar@sha256:&lt;PIN&gt;
-  env:
-    - name: POLICY_DIR
-      value: /policies
-    - name: FAIL_MODE
-      value: closed
-    - name: DECISION_HEADERS
-      value: "false"
-  ports: [{containerPort:15000,name:"proxy"}]</code></pre>
-
-  <h2 id="tls">TLS Interception & CA</h2>
-  <pre><button class="copybtn">Copy</button><code># Ubuntu/Debian
-sudo cp mitmproxy-ca-cert.pem /usr/local/share/ca-certificates/treeline.crt
-sudo update-ca-certificates</code></pre>
-
-  <h2 id="config">Configuration</h2>
-  <ul>
-    <li><code>POLICY_DIR</code>, <code>LOG_PATH</code>, <code>FAIL_MODE=closed</code></li>
-    <li><code>DECISION_HEADERS=false</code> (debug-only toggle)</li>
-    <li>Optional: token caps; <code>OTEL_EXPORTER_OTLP_ENDPOINT</code></li>
-  </ul>
-
-  <h2 id="policy">Policy Pack (Baseline v1) — excerpt</h2>
-  <pre><button class="copybtn">Copy</button><code>rules:
-- id: r107_aws_keys
-  match: regex
-  action: block
-  pattern: '(AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16})'
-- id: r103_email
-  match: regex
-  action: redact
-  pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}'
-  redact_with: '&lt;redacted:email&gt;'</code></pre>
-
-  <h2 id="obs">Observability</h2>
-  <pre><button class="copybtn">Copy</button><code>scrape_configs:
-- job_name: 'treeline-sidecar'
-  static_configs: [{ targets: ['sidecar:9095'] }]</code></pre>
-
-  <h2 id="debug">Decision Headers (Debug)</h2>
-  <p>Default OFF to avoid policy intel leakage. Use logs/metrics in prod.</p>
-
-  <h2 id="troubleshoot">Troubleshooting</h2>
-  <ul>
-    <li>Port in use → change host ports or stop conflicts</li>
-    <li>No body redaction → install CA</li>
-    <li>Headers “missing” → expected (debug OFF)</li>
-  </ul>
-
-  <h2 id="release">Release Checklist</h2>
-  <ul>
-    <li>Compose quickstart runs macOS/Linux/WSL</li>
-    <li>ECS task behind ALB; <code>/health</code> 200</li>
-    <li>Prometheus/Grafana visible</li>
-    <li>Baseline v1 + exceptions present</li>
-    <li>Docs pin GHCR digests</li>
-  </ul>
+<header class="nav"><a class="brand" href="/"><img src="/assets/treeline-mark.svg" width="28" height="28" alt="Treeline"> <span>Treeline Proxy</span></a>
+  <nav><a href="/sidecar/">Sidecar</a><a href="/downloads/compose.quickstart.yml">Download</a></nav></header>
+<main>
+<section class="hero"><h1>Sidecar Docs</h1><p>Quickstart, ports, headers, TLS, observability, production, troubleshooting.</p></section>
+<section class="section"><h2>Quickstart (3 commands)</h2>
+<div class="copy"><button data-copy>copy</button><pre>curl -fsSL https://treelineproxy.io/downloads/compose.quickstart.yml -o compose.yml
+docker compose -f compose.yml up -d
+curl -fsSL https://treelineproxy.io/downloads/smoke.sh -o smoke.sh && chmod +x smoke.sh && ./smoke.sh</pre></div>
+<p class="lead">Expect: LIVE on /ready, 403 on blocked, [REDACTED] in bodies, metrics at 127.0.0.1:9096/metrics.</p></section>
+<section class="section grid-2">
+  <div>
+    <h2>Ports & Health</h2>
+    <div class="card">
+      <ul>
+        <li>Proxy: <code>127.0.0.1:15050 → 15000</code></li>
+        <li>Metrics: <code>127.0.0.1:9096 → 9095</code></li>
+        <li>Health: <code>127.0.0.1:18080 → 8080</code> (<code>GET /ready</code>)</li>
+      </ul>
+      <div class="copy"><button data-copy>copy</button><pre>curl -fsS http://127.0.0.1:18080/ready</pre></div>
+    </div>
+    <h2>Decision headers</h2>
+    <div class="card">
+      <p>Default: <strong>OFF</strong> (prod-safe). Enable for local debug:</p>
+      <div class="copy"><button data-copy>copy</button><pre>TREELINE_DECISION_HEADERS=true docker compose -f compose.yml up -d</pre></div>
+      <p>When on: <code>X-Decision</code>, <code>X-Duplicate</code>, <code>X-Rulepack-Version</code>.</p>
+    </div>
+    <h2>TLS body inspection</h2>
+    <div class="card"><p>For HTTPS body redaction, trust the sidecar CA locally (dev only).</p><div class="copy"><button data-copy>copy</button><pre>ls ./mitm</pre></div></div>
+  </div>
+  <div>
+    <h2>Observability</h2>
+    <div class="card"><p>Add overlay:</p><div class="copy"><button data-copy>copy</button><pre>docker compose -f compose.yml -f https://treelineproxy.io/downloads/compose.observability.yml up -d</pre></div>
+    <ul><li>Grafana: <code>127.0.0.1:3030</code> (admin/admin)</li><li>Prom: <code>127.0.0.1:9091</code></li></ul></div>
+    <h2>Metrics</h2>
+    <div class="card"><ul><li><code>treeline_requests_total{decision}</code></li><li><code>treeline_decisions_total{action,rule}</code></li></ul>
+    <div class="copy"><button data-copy>copy</button><pre>curl -s http://127.0.0.1:9096/metrics | egrep 'treeline_requests_total|treeline_decisions_total' | sort</pre></div></div>
+  </div>
+</section>
+<section class="section"><h2>Baseline Policy (v1)</h2>
+<div class="card"><ul>
+<li>Block: <code>Authorization: Bearer …</code></li>
+<li>Block: OpenAI‑style keys (<code>sk-…</code>)</li>
+<li>Redact: emails, SSNs, credit cards, JWTs</li>
+<li>Audit: duplicate requests (60s)</li>
+</ul></div></section>
+<section class="section"><h2>Production notes</h2><div class="card"><ul>
+<li>Bind to localhost in dev; VPC/LB in prod.</li>
+<li>Keep headers OFF in prod; rely on metrics/logs.</li>
+<li>Ship policy as read‑only volume; tune by risk.</li>
+<li>Export telemetry to Prom/OTel/SIEM.</li>
+</ul></div></section>
+<section class="section"><h2>Troubleshooting</h2><div class="card"><ul>
+<li>Port in use → change host ports or stop the process.</li>
+<li>HTTPS body not redacted → trust sidecar CA locally.</li>
+<li>503 from proxy → check FAIL_MODE and health.</li>
+</ul></div></section>
 </main>
-
-<footer class="wrap">
-  <a href="../../">Home</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a>
-</footer>
-
-<script>
-document.querySelectorAll('pre').forEach(pre=>{
-  const btn=pre.querySelector('.copybtn'); if(!btn) return;
-  btn.addEventListener('click',()=>navigator.clipboard.writeText(pre.innerText)
-    .then(()=>{btn.textContent='Copied'; setTimeout(()=>btn.textContent='Copy',1000);}));
-});
-</script>
-</body>
-</html>
-
+<footer class="footer"><a href="/sidecar/">Sidecar</a> · <a href="/downloads/compose.quickstart.yml">Downloads</a></footer>
+</body></html>

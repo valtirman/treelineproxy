@@ -1,5 +1,7 @@
-global: {}
+
+global:
+  scrape_interval: 5s
 scrape_configs:
   - job_name: 'treeline'
     static_configs:
-      - targets: ['host.docker.internal:9096']
+      - targets: ['treeline-sidecar:9095']

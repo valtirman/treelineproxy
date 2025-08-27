@@ -1,6 +1,28 @@
-<!doctype html><meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=/resources/sidecar/">
-<link rel="canonical" href="/resources/sidecar/">
-<title>Redirecting…</title>
-<p>Redirecting to <a href="/resources/sidecar/">Treeline Sidecar docs</a>…</p>
-<script>location.replace("/resources/sidecar/");</script>
+
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sidecar — Treeline Proxy</title><link rel="stylesheet" href="/assets/site.css"><script defer src="/assets/app.js"></script></head>
+<body>
+<header class="nav"><a class="brand" href="/"><img src="/assets/treeline-mark.svg" width="28" height="28" alt="Treeline"> <span>Treeline Proxy</span></a>
+  <nav><a href="/resources/sidecar/">Docs</a><a href="/downloads/compose.quickstart.yml">Download</a></nav>
+</header>
+<main>
+<section class="hero"><h1>Sidecar MITM</h1><p>Drop‑in TLS MITM for GenAI egress. Policy + DLP + risk scoring with zero app changes.</p>
+<p><a class="btn-primary btn" href="/resources/sidecar/">Get Started</a><a class="btn-secondary btn" href="/downloads/compose.quickstart.yml" download>Download Compose</a></p>
+<p class="note">Local‑only defaults (127.0.0.1). macOS/Linux/WSL.</p></section>
+<section class="section grid-2">
+  <div class="card"><h3>3‑command install</h3>
+    <div class="copy"><button data-copy>copy</button><pre>curl -fsSL https://treelineproxy.io/downloads/compose.quickstart.yml -o compose.yml
+docker compose -f compose.yml up -d
+curl -fsSL https://treelineproxy.io/downloads/smoke.sh -o smoke.sh && chmod +x smoke.sh && ./smoke.sh</pre></div>
+  </div>
+  <div class="card"><h3>Observability</h3><p>Prom/Grafana overlay:</p>
+    <div class="copy"><button data-copy>copy</button><pre>docker compose -f compose.yml -f https://treelineproxy.io/downloads/compose.observability.yml up -d</pre></div>
+  </div>
+</section>
+<section class="section"><h2>Security defaults</h2>
+  <div class="card"><p><strong>Decision headers OFF</strong> by default. Use metrics/logs in prod; enable headers only for local debug.</p>
+  <div class="copy"><button data-copy>copy</button><pre>TREELINE_DECISION_HEADERS=true docker compose -f compose.yml up -d</pre></div></div>
+</section>
+</main>
+<footer class="footer"><a href="/resources/sidecar/">Docs</a> · <a href="/downloads/compose.quickstart.yml">Downloads</a></footer>
+</body></html>

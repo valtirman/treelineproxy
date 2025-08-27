@@ -1,16 +1,18 @@
+
 services:
   treeline:
     image: ghcr.io/treelineproxy/sidecar:latest
+    container_name: treeline-sidecar
+    ports:
+      - "127.0.0.1:15050:15000"
+      - "127.0.0.1:9096:9095"
+      - "127.0.0.1:18080:8080"
     environment:
       - TREELINE_RULEPACK=/app/rules/baseline.yaml
-      - TREELINE_FAIL_MODE=hard
+      - TREELINE_FAIL_MODE=soft
       - TREELINE_DECISION_HEADERS=false
-    ports:
-      - "127.0.0.1:15050:15000"  # proxy
-      - "127.0.0.1:9096:9095"    # metrics
-      - "127.0.0.1:18080:8080"   # health
     volumes:
-      - ./rules:/app/rules
+      - ./rules:/app/rules:ro
       - ./mitm:/home/mitmproxy
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8080/ready"]
