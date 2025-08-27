@@ -1,11 +1,122 @@
-
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Treeline Proxy</title><link rel="stylesheet" href="/assets/site.css"><script defer src="/assets/app.js"></script></head>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Treeline Proxy — Guardrails for GenAI</title>
+  <meta name="description" content="Guardrails, DLP, observability for GenAI—sidecar or egress proxy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/home.css">
+</head>
 <body>
-<header class="nav"><a class="brand" href="/"><img src="/assets/treeline-mark.svg" width="28" height="28" alt="Treeline"></a>
-  <nav><a href="/sidecar/">Sidecar</a><a href="/resources/sidecar/">Docs</a><a href="/downloads/compose.quickstart.yml">Download</a></nav>
-</header>
-<main><section class="hero"><h1>Treeline Proxy</h1><p>Guardrails, DLP, observability for GenAI—sidecar or egress proxy.</p>
-<p><a class="btn-primary btn" href="/sidecar/">Sidecar</a><a class="btn-secondary btn" href="/resources/sidecar/">Docs</a></p></section></main>
-<footer class="footer"><a href="/sidecar/">Sidecar</a> · <a href="/resources/sidecar/">Docs</a></footer>
-</body></html>
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="brand" href="/">
+        <img class="brand__mark" src="/assets/treeline-mark.svg" alt="Treeline" />
+        <span class="brand__text">Treeline Proxy</span>
+      </a>
+      <nav class="nav__links">
+        <a href="/sidecar/">Sidecar</a>
+        <a href="/resources/sidecar/">Docs</a>
+        <a href="/downloads/compose.quickstart.yml">Download</a>
+        <a href="https://github.com/valtirman/treelineproxy" rel="noopener" target="_blank">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Guardrails, DLP, observability for GenAI</h1>
+      <p class="lead">Drop‑in <strong>sidecar</strong> or <strong>egress proxy</strong> that blocks secrets, redacts PII, and exports metrics. 100% self‑hosted.</p>
+      <div class="cta">
+        <a class="btn btn--primary" href="/sidecar/">Get the Sidecar</a>
+        <a class="btn" href="/resources/sidecar/">Read the Docs</a>
+      </div>
+    </section>
+
+    <section class="grid two">
+      <article class="card">
+        <div class="card__header">
+          <h2>Prompt Scanner</h2>
+          <p class="muted">Local, client‑side scan. <em>No data leaves your browser.</em></p>
+        </div>
+        <div class="card__body">
+          <textarea id="scan-input" class="input" rows="6" placeholder="Paste text or a prompt here…"></textarea>
+          <div class="actions">
+            <button id="scan-btn" class="btn btn--primary">Scan</button>
+            <button id="redact-btn" class="btn">Redact</button>
+          </div>
+          <div id="scan-results" class="results"></div>
+          <div class="copyrow">
+            <button id="copy-redacted" class="btn btn--ghost" title="Copy redacted output">Copy redacted</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card__header">
+          <h2>Prompt Builder</h2>
+          <p class="muted">Compose production‑ready prompts with structure and constraints.</p>
+        </div>
+        <div class="card__body builder">
+          <label>Role <input id="b-role" class="input" placeholder="e.g., Senior Data Engineer" /></label>
+          <label>Task <input id="b-task" class="input" placeholder="e.g., design a Spark job to de‑duplicate records" /></label>
+          <label>Data / Context <input id="b-data" class="input" placeholder="e.g., Parquet on S3, 200GB/day, Glue catalog" /></label>
+          <div class="grid two tight">
+            <label>Output format
+              <select id="b-format" class="input">
+                <option>bullet list</option>
+                <option>step‑by‑step plan</option>
+                <option>RFC with headers</option>
+                <option>code with comments</option>
+              </select>
+            </label>
+            <label>Tone
+              <select id="b-tone" class="input">
+                <option>concise</option>
+                <option>formal</option>
+                <option>friendly</option>
+                <option>critical</option>
+              </select>
+            </label>
+          </div>
+          <label>Constraints <input id="b-constraints" class="input" placeholder="e.g., cite sources, include risks, stay under 400 words" /></label>
+          <div class="actions">
+            <button id="build-btn" class="btn btn--primary">Build Prompt</button>
+            <button id="copy-built" class="btn btn--ghost">Copy</button>
+          </div>
+          <textarea id="built-output" class="output" rows="10" placeholder="Your generated prompt will appear here…" readonly></textarea>
+        </div>
+      </article>
+    </section>
+
+    <section class="strip">
+      <div class="strip__inner">
+        <h3>Why Treeline?</h3>
+        <ul class="ticks">
+          <li>Blocks <code>Authorization: Bearer …</code> and OpenAI‑style keys.</li>
+          <li>Redacts emails/SSNs/cards/JWTs with tunable policy.</li>
+          <li>Prom/Grafana metrics for requests + rule decisions.</li>
+          <li>Dev‑friendly: single compose file, local‑only defaults.</li>
+        </ul>
+        <a class="btn btn--primary" href="/sidecar/">Start in 60 seconds</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© 2025 Treeline</span>
+      <span class="footer__spacer">·</span>
+      <a href="https://github.com/valtirman/treelineproxy" rel="noopener" target="_blank">GitHub</a>
+      <span class="footer__spacer">·</span>
+      <a href="/resources/sidecar/">Docs</a>
+    </div>
+  </footer>
+
+  <script src="/assets/home.js"></script>
+</body>
+</html>
