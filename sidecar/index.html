@@ -1,28 +1,161 @@
-
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sidecar — Treeline Proxy</title><link rel="stylesheet" href="/assets/site.css"><script defer src="/assets/app.js"></script></head>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Treeline Sidecar — 1‑Minute Quickstart</title>
+  <meta name="description" content="Drop-in TLS MITM proxy for GenAI traffic. Block secrets, redact PII/PHI, enforce policy without app changes."/>
+  <link rel="stylesheet" href="/assets/sidecar.css"/>
+  <script defer src="/assets/sidecar.js"></script>
+</head>
 <body>
-<header class="nav"><a class="brand" href="/"><img src="/assets/treeline-mark.svg" width="28" height="28" alt="Treeline"> <span>Treeline Proxy</span></a>
-  <nav><a href="/resources/sidecar/">Docs</a><a href="/downloads/compose.quickstart.yml">Download</a></nav>
-</header>
-<main>
-<section class="hero"><h1>Sidecar MITM</h1><p>Drop‑in TLS MITM for GenAI egress. Policy + DLP + risk scoring with zero app changes.</p>
-<p><a class="btn-primary btn" href="/resources/sidecar/">Get Started</a><a class="btn-secondary btn" href="/downloads/compose.quickstart.yml" download>Download Compose</a></p>
-<p class="note">Local‑only defaults (127.0.0.1). macOS/Linux/WSL.</p></section>
-<section class="section grid-2">
-  <div class="card"><h3>3‑command install</h3>
-    <div class="copy"><button data-copy>copy</button><pre>curl -fsSL https://treelineproxy.io/downloads/compose.quickstart.yml -o compose.yml
-docker compose -f compose.yml up -d
-curl -fsSL https://treelineproxy.io/downloads/smoke.sh -o smoke.sh && chmod +x smoke.sh && ./smoke.sh</pre></div>
-  </div>
-  <div class="card"><h3>Observability</h3><p>Prom/Grafana overlay:</p>
-    <div class="copy"><button data-copy>copy</button><pre>docker compose -f compose.yml -f https://treelineproxy.io/downloads/compose.observability.yml up -d</pre></div>
-  </div>
-</section>
-<section class="section"><h2>Security defaults</h2>
-  <div class="card"><p><strong>Decision headers OFF</strong> by default. Use metrics/logs in prod; enable headers only for local debug.</p>
-  <div class="copy"><button data-copy>copy</button><pre>TREELINE_DECISION_HEADERS=true docker compose -f compose.yml up -d</pre></div></div>
-</section>
-</main>
-<footer class="footer"><a href="/resources/sidecar/">Docs</a> · <a href="/downloads/compose.quickstart.yml">Downloads</a></footer>
-</body></html>
+  <nav class="nav">
+    <div class="brand"><a href="/"><img src="/assets/treeline-mark.svg" alt="Treeline"/></a><strong>Treeline Sidecar</strong></div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/resources/sidecar/">Docs</a>
+      <a href="#downloads">Downloads</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <div>
+        <h1 class="anchor" id="quickstart">Sidecar MITM — 1‑Minute Quickstart</h1>
+        <p class="subtle">Transparent TLS proxy for OpenAI, Anthropic, Azure AI, Vertex, Bedrock and local LLMs. Enforce policy at the network edge.</p>
+        <div class="kpis">
+          <span class="pill">Proxy <b>15000</b></span>
+          <span class="pill">Health <b>8080</b></span>
+          <span class="pill">Metrics <b>9095</b></span>
+        </div>
+      </div>
+      <aside class="card">
+        <h3>Security defaults</h3>
+        <ul class="small">
+          <li>Blocks bearer tokens & OpenAI keys</li>
+          <li>Redacts PII/JWT/SSN/CC in bodies</li>
+          <li>Local-only quickstart binds</li>
+          <li>Decision headers <b>OFF</b> (prod-safe)</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="card">
+      <h2>Start the sidecar</h2>
+      <div class="copywrap">
+        <pre id="start" class="code">curl -fsS https://treelineproxy.io/downloads/compose.quickstart.yml -o compose.yml
+docker compose -f compose.yml up -d --build
+curl -fsS http://127.0.0.1:8080/ready && echo LIVE</pre>
+        <button class="btn copybtn" data-copy="start">Copy</button>
+      </div>
+      <p class="small notice">Need Prometheus + Grafana? Add the <a href="#observability">observability overlay</a> below.</p>
+    </section>
+
+    <section class="card">
+      <h2 class="anchor" id="verify">Verify policy</h2>
+      <p class="small">Expect <span class="bad">403</span> for risky headers & keys; redaction shows <code>[REDACTED]</code>.</p>
+      <div class="copywrap">
+        <pre id="verify-cmds" class="code">export PROXY=http://127.0.0.1:15000
+# Header block → 403
+curl -i -x "$PROXY" -k https://example.com/ -H 'Authorization: Bearer x' -d hi -o /dev/null -w "%{http_code}\n"
+# OpenAI key block → 403
+curl -i -x "$PROXY" -k https://example.com/ --data 'sk-123456789012345678901234' -o /dev/null -w "%{http_code}\n"
+# Redaction visible in echo
+curl -s -x "$PROXY" -k https://postman-echo.com/post -H 'content-type: text/plain' \
+  --data 'email a@b.com SSN 123-45-6789 CC 4242 4242 4242 4242' | jq -r '.data'</pre>
+        <button class="btn copybtn" data-copy="verify-cmds">Copy</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2 class="anchor" id="observability">Observability (optional)</h2>
+        <p class="small">Adds Prometheus + Grafana to your running compose.</p>
+        <div class="copywrap">
+          <pre id="obs" class="code">curl -fsS https://treelineproxy.io/downloads/compose.observability.yml -o compose.obs.yml
+docker compose -f compose.yml -f compose.obs.yml up -d
+# Prometheus → http://localhost:9090   Grafana → http://localhost:3000 (admin/admin)</pre>
+          <button class="btn copybtn" data-copy="obs">Copy</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2 class="anchor" id="metrics">Metrics to watch</h2>
+        <pre class="code">curl -s http://127.0.0.1:9095/metrics \
+ | egrep 'treeline_requests_total|treeline_decisions_total' | sort</pre>
+        <table class="table small">
+          <tr><th>Metric</th><th>Meaning</th></tr>
+          <tr><td><code>treeline_requests_total{decision}</code></td><td>allow · redact · block</td></tr>
+          <tr><td><code>treeline_decisions_total{action,rule}</code></td><td>which rule fired</td></tr>
+        </table>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2 class="anchor" id="policies">Headers & policy</h2>
+        <table class="table small">
+          <tr><th>Env</th><th>Value</th><th>Effect</th></tr>
+          <tr><td><code>TREELINE_FAIL_MODE</code></td><td><b>soft</b> / <b>hard</b></td><td>soft = observe; hard = enforce</td></tr>
+          <tr><td><code>TREELINE_DECISION_HEADERS</code></td><td><b>false</b> (prod)</td><td>No <code>X-Decision</code> headers; use metrics/logs</td></tr>
+          <tr><td><code>TREELINE_RULEPACK</code></td><td><code>/app/rules/baseline.yaml</code></td><td>PII, secrets, OpenAI key, JWT, etc.</td></tr>
+        </table>
+        <p class="small">Baseline covers: API keys/secrets (incl. OpenAI), SSN/CC/PII, JWT; blocks via header & body; redacts sensitive spans.</p>
+      </article>
+
+      <article class="card">
+        <h2 class="anchor" id="ports">Ports & binds</h2>
+        <table class="table small">
+          <tr><th>Host</th><th>Container</th><th>Purpose</th></tr>
+          <tr><td>15000</td><td>15000</td><td>HTTP/HTTPS proxy</td></tr>
+          <tr><td>8080</td><td>8080</td><td>Health (<code>/ready</code>)</td></tr>
+          <tr><td>9095</td><td>9095</td><td>Prometheus metrics</td></tr>
+        </table>
+        <p class="small">Change host ports by editing your compose file mapping on the left of <code>host:container</code>.</p>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2 class="anchor" id="deploy">Kubernetes/ECS</h2>
+<pre class="code small"># Sidecar example (K8s)
+containers:
+- name: app
+  image: your/app
+- name: treeline
+  image: treeline/sidecar:latest
+  env:
+  - name: TREELINE_FAIL_MODE
+    value: "hard"
+  ports:
+  - containerPort: 15000
+# Point your app's HTTP(S)_PROXY to http://localhost:15000</pre>
+      </article>
+
+      <article class="card">
+        <h2 class="anchor" id="troubleshoot">Troubleshooting</h2>
+        <ul class="small">
+          <li><b>Port in use</b>: stop old containers; change host ports; or kill stray <code>docker-proxy</code>.</li>
+          <li><b>503 from proxy</b>: target unreachable or TLS MITM blocked; try <code>httpbin</code>/<code>postman-echo</code>.</li>
+          <li><b>No headers</b>: by design in prod (<code>TREELINE_DECISION_HEADERS=false</code>); use metrics.</li>
+          <li><b>Not capturing</b>: ensure your client uses the proxy (env <code>HTTP_PROXY</code>/<code>HTTPS_PROXY</code> or curl <code>-x</code>).</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card" id="downloads">
+      <h2>Downloads</h2>
+      <ul class="small">
+        <li><a href="/downloads/compose.quickstart.yml">compose.quickstart.yml</a></li>
+        <li><a href="/downloads/compose.observability.yml">compose.observability.yml</a></li>
+        <li><a href="/downloads/prometheus.yml">prometheus.yml</a></li>
+        <li><a href="/downloads/smoke.sh">smoke.sh</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© Treeline Proxy — Sidecar</p>
+  </footer>
+</body>
+</html>
