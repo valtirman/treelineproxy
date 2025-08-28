@@ -4,27 +4,26 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Treeline Proxy — Guardrails for GenAI</title>
-  <meta name="description" content="Guardrails, DLP, and observability for GenAI — delivered as a drop-in sidecar or egress proxy. Block secrets, redact PII, and export metrics without changing your app."/>
-  <!-- Reuse the Sidecar look & feel -->
+  <meta name="description" content="Guardrails, DLP, and observability for GenAI—delivered as a drop-in sidecar or egress proxy. Block secrets, redact PII/PHI, and export metrics without code changes."/>
+  <!-- reuse the Sidecar look/feel; this file already exists on your site -->
   <link rel="stylesheet" href="/assets/sidecar.css">
   <style>
-    /* homepage-only refinements layered on top of sidecar.css */
-    .kpis { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .pill { display:inline-block; padding:4px 10px; border-radius:999px; border:1px solid #1f2a37; color:#9fb3c8; font-size:12px; background:#0f1520; }
-    .list { margin:10px 0 0 18px; color:#9fb3c8; }
-    .list li { margin:6px 0; }
-    .lead { color:#9fb3c8; max-width:75ch; }
-    .spaced { margin-top: 22px; }
-    .code { background:#0b111d; border:1px solid #1f2b45; border-radius:12px; padding:12px; white-space:pre-wrap; word-break:break-word; }
-    .grid-3 { display:grid; gap:16px; grid-template-columns:1fr; }
-    @media(min-width:1024px){ .grid-3{ grid-template-columns:1fr 1fr 1fr; } }
+    /* small homepage-only helpers layered on top of sidecar.css */
+    .kpis{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid #1f2a37;background:#0f1520;color:#9fb3c8;font-size:12px}
+    .list{margin:10px 0 0 18px;color:#9fb3c8}
+    .list li{margin:6px 0}
+    .lead{color:#9fb3c8;max-width:75ch}
+    .spaced{margin-top:20px}
+    .grid-3{display:grid;gap:16px;grid-template-columns:1fr}
+    @media(min-width:1100px){.grid-3{grid-template-columns:1fr 1fr 1fr}}
   </style>
 </head>
 <body>
-  <!-- Sticky header like /sidecar/ -->
+  <!-- sticky header like /sidecar/ -->
   <nav class="nav">
     <div class="wrap nav__inner">
-      <a class="brand" href="/"><img src="/assets/treeline-mark.svg" alt="Treeline"><span>Treeline Proxy</span></a>
+      <a class="brand" href="/"><img src="/assets/treeline-mark.svg" alt="Treeline" style="height:28px;width:auto;vertical-align:middle"><span>Treeline Proxy</span></a>
       <div class="links">
         <a href="/sidecar/">Sidecar</a>
         <a href="/scanner/">Scanner</a>
@@ -36,15 +35,15 @@
   </nav>
 
   <main class="wrap">
-    <!-- Hero card -->
+    <!-- HERO (same vibe as /sidecar/) -->
     <section class="hero">
-      <h1>Guardrails, DLP, observability for GenAI</h1>
-      <p class="lead">Treeline is a drop-in <b>sidecar</b> or <b>egress proxy</b> that puts safety on the wire: block secrets, redact PII/PHI, enforce policy, and export ground-truth metrics — without changing your app.</p>
+      <h1>Guardrails, DLP, and observability for GenAI</h1>
+      <p class="lead">Your models aren’t the risk—your <i>runtime</i> is. Treeline is a drop-in sidecar that stops secrets, redacts PII/PHI, governs tool-use, and exports ground-truth metrics—without changing your app.</p>
       <div class="kpis">
         <span class="pill">No code changes</span>
         <span class="pill">OpenAI · Anthropic · Azure · Vertex · Bedrock</span>
+        <span class="pill">Sidecar or Gateway</span>
         <span class="pill">Prometheus + OTLP/OTel</span>
-        <span class="pill">Local-only quickstart</span>
       </div>
       <div class="cta spaced">
         <a class="btn btn-primary" href="/sidecar/">Get the Sidecar</a>
@@ -52,95 +51,66 @@
       </div>
     </section>
 
-    <!-- What you can do today -->
-    <section class="grid">
-      <article class="card">
-        <h3>Scan a prompt (local-first)</h3>
-        <p class="muted">Check prompts/outputs for secrets, PII, JWTs, and jailbreak signals — all in the browser.</p>
-        <ul class="list">
-          <li>Deterministic rules & profiles (chatbot, RAG, agents)</li>
-          <li>Explainable hits with example patterns</li>
-          <li>No data leaves your machine</li>
-        </ul>
-        <div class="cta spaced">
-          <a class="btn btn-primary" href="/scanner/">Open Scanner</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <h3>Build a robust prompt</h3>
-        <p class="muted">Compose production prompts with structure, constraints, and optional guardrails.</p>
-        <ul class="list">
-          <li>Zero/Few-shot · CoT/ToT · RAG · ReAct · PAL · Reflexion</li>
-          <li>Security wrapper to resist injection/jailbreak</li>
-          <li>Export variants and evaluation rubric</li>
-        </ul>
-        <div class="cta spaced">
-          <a class="btn btn-primary" href="/workshop/">Open Builder</a>
-        </div>
-      </article>
+    <!-- WHY NOW -->
+    <section class="card accent">
+      <h2 class="section-title">Why put guardrails on the wire?</h2>
+      <p class="lead">LLM leaks don’t look like queries; they look like <b>runtime behavior</b>: pasted secrets, hidden PII, jailbreak prompts, tool calls that reach into prod. Policies in code reviews don’t help if the risk is in the conversation. Treeline enforces where it matters—on the wire.</p>
+      <ul class="list">
+        <li><b>Policy drift</b>: prompts mutate faster than app reviews.</li>
+        <li><b>Silent exposure</b>: app-level redaction never hit metrics or audit.</li>
+        <li><b>Spend sprawl</b>: unknown tokens, duplicate requests, runaway contexts.</li>
+      </ul>
     </section>
 
-    <!-- How it works (high level) -->
+    <!-- WHAT (3-up) -->
+    <section class="grid-3">
+      <article class="card"><h3>Enforce</h3><p>Block bearer tokens & API keys, redact PII/JWTs, gate tools & file I/O; fail-open or fail-closed.</p></article>
+      <article class="card"><h3>Observe</h3><p>Prometheus counters + OTLP traces show which rules fired and why—no black boxes.</p></article>
+      <article class="card"><h3>Fit</h3><p>Sidecar or egress gateway; OpenAI/Anthropic/Azure/Vertex/Bedrock/local; any SDK.</p></article>
+    </section>
+
+    <!-- HOW IT WORKS + QUICKSTART -->
     <section class="grid">
       <article class="card">
-        <h3>How Treeline works</h3>
+        <h3>How it works</h3>
         <ol class="list">
-          <li><b>Intercept</b> — Transparent HTTP(S) proxy (sidecar/gateway).</li>
-          <li><b>Inspect</b> — Match rules: PII/DLP, secrets, JWTs, jailbreaks, exfil; optional semantic checks.</li>
-          <li><b>Decide</b> — <b>allow</b> / <b>redact</b> / <b>block</b> (fail-open or fail-closed).</li>
-          <li><b>Observe</b> — Export metrics/logs/traces and alert on policy hits.</li>
+          <li><b>Intercept</b> — transparent HTTP(S) proxy.</li>
+          <li><b>Inspect</b> — secrets, PII/PHI, JWTs, jailbreak/exfil; optional semantic checks.</li>
+          <li><b>Decide</b> — <code>allow</code> / <code>redact</code> / <code>block</code>; headers off in prod.</li>
+          <li><b>Observe</b> — export metrics/logs/traces; wire into SIEM.</li>
         </ol>
-        <p class="muted">Policy packs ship ready-to-use and are fully tunable for your risk appetite.</p>
       </article>
-
       <article class="card">
         <h3>Quickstart (copy/paste)</h3>
         <pre class="code">curl -fsSL https://treelineproxy.io/downloads/compose.quickstart.yml -o compose.yml
 docker compose -f compose.yml up -d
 curl -fsSL https://treelineproxy.io/downloads/smoke.sh -o smoke.sh && chmod +x smoke.sh && ./smoke.sh</pre>
-        <p class="muted">Expect: <code>/ready</code> → LIVE, header/key blocks → 403, body redactions → <b>[REDACTED]</b>, metrics at <code>127.0.0.1:9096/metrics</code>.</p>
+        <p class="muted">Expect: <code>/ready</code> → LIVE · header/key → 403 · bodies → <b>[REDACTED]</b> · metrics at <code>127.0.0.1:9096/metrics</code></p>
       </article>
     </section>
 
-    <!-- Why teams choose Treeline -->
-    <section class="grid-3">
+    <!-- TOOLS (Scanner + Builder) -->
+    <section class="grid">
       <article class="card">
-        <h3>Security defaults</h3>
-        <ul class="list">
-          <li>Decision headers <b>OFF</b> in prod (no policy leakage)</li>
-          <li>Baseline: block bearer & OpenAI keys; redact email/SSN/CC/JWT</li>
-          <li>Local binds in quickstart; easy to harden for prod</li>
-        </ul>
+        <h3>Prompt Scanner</h3>
+        <p class="muted">Local-first checks—no data leaves your browser.</p>
+        <div class="cta"><a class="btn btn-primary" href="/scanner/">Open Scanner</a></div>
       </article>
       <article class="card">
-        <h3>Ops & Observability</h3>
-        <ul class="list">
-          <li>Prometheus counters for decisions & rules</li>
-          <li>OTLP/OTel/JSONL exports</li>
-          <li>Grafana overlay in one compose</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Fits your stack</h3>
-        <ul class="list">
-          <li>SDK-agnostic: sidecar or gateway</li>
-          <li>K8s/ECS/VMs supported</li>
-          <li>Works with OpenAI/Anthropic/Azure/Vertex/Bedrock/local</li>
-        </ul>
+        <h3>Prompt Workshop</h3>
+        <p class="muted">Compose robust prompts with structure, constraints, and guardrails.</p>
+        <div class="cta"><a class="btn btn-primary" href="/workshop/">Open Builder</a></div>
       </article>
     </section>
 
-    <!-- Resources -->
+    <!-- RESOURCES -->
     <section class="grid">
       <article class="card">
         <h3>Resources</h3>
         <ul class="list">
-          <li><a href="/resources/sidecar/">Sidecar Docs</a> (quickstart, ports, headers, TLS, metrics, prod notes)</li>
-          <li><a href="/downloads/compose.quickstart.yml">compose.quickstart.yml</a></li>
-          <li><a href="/downloads/compose.observability.yml">compose.observability.yml</a></li>
-          <li><a href="/downloads/prometheus.yml">prometheus.yml</a></li>
-          <li><a href="/downloads/smoke.sh">smoke.sh</a></li>
+          <li><a href="/resources/sidecar/">Sidecar Docs</a> (ports, headers, TLS/CA, metrics, prod notes)</li>
+          <li><a href="/downloads/compose.quickstart.yml">compose.quickstart.yml</a> · <a href="/downloads/compose.observability.yml">compose.observability.yml</a></li>
+          <li><a href="/downloads/prometheus.yml">prometheus.yml</a> · <a href="/downloads/smoke.sh">smoke.sh</a></li>
         </ul>
       </article>
     </section>
@@ -149,4 +119,3 @@ curl -fsSL https://treelineproxy.io/downloads/smoke.sh -o smoke.sh && chmod +x s
   <footer class="footer">© Treeline · <a href="/resources/sidecar/">Docs</a></footer>
 </body>
 </html>
-
