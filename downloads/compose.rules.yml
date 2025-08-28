@@ -1,0 +1,5 @@
+services:
+  treeline:
+    volumes:
+      - ./rules:/app/rules:ro
+
